@@ -573,7 +573,7 @@ public class CustomerMainAppController extends ClientController {
     public void switchToClientApp() {
         primaryStage.setScene(customerAppScene);
         primaryStage.show();
-        customerInfoTables = new customerDataTables(this,LoansAsLoaner,LoansAsLender,relevantLoans);
+        customerInfoTables = new customerDataTables(this,LoansAsLoaner,LoansAsLender,relevantLoans,LoansToSellTable,LoansToBuyTable);
         customerInfoTables.getTransactionTable().prefWidthProperty().bind(AccountTransInfo.widthProperty());
         customerInfoTables.getTransactionTable().prefHeightProperty().bind(AccountTransInfo.heightProperty());
         AccountTransInfo.getChildren().setAll(customerInfoTables.getTransactionTable());
