@@ -16,6 +16,8 @@ public class Constants {
     public final static String GETALLCATEGORIES = FULL_SERVER_PATH + "/GetCategories";
     public final static String SCRAMBLE = FULL_SERVER_PATH + "/Scramble";
     public final static String INCREASE_YAZ = FULL_SERVER_PATH + "/IncreaseYaz";
+    public final static String REWIND_YAZ = FULL_SERVER_PATH + "/RewindYaz";
+
 
 
     // GSON instance

@@ -33,7 +33,6 @@ public class LoginController {
     private final StringProperty errorMessageProperty = new SimpleStringProperty();
 
     private ClientController customerAppMainController;
-    //private ClientController adminAppMainController;
 
 
 

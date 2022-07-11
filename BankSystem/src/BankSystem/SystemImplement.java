@@ -3,7 +3,6 @@ package BankSystem;
 import BankActions.*;
 import Costumers.Customer;
 import DTOs.*;
-import SystemExceptions.InccorectInputType;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.io.Serializable;
@@ -11,6 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static BankSystem.FromXmlToClasses.fromXmlToObjects;
+import static java.util.stream.Collectors.groupingBy;
 
 public class SystemImplement implements BankSystem , Serializable {
     private Map<String, Customer> Customers = new HashMap<>();
@@ -18,6 +18,8 @@ public class SystemImplement implements BankSystem , Serializable {
     private Set<String> allCategories = new HashSet<>();
     private int Yaz = 1;
     transient private SimpleStringProperty yazProperty = new SimpleStringProperty();
+    private Boolean isRewind = false;
+    private int RewindYaz = 1;
 
 
     public SimpleStringProperty getYazProperty() {
@@ -198,18 +200,36 @@ public class SystemImplement implements BankSystem , Serializable {
             }
         }
         sendMassagesToNewRiskLoans(newRiskLoans);
-        Yaz++;
-        yazProperty.set("Current Yaz: " + Yaz);
-        for(Customer curCustomer : Customers.values()){
-            List<Loan> curCustomerLoans = LoansInBank.values().stream().filter(L -> L.getNameOfLoaner().equals(curCustomer.getName())).filter(L -> (L.getStatus().equals(LoanStatus.ACTIVE)||L.getStatus().equals(LoanStatus.RISK))).collect(Collectors.toList());
-            for(Loan curLoan : curCustomerLoans){
-                curLoan.setHowManyYazAreLeft();
-                if(curLoan.getNextYazForPayment() == Yaz){
-                    messageMaker(curLoan.getNameOfLoaner(), curLoan.getYazlyPaymentWithDebtsCalculation(Yaz), curLoan.getNameOfLoan(), "The payment date has arrived on the loan: ");
+        if(!isRewind) {
+            Yaz++;
+            RewindYaz++;
+            yazProperty.set("Current Yaz: " + Yaz);
+            for (Customer curCustomer : Customers.values()) {
+                List<Loan> curCustomerLoans = LoansInBank.values().stream().filter(L -> L.getNameOfLoaner().equals(curCustomer.getName())).filter(L -> (L.getStatus().equals(LoanStatus.ACTIVE) || L.getStatus().equals(LoanStatus.RISK))).collect(Collectors.toList());
+                for (Loan curLoan : curCustomerLoans) {
+                    curLoan.setHowManyYazAreLeft();
+                    if (curLoan.getNextYazForPayment() == Yaz) {
+                        messageMaker(curLoan.getNameOfLoaner(), curLoan.getYazlyPaymentWithDebtsCalculation(Yaz), curLoan.getNameOfLoan(), "The payment date has arrived on the loan: ");
+                    }
                 }
             }
         }
-        return new BankSystemDTO(Yaz,"Increase Yaz was successful");
+        else {
+            RewindYaz++;
+            if(RewindYaz == Yaz)
+                isRewind = false;
+        }
+            return new BankSystemDTO(RewindYaz, "Increase Yaz was successful",
+                    getListOfDTOsCustomer().stream().collect(Collectors.toMap(CustomerDTOs::getName,
+                            CustomerDTOs -> CustomerDTOs)),
+                    getListOfLoansDTO().stream().collect(Collectors.toMap(LoanDTOs::getNameOfLoan, LoansDTOs -> LoansDTOs)));
+
+    }
+
+    public int rewindYaz(){
+        isRewind = true;
+        RewindYaz--;
+        return RewindYaz;
     }
 
     private void sendMassagesToNewRiskLoans(Map<Loan,Integer> i_newRiskLoans) {

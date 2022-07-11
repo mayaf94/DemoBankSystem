@@ -16,32 +16,30 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class GetIncreaseYazServlet {
 
-    @WebServlet(name = "IncreaseYaz",urlPatterns = {"/IncreaseYaz"})
-    public class TransactionServlet extends HttpServlet {
-        @Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-            response.setContentType("application/json");
-            String usernameFromSession = SessionUtils.getUsername(request);
-            BankSystem bankEngine = ServletUtils.getBankSystem(getServletContext());
-            BankSystemDTO DTO = null;
-            UserManager userManager = ServletUtils.getUserManager(getServletContext());
+@WebServlet(name = "GetIncreaseYazServlet",urlPatterns = {"/IncreaseYaz"})
+public class GetIncreaseYazServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        String usernameFromSession = SessionUtils.getUsername(request);
+        BankSystem bankEngine = ServletUtils.getBankSystem(getServletContext());
+        BankSystemDTO DTO = null;
+        UserManager userManager = ServletUtils.getUserManager(getServletContext());
 
-            synchronized (getServletContext()){
+        synchronized (getServletContext()) {
 
-                    userManager.addVersionToBankSystemVersionMap(bankEngine);
-                    DTO = bankEngine.IncreaseYaz();
-                    response.setStatus(HttpServletResponse.SC_OK);
+            userManager.addVersionToBankSystemVersionMap(bankEngine);
+            DTO = bankEngine.IncreaseYaz();
+            response.setStatus(HttpServletResponse.SC_OK);
 
-                    //create the response json string
-                    Gson gson = new Gson();
-                    String jsonResponse = gson.toJson(DTO);
-                    try (PrintWriter out = response.getWriter()) {
-                        out.print(jsonResponse);
-                        out.flush();
-                    }
-                }
+            //create the response json string
+            Gson gson = new Gson();
+            String jsonResponse = gson.toJson(DTO);
+            try (PrintWriter out = response.getWriter()) {
+                out.print(jsonResponse);
+                out.flush();
             }
         }
+    }
 }

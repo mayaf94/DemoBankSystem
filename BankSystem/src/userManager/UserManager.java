@@ -38,6 +38,6 @@ public class    UserManager {
     }
 
     public synchronized void addVersionToBankSystemVersionMap(BankSystem bankSystemVersion){
-        bankSystemVersionMap.put(bankSystemVersion.getCurrentYaz(),bankSystemVersion);
+        bankSystemVersionMap.put(bankSystemVersion.getCurrentYaz(), bankSystemVersion);
     }
 }
