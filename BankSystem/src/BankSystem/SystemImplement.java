@@ -20,6 +20,7 @@ public class SystemImplement implements BankSystem , Serializable {
     transient private SimpleStringProperty yazProperty = new SimpleStringProperty();
     private Boolean isRewind = false;
     private int RewindYaz = 1;
+    private List<LoanForSale> loanForSale = new ArrayList<>();
 
 
     public SimpleStringProperty getYazProperty() {
@@ -289,6 +290,7 @@ public class SystemImplement implements BankSystem , Serializable {
         Map<String, Integer> mapToChang = LoansInBank.get(nameOfLoan).getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment();
         for (Map.Entry<String,Integer> entry: mapToChang.entrySet()) {
             entry.setValue(amountOfPrincipalPaymentThatIsLeft(nameOfLoan, entry.getKey()));
+            setNewAmount(entry.getKey(),nameOfLoan);
         }
         return amountInvested;
     }
@@ -304,8 +306,11 @@ public class SystemImplement implements BankSystem , Serializable {
             for (Map.Entry<String,Integer> entry: mapToChang.entrySet()) {
                 entry.setValue(amountOfPrincipalPaymentThatIsLeft(curLoan, entry.getKey()));
             }
+            for (LoanForSale curLoanForSale: loanForSale) {
+                if(curLoanForSale.getLoanName().equals(curLoan) && curLoanForSale.getSeller().equals(customerName))
+                    loanForSale.remove(curLoan);
+            }
         }
-
     }
 
     private void payForLoanFully(Loan loan, Customer customer){
@@ -406,5 +411,28 @@ public class SystemImplement implements BankSystem , Serializable {
                 sum += (curLeftToPay - tmp);
             }
             return sum;
+        }
+
+        public void putLoanOnSale(List<String> loansForSale, String seller){
+            for (String curLoan: loansForSale) {
+                loanForSale.add(new LoanForSale(seller, LoansInBank.get(curLoan).getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment().get(seller),curLoan));
+            }
+        }
+
+        private void setNewAmount(String seller, String loanName){
+            for (LoanForSale curLoan: loanForSale) {
+                if(curLoan.getSeller().equals(seller) && curLoan.getLoanName().equals(loanName)){
+                    curLoan.setPrice(LoansInBank.get(loanName).getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment().get(seller));
+                }
+            }
+        }
+
+        public List<LoansForSaleDTO> getAllLoansForSaleForTheCustomer(String seller){
+        List<LoansForSaleDTO> loansForSaleDTOList = new ArrayList<>();
+            for (LoanForSale curLoan: loanForSale) {
+                if(curLoan.getSeller().equals(seller))
+                loansForSaleDTOList.add(new LoansForSaleDTO(curLoan));
+            }
+            return loansForSaleDTOList;
         }
 }

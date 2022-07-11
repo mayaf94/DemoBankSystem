@@ -34,5 +34,9 @@ public interface BankSystem extends Serializable {
     Map<String, SimpleStringProperty> getLoanDataByStatusPropertyFromSystemMap(String loanName);
     List<LoanDTOs> getAllLoansThatAreForSale();
     int rewindYaz();
+    List<LoansForSaleDTO> getAllLoansForSaleForTheCustomer(String seller);
+    void putLoanOnSale(List<String> loansForSale, String seller);
+    void buyLoans(Map<String,String> mapOfSellerAndLoan, String buyer);
+
 
     }

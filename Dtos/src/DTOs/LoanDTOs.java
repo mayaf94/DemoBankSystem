@@ -76,6 +76,11 @@ public class LoanDTOs implements Serializable {
         totalMissedYazNeedToPayBack = loan.getTotalMissedYazNeedToPayBack();
         debt = loan.getDebt();
         isForSale = loan.getForSale();
+        mapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment = loan.getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment();
+    }
+
+    public Map<String, Integer> getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment() {
+        return mapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment;
     }
 
     public Boolean getForSale() {

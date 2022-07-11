@@ -23,10 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import login.LoginController;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.Response;
+import okhttp3.*;
 import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.StatusBar;
@@ -606,6 +603,15 @@ public class CustomerMainAppController extends ClientController {
 
     @FXML
     void SellLoansClicked(ActionEvent event) {
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("somParam", "someValue")
+                .build();
+
+//        Request request = new Request.Builder()
+//                .url(BASE_URL + route)
+//                .post(requestBody)
+//                .build();
 
     }
 

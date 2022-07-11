@@ -201,11 +201,14 @@ public class Loan implements Serializable {
     }
 
     public void setAnInvestment(int amount, String nameOfLender, int yaz){
-        if(!listOfLenders.containsKey(nameOfLender))
-            listOfLenders.put(nameOfLender,new LeftToPay(amount, (durationOfTheLoan / paymentFrequency),interest));
+        if(!listOfLenders.containsKey(nameOfLender)) {
+            listOfLenders.put(nameOfLender, new LeftToPay(amount, (durationOfTheLoan / paymentFrequency), interest));
+            mapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment.put(nameOfLender,amount);
+        }
         else {
             listOfLenders.get(nameOfLender).setOriginalAmount(amount);
-            mapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment.put(nameOfLender,0);
+            int newAmount = listOfLenders.get(nameOfLender).getOriginalAmount();
+            mapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment.put(nameOfLender, newAmount);
         }
         theAmountLeftToMakeTheLoanActive -= amount;
         if(theAmountLeftToMakeTheLoanActive == 0){
