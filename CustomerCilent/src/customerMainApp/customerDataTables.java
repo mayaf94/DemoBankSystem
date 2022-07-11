@@ -7,6 +7,7 @@ import clientController.ClientController;
 import component.loansComponent.ViewLoansInfo.ViewLoansInfoController;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.Serializable;
@@ -19,23 +20,46 @@ public class customerDataTables implements Serializable {
     private TableView<LoanDTOs> LoansAsLoanerData;
     private TableView<LoanDTOs> LoansAsLenderData;
     private TableView<LoanDTOs> MatchinLoansForScramble;
+    private TableView<LoanDTOs> LoansForSell;
+    private TableView<LoanDTOs> LoansToBuy;
     private TableView<LoanDTOs> LoansAsLoanerDataForPaymentTab = new TableView<>();
     private TableView<AccountTransactionDTO> TransactionTable = new TableView<>();
     ViewLoansInfoController loansInfoController = new ViewLoansInfoController();
     ClientController clientController;
 
-    public customerDataTables(ClientController i_clientController,TableView<LoanDTOs> i_LoansAsLoanerData,TableView<LoanDTOs> i_LoansAsLenderData,TableView<LoanDTOs> i_MatchinLoansForScramble) {
+    public customerDataTables(ClientController i_clientController,TableView<LoanDTOs> i_LoansAsLoanerData,TableView<LoanDTOs> i_LoansAsLenderData,TableView<LoanDTOs> i_MatchinLoansForScramble,TableView<LoanDTOs> i_LoansForSell,TableView<LoanDTOs> i_LoansForBuy) {
         clientController = i_clientController;
         List<LoanDTOs> lst = new ArrayList<>();
         loansInfoController.setMainController(clientController);
         LoansAsLoanerData = i_LoansAsLoanerData;
         LoansAsLenderData = i_LoansAsLenderData;
+        LoansForSell = i_LoansForSell;
+        LoansToBuy = i_LoansForBuy;
         MatchinLoansForScramble = i_MatchinLoansForScramble;
+        buildLoansForSellOrBuyTable(LoansToBuy);
+        buildLoansForSellOrBuyTable(LoansForSell);
         loansInfoController.buildLoansTableView(MatchinLoansForScramble);
         loansInfoController.buildLoansTableView(LoansAsLoanerData);
         loansInfoController.buildLoansTableView(LoansAsLenderData);
         //buildLoansTableForPaymentTab();
         buildTransactionsTable();
+    }
+
+    private void buildLoansForSellOrBuyTable(TableView<LoanDTOs> LoansTradeTable){
+        loansInfoController.buildLoansTableView(LoansTradeTable);
+        final TableColumn<LoanDTOs, Integer> price = new TableColumn<>( "Price" );
+        price.setCellValueFactory( new PropertyValueFactory<>("price"));
+
+        LoansTradeTable.getColumns().add(price);
+        price.setPrefWidth(150);
+
+        final TableColumn<LoanDTOs, Boolean> selectedColumn = new TableColumn<>( "Select" );
+        selectedColumn.setCellValueFactory( new PropertyValueFactory<>("select"));
+        selectedColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectedColumn));
+        selectedColumn.setPrefWidth(125);
+        LoansTradeTable.getColumns().add( selectedColumn );
+        selectedColumn.getTableView().setEditable(true);
+
     }
 
 /*    private void buildLoansTableForPaymentTab(){
