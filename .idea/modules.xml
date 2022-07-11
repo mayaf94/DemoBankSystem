@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/ABS part 3.iml" filepath="$PROJECT_DIR$/.idea/ABS part 3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ABS-Web/ABS-Web.iml" filepath="$PROJECT_DIR$/ABS-Web/ABS-Web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BankSystem/BankSystem.iml" filepath="$PROJECT_DIR$/BankSystem/BankSystem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ClientCommons/ClientCommons.iml" filepath="$PROJECT_DIR$/ClientCommons/ClientCommons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CustomerCilent/CustomerCilent.iml" filepath="$PROJECT_DIR$/CustomerCilent/CustomerCilent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Dtos/Dtos.iml" filepath="$PROJECT_DIR$/Dtos/Dtos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Gui/Gui.iml" filepath="$PROJECT_DIR$/Gui/Gui.iml" />
+    </modules>
+  </component>
+</project>

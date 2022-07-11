@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="BankSystem">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ABS/out/artifacts/BankSystem_jar/BankSystem.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

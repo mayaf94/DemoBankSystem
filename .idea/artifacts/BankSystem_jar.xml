@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BankSystem:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BankSystem_jar</output-path>
+    <root id="archive" name="BankSystem.jar">
+      <element id="module-output" name="BankSystem" />
+      <element id="module-output" name="Dtos" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../GSON/gson-2.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../GSON/gson-2.1-javadoc.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../GSON/gson-2.1-sources.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

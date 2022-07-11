@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="ABS-Web:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="ABS-Web" />
+          <element id="module-output" name="BankSystem" />
+          <element id="module-output" name="Dtos" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="GSON" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="ABS-Web/web/Web" />
+    </root>
+  </artifact>
+</component>

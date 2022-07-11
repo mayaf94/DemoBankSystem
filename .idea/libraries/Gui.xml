@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gui">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ABS/out/artifacts/Gui_jar/Gui.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
