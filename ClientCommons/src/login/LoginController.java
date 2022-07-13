@@ -34,6 +34,8 @@ public class LoginController {
 
     private ClientController customerAppMainController;
 
+    private boolean isAdmin;
+
 
 
     @FXML
@@ -41,6 +43,9 @@ public class LoginController {
         errorMassage.textProperty().bind(errorMessageProperty);
     }
 
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
 
     @FXML
     void LoginClicked(ActionEvent event) {
@@ -49,11 +54,14 @@ public class LoginController {
             errorMessageProperty.set("User name is empty. You can't login with empty user name");
             return;
         }
-
+        String isAdminAsString = "false";
+        if(isAdmin)
+            isAdminAsString = "true";
         String finalUrl = HttpUrl
                 .parse(Constants.LOGIN_PAGE)
                 .newBuilder()
                 .addQueryParameter("username", userName)
+                .addQueryParameter("admin",isAdminAsString)
                 .build()
                 .toString();
 

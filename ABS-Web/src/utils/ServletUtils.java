@@ -13,7 +13,9 @@ import java.util.Map;
 public class ServletUtils {
     private static final String USER_MANAGER_ATTRIBUTE_NAME = "userManager";
     private static final String Bank_SYSTEM_ATTRIBUTE_NAME = "BankSystem";
+    private static final String BANK_ADMIN_NAME = "BankAdmin";
     private static final Object userManagerLock = new Object();
+    private static final Object bankAdminLock = new Object();
     private static final Object bankSystemLock = new Object();
 
     public static UserManager getUserManager(ServletContext servletContext) {
@@ -26,6 +28,18 @@ public class ServletUtils {
             }
         }
         return (UserManager) servletContext.getAttribute(USER_MANAGER_ATTRIBUTE_NAME);
+    }
+
+    public static Boolean getAdminName(ServletContext servletContext) {
+
+        synchronized (bankAdminLock) {
+            if (servletContext.getAttribute(BANK_ADMIN_NAME) == null) {
+                Boolean bankAdmin = true;
+                servletContext.setAttribute(BANK_ADMIN_NAME, bankAdmin);
+                return false;
+            }
+        }
+        return (Boolean) servletContext.getAttribute(BANK_ADMIN_NAME);
     }
 
     public static BankSystem getBankSystem(ServletContext servletContext){

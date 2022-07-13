@@ -36,11 +36,14 @@ public class InvestInLoans extends HttpServlet {
         }
 
         synchronized (getServletContext()) {
-            //validation such as maxLoanOwner <= 100 that user balance >= amount to invest and that loans names list are real names of loans in bank TODO
-            //if validations are Ok so
+            //TODO validation such as maxLoanOwner <= 100 that user balance >= amount to invest and that loans names list are real names of loans in bank TODO
 
-            bankEngine.LoansInlay(LoansNamesAsList,Integer.parseInt(amountToInvest),usernameFromSession,Integer.parseInt(maxLoanOwenerShip));
+
+            //TODO if validations are Ok so
+                bankEngine.LoansInlay(LoansNamesAsList,Integer.parseInt(amountToInvest),usernameFromSession,Integer.parseInt(maxLoanOwenerShip));
             response.setStatus(HttpServletResponse.SC_OK);
+
+            //TODO if validation are not Ok provide bad status code and error msg!
         }
     }
 

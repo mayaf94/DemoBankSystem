@@ -20,6 +20,7 @@ public class LoginServlets extends HttpServlet {
         response.setContentType("text/plain;charset=UTF-8");
         String usernameFromSession = SessionUtils.getUsername(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
+        String isAdmin = request.getParameter("admin");
 
         if (usernameFromSession == null) { //user is not logged in yet
             String usernameFromParameter = request.getParameter(USERNAME);
@@ -31,18 +32,26 @@ public class LoginServlets extends HttpServlet {
                 //normalize the username value
                 usernameFromParameter = usernameFromParameter.trim();
                 synchronized (this) {
-                    if (userManager.isUserExists(usernameFromParameter)) {
-                        String errorMessage = "Username " + usernameFromParameter + " already exists. Please enter a different username.";
-
-                        // stands for unauthorized as there is already such user with this name
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        response.getOutputStream().print(errorMessage);
+                    if(isAdmin.equals("true")) {
+                        if (ServletUtils.getAdminName(getServletContext())) {
+                            String errorMessage = "The Bank already has admin!!!";
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getOutputStream().print(errorMessage);
+                        }
                     }
-                    else {
-                        //add the new user to the users list
-                        userManager.addUser(usernameFromParameter);
-                        request.getSession(true).setAttribute(servletConstants.USERNAME, usernameFromParameter);
-                        response.setStatus(HttpServletResponse.SC_OK);
+                    if(isAdmin.equals("false") || !ServletUtils.getAdminName(getServletContext())) {
+                        if (userManager.isUserExists(usernameFromParameter)) {
+                            String errorMessage = "Username " + usernameFromParameter + " already exists. Please enter a different username.";
+
+                            // stands for unauthorized as there is already such user with this name
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getOutputStream().print(errorMessage);
+                        } else {
+                            //add the new user to the users list
+                            userManager.addUser(usernameFromParameter);
+                            request.getSession(true).setAttribute(servletConstants.USERNAME, usernameFromParameter);
+                            response.setStatus(HttpServletResponse.SC_OK);
+                        }
                     }
                 }
             }
