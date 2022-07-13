@@ -270,7 +270,7 @@ public class SystemImplement implements BankSystem , Serializable {
                         .sorted(Comparator.comparingInt(e -> e.getValue().getAmountToPayByGivenYaz(Yaz)))
                         .collect(Collectors.toMap(Map.Entry::getKey,Map.Entry::getValue,(e1,e2) -> e1,LinkedHashMap::new));
 
-                for (Map.Entry<String, LeftToPay> curLender : sortedLendersByAmountToPay.entrySet()) {//TODO to make sure it is sorted by leftToPayValues
+                for (Map.Entry<String, LeftToPay> curLender : sortedLendersByAmountToPay.entrySet()) {
                     int dividedAmount = amountUserWantToPay / amountOfLenders;
                     moneyPaidTmp = makePayment(dividedAmount,curLender.getKey(),curLender.getValue(), entry.getKey());
                     amountUserWantToPay -= moneyPaidTmp;
@@ -342,7 +342,7 @@ public class SystemImplement implements BankSystem , Serializable {
 
     public List<LoanDTOs> getAllLoansThatAreForSale() {
         return getListOfLoansDtoByListOfNamesOFLoans(LoansInBank.keySet().stream().collect(Collectors.toList()))
-                .stream().filter(L -> L.getForSale()).collect(Collectors.toList());
+                .stream().filter(L -> L.getForSale()).collect(Collectors.toList());//TODO  not sure we need it we need TheSame that returns loansForSale
     }
 
     public CustomerDTOs getCustomerByName(String name){
@@ -393,8 +393,18 @@ public class SystemImplement implements BankSystem , Serializable {
         yazProperty.set("Current Yaz: " + Yaz);
     }
 
-    public void buyLoans(Map<String,String> mapOfSellerAndLoan, String buyer){
-        for (Map.Entry<String,String> entry: mapOfSellerAndLoan.entrySet()) {
+    public void checkIfUserHasTheTotalPriceOfLoansUserWantsToBuy(Map<String,String> mapOfKeySellerAndValueLoan, String buyer){
+        int sum = 0;
+        for (Map.Entry<String,String> entry: mapOfKeySellerAndValueLoan.entrySet()) {
+            for (LoanForSale curLoan: loanForSale) {
+                //if(curLoan.getSeller().equals(entry.getKey()) && curLoan.getLoanName().equals(entry.get()))
+            }
+        }
+    }
+    //TODO  together with maya i think it should be map<string,List<string>>  <seller,LoansForSaleThatTheSellerSells>
+    public void buyLoans(Map<String,String> mapOfKeySellerAndValueLoan, String buyer){
+        for (Map.Entry<String,String> entry: mapOfKeySellerAndValueLoan.entrySet()) {
+            //TODO  check if buyer has enough money to buy loan from seller (the logic need to be the same as in the invest method)
             Customers.get(entry.getKey()).getLoansAsALender().remove(LoansInBank.get(entry.getValue()).getNameOfLoan());
             LeftToPay leftToPayOfTheSeller = LoansInBank.get(entry.getValue()).getMapOfLenders().get(entry.getKey());
             LoansInBank.get(entry.getValue()).getMapOfLenders().remove(entry.getKey());
@@ -427,11 +437,11 @@ public class SystemImplement implements BankSystem , Serializable {
             }
         }
 
-        public List<LoansForSaleDTO> getAllLoansForSaleForTheCustomer(String seller){
+        public List<LoansForSaleDTO> getAllLoansForSaleForTheCustomer(String Buyer){
         List<LoansForSaleDTO> loansForSaleDTOList = new ArrayList<>();
             for (LoanForSale curLoan: loanForSale) {
-                if(curLoan.getSeller().equals(seller))
-                loansForSaleDTOList.add(new LoansForSaleDTO(curLoan));
+                if(!curLoan.getSeller().equals(Buyer))
+                    loansForSaleDTOList.add(new LoansForSaleDTO(curLoan));
             }
             return loansForSaleDTOList;
         }

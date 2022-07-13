@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 //import com.sun.deploy.util.StringUtils;
 //import org.apache.commons.lang.StringUtils;
 
+import com.sun.deploy.util.StringUtils;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -33,9 +34,11 @@ import util.http.HttpClientUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static javafx.application.Platform.runLater;
 import static util.Constants.GSON_INSTANCE;
 
 public class CustomerMainAppController extends ClientController {
@@ -97,6 +100,7 @@ public class CustomerMainAppController extends ClientController {
     @FXML private TableView<LoanDTOs> LoansToBuyTable;
     @FXML private Button SellLoanBT;
     @FXML private Button BuyLoansBT;
+
 
     @FXML
     private void initialize() {
@@ -209,12 +213,11 @@ public class CustomerMainAppController extends ClientController {
                 }
             }
         });
-        //TODO update bank customers table in admin view;
     }
 
     void updateCategoriesInScrambleView(){
         String finalUrl = HttpUrl
-                .parse(Constants.GETALLCATEGORIES)
+                .parse(Constants.CATEGORISATIONS)
                 .newBuilder()
                 .build()
                 .toString();
@@ -231,7 +234,7 @@ public class CustomerMainAppController extends ClientController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    Platform.runLater(() -> {
+                Platform.runLater(() -> {
                         String rawBody = null;
                         try {
                             rawBody = response.body().string();
@@ -337,7 +340,7 @@ public class CustomerMainAppController extends ClientController {
                     }
                     else{
                         String responseBody = response.body().string();
-                            Platform.runLater(() -> {
+                        Platform.runLater(() -> {
                                 errorAlert.setContentText(responseBody);
                                 errorAlert.showAndWait();
                             });
@@ -382,7 +385,7 @@ public class CustomerMainAppController extends ClientController {
                             }
               //  });
                 getRelevantLoansByUserParameters();
-                Platform.runLater(() -> {
+                runLater(() -> {
                     updateProgress(0, 0);
                     done();
                 });
@@ -498,7 +501,7 @@ public class CustomerMainAppController extends ClientController {
     }
 
     void resetScrambleTab(){
-        Platform.runLater(() ->{
+        runLater(() ->{
             disableFilterFields(false);
             amountToInvest.clear();
             categories.getCheckModel().clearChecks();
@@ -525,17 +528,207 @@ public class CustomerMainAppController extends ClientController {
 
     @FXML
     void fullPaymentClicked(ActionEvent event) {
+        List<String> LoansToClose = customerInfoTables.getLoansAsLoanerDataForPaymentTab().getItems().stream()
+                .filter(L -> L.isSelected())
+                .collect(Collectors.toMap(LoanDTOs::getNameOfLoan,loan -> loan))
+                .keySet().stream().collect(Collectors.toList());
+        if (LoansToClose.size() != 0) {
+            Type type = new TypeToken<List<String>>(){}.getType();
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody requestBody = RequestBody.create(
+                    mediaType, GSON_INSTANCE.toJson(LoansToClose,type));
+
+            String finalUrl = HttpUrl
+                    .parse(Constants.LOANSPAYMENT)
+                    .newBuilder()
+                    .addQueryParameter("typeOfPayment","full")
+                    .addQueryParameter("AutoPayment","manual")
+                    .build()
+                    .toString();
+
+            HttpClientUtil.runAsyncWithBodyForPost(finalUrl,requestBody, new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Platform.runLater(() -> {
+                        errorAlert.setContentText(String.valueOf(e));
+                        errorAlert.showAndWait();
+                    });
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    if (response.code() != 200) {
+                        String responseBody = response.body().string();//Name of loans that the user has enough money to pay for.
+                        Platform.runLater(()->{
+                                confirmationAlert.setContentText("You can not pay fully on the loans that you choose but you can pay the loans:\n" + responseBody +"Press OK to continue the process");
+                                confirmationAlert.showAndWait();
+                                if(confirmationAlert.getResult().getText().equals("OK")){
+                                    fullPayTheMinimumLoansThatUserCanPay(responseBody);
+                                }
+                        });
+                    }
+                }
+            });
+
+        }
+    }
+
+    @FXML
+    void yazlyPaymentClicked(ActionEvent event) {
+        List<String> nameOfLoansThatCanBePaid = new ArrayList<>();
+        List<LoanDTOs> loansToPay = customerInfoTables.getLoansAsLoanerDataForPaymentTab().getItems().stream().collect(Collectors.toList());
+        Map<String,Integer> loansToPayAndAmountOfPayment = new HashMap<>();
+        for(LoanDTOs curLoan : loansToPay){
+            if(curLoan.getAmountToPay().isEmpty())
+                loansToPay.remove(curLoan);//TODO debug and make sure if user dosnt insert amount to pay its empty
+        }
+        if(loansToPay.size() != 0) {
+            Type type = new TypeToken<List<LoanDTOs>>(){}.getType();
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody requestBody = RequestBody.create(
+                    mediaType, GSON_INSTANCE.toJson(loansToPayAndAmountOfPayment,type));
+            String finalUrl = HttpUrl
+                    .parse(Constants.LOANSPAYMENT)
+                    .newBuilder()
+                    .addQueryParameter("typeOfPayment","yazly")
+                    .addQueryParameter("AutoPayment","manual")
+                    .build()
+                    .toString();
+            HttpClientUtil.runAsyncWithBodyForPost(finalUrl,requestBody, new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Platform.runLater(() -> {
+                        errorAlert.setContentText(String.valueOf(e));
+                        errorAlert.showAndWait();
+                    });
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    if (response.code() != 200) {
+                        String responseBody = response.body().string();//Name of loans that the user has enough money to pay for.
+                        Platform.runLater(() -> {
+                            confirmationAlert.setContentText("You can not pay all the loans that you choose but you can pay the loans:\n" + responseBody +"Press OK to continue the process");
+                            confirmationAlert.showAndWait();
+                            if (confirmationAlert.getResult().getText().equals("OK")) {
+                                yazliPayTheMinimumLoansThatUserCanPay(loansToPay);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    private void yazliPayTheMinimumLoansThatUserCanPay(List<LoanDTOs> i_loansToPay) {
+        Type type = new TypeToken<List<LoanDTOs>>(){}.getType();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody requestBody = RequestBody.create(
+                mediaType, GSON_INSTANCE.toJson(i_loansToPay,type));
+
+        String finalUrl = HttpUrl
+                .parse(Constants.LOANSPAYMENT)
+                .newBuilder()
+                .addQueryParameter("typeOfPayment","yazly")
+                .addQueryParameter("AutoPayment","auto")//auto mean tell system to pay the loans the loans the user able to pay and manual is ask the user if he wants to pay what he can becaus he dosnet have enoug money to all the loans
+                .build()
+                .toString();
+        HttpClientUtil.runAsyncWithBodyForPost(finalUrl,requestBody,new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    errorAlert.setContentText(String.valueOf(e));
+                    errorAlert.showAndWait();
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                //nothing to do if successful
+            }
+        });
+
+
+    }
+
+    private void fullPayTheMinimumLoansThatUserCanPay(String i_loansToPay) {
+        String finalUrl = HttpUrl
+                .parse(Constants.LOANSPAYMENT)
+                .newBuilder()
+                .addQueryParameter("namesOfLoans",i_loansToPay)
+                .addQueryParameter("typeOfPayment","full")
+                .addQueryParameter("AutoPayment","auto")//auto mean tell system to pay the loans the loans the user able to pay and manual is ask the user if he wants to pay what he can becaus he dosnet have enoug money to all the loans
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    errorAlert.setContentText(String.valueOf(e));
+                    errorAlert.showAndWait();
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+             //nothing to do if successful
+            }
+        });
+
 
     }
 
     @FXML
     void investBtClicked(ActionEvent event) {
 
+        String maxOwnerShipOfTheLoan = "100";
+        if(!maxLoanOwner.getText().isEmpty()){
+            maxOwnerShipOfTheLoan = maxLoanOwner.getText();
+        }
+        StringJoiner joiner = new StringJoiner(", ");
+        checkLoansToInvest.getCheckModel().getCheckedItems().stream().forEach(joiner::add);
+        String LoansToInvest = joiner.toString();
+        String finalUrl = HttpUrl
+                .parse(Constants.INVESMENTS)
+                .newBuilder()
+                .addQueryParameter("maxLoanOwnership",maxOwnerShipOfTheLoan)
+                .addQueryParameter("amountToInvest",amountToInvest.getText())
+                .addQueryParameter("LoansNames", LoansToInvest)
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    errorAlert.setContentText(String.valueOf(e));
+                    errorAlert.showAndWait();
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.code() != 200) {
+                    String responseBody = response.body().string();
+                    Platform.runLater(() -> {
+                        errorAlert.setContentText("Something went wrong: " + responseBody);
+                    });
+                }
+            }
+        });
+
+        checkLoansToInvest.getCheckModel().clearChecks();
+        resetScrambleTab();
     }
 
     @FXML
-    void logoutClicked(ActionEvent event) {
-
+    void selectAllLoansToInvestBtClicked(ActionEvent event) {
+        if(selectAllLoansToInvest.isSelected())
+            checkLoansToInvest.getCheckModel().checkAll();
+        else{
+            checkLoansToInvest.getCheckModel().clearChecks();
+        }
     }
 
     @FXML
@@ -545,16 +738,6 @@ public class CustomerMainAppController extends ClientController {
 
     @FXML
     void resetSearchBtClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void selectAllLoansToInvestBtClicked(ActionEvent event) {
-
-    }
-
-    @FXML
-    void yazlyPaymentClicked(ActionEvent event) {
 
     }
 
@@ -603,20 +786,76 @@ public class CustomerMainAppController extends ClientController {
 
     @FXML
     void SellLoansClicked(ActionEvent event) {
-        RequestBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("somParam", "someValue")
-                .build();
+        List<String> LoansToSell = LoansToSellTable.getItems().stream()
+                .filter(L -> L.isSelected())
+                .collect(Collectors.toMap(LoanDTOs::getNameOfLoan,loan -> loan))
+                .keySet().stream().collect(Collectors.toList());
 
-//        Request request = new Request.Builder()
-//                .url(BASE_URL + route)
-//                .post(requestBody)
-//                .build();
+        Type type = new TypeToken<List<String>>(){}.getType();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody requestBody = RequestBody.create(
+                mediaType, GSON_INSTANCE.toJson(LoansToSell,type));
 
+        String finalUrl = HttpUrl
+                .parse(Constants.SELL_LOANS)
+                .newBuilder()
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsyncWithBodyForPost(finalUrl,requestBody, new Callback(){
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    errorAlert.setContentText(String.valueOf(e));
+                    errorAlert.showAndWait();
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                Platform.runLater(() -> {
+                    //TODO maya im not sure if we need to do something after the customer put to sale one or more loans.
+                });
+            }
+        });
     }
 
     @FXML
     void BuyLoansClicked(ActionEvent event) {
+        List<String> LoansToBuy = LoansToBuyTable.getItems().stream()      // TODO maybe to change it to table of LoansForSaleDto
+                .filter(L -> L.isSelected())
+                .collect(Collectors.toMap(LoanDTOs::getNameOfLoan,loan -> loan))
+                .keySet().stream().collect(Collectors.toList());
 
+        Type type = new TypeToken<List<String>>(){}.getType();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody requestBody = RequestBody.create(
+                mediaType, GSON_INSTANCE.toJson(LoansToBuy,type));
+
+        String finalUrl = HttpUrl
+                .parse(Constants.SELL_LOANS)
+                .newBuilder()
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsyncWithBodyForPost(finalUrl,requestBody, new Callback(){
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    errorAlert.setContentText(String.valueOf(e));
+                    errorAlert.showAndWait();
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                //TODO don't have enough money to buy loan
+                Platform.runLater(() -> {
+                    //TODO maya im not sure if we need to do something after the customer put to sale one or more loans.
+                });
+            }
+        });
     }
 }

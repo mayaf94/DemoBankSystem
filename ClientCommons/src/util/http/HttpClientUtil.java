@@ -14,12 +14,12 @@ public class HttpClientUtil {
                     .followRedirects(false)
                     .build();
 
-  public static void setCookieManagerLoggingFacility(Consumer<String> logConsumer) {
-      SimpleCookieManager.setLogData(logConsumer);
+    public static void setCookieManagerLoggingFacility(Consumer<String> logConsumer) {
+        SimpleCookieManager.setLogData(logConsumer);
     }
 
-  public static void removeCookiesOf(String domain) {
-      SimpleCookieManager.removeCookiesOf(domain);
+    public static void removeCookiesOf(String domain) {
+        SimpleCookieManager.removeCookiesOf(domain);
     }
 
     public static void runAsync(String finalUrl, Callback callback) {
@@ -29,6 +29,17 @@ public class HttpClientUtil {
 
         Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
 
+        call.enqueue(callback);
+    }
+
+    public static void runAsyncWithBodyForPost(String finalUrl, RequestBody requestBody,Callback callback ) {
+        Request request = new Request.Builder()
+                .url(finalUrl)
+                .post(requestBody)
+                .build();
+
+        Call call = HttpClientUtil.HTTP_CLIENT.newCall(request);
+        
         call.enqueue(callback);
     }
 
