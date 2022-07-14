@@ -10,17 +10,70 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4705f9e8-b661-4012-8193-21a6f7109a3d" name="Changes" comment="commit">
-      <change afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/SellLoansServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BankSystem/src/BankActions/LoanForSale.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dtos/src/DTOs/LoansForSaleDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="4705f9e8-b661-4012-8193-21a6f7109a3d" name="Changes" comment="added sell loans servlet and methods in bank system">
+      <change afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/BankSystemDTODeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/RefreshTableServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ABS-Web/src/customerServlets/GetAllLoansAndCustomersServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ClientCommons/src/refreshers/AdminTablesRefresher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CustomerCilent/src/CustomerInfoView/ViewCustomersInfoController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CustomerCilent/src/CustomerInfoView/customersInfoComponent.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BankSystem/src/BankActions/Loan.java" beforeDir="false" afterPath="$PROJECT_DIR$/BankSystem/src/BankActions/Loan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/GetIncreaseYazServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/GetIncreaseYazServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/refreshers/AdminInfoRefresher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/refreshers/CustomerInfoRefresher.java" beforeDir="false" afterPath="$PROJECT_DIR$/ClientCommons/src/refreshers/CustomerInfoRefresher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/utils/Constants/servletConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/ABS-Web/src/utils/Constants/servletConstants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BankSystem/src/BankSystem/BankSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/BankSystem/src/BankSystem/BankSystem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BankSystem/src/BankSystem/SystemImplement.java" beforeDir="false" afterPath="$PROJECT_DIR$/BankSystem/src/BankSystem/SystemImplement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BankSystem/src/userManager/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/BankSystem/src/userManager/UserManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClientCommons/src/component/loansComponent/ViewLoansInfo/ViewLoansInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ClientCommons/src/component/loansComponent/ViewLoansInfo/ViewLoansInfoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClientCommons/src/util/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/ClientCommons/src/util/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CustomerCilent/CustomerCilent.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerCilent/CustomerCilent.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CustomerCilent/src/adminMainApp/AdminMainAppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerCilent/src/adminMainApp/AdminMainAppController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dtos/Dtos.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Dtos/Dtos.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dtos/src/DTOs/AccountTransactionDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Dtos/src/DTOs/AccountTransactionDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dtos/src/DTOs/BankSystemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Dtos/src/DTOs/BankSystemDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dtos/src/DTOs/CustomerDTOs.java" beforeDir="false" afterPath="$PROJECT_DIR$/Dtos/src/DTOs/CustomerDTOs.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dtos/src/DTOs/LoanDTOs.java" beforeDir="false" afterPath="$PROJECT_DIR$/Dtos/src/DTOs/LoanDTOs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gui/src/Component/ViewLoansInfo/ViewLoansInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Gui/src/Component/ViewLoansInfo/ViewLoansInfoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/BankActions/Loan.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/BankActions/Loan.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/BankSystem/BankSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/BankSystem/BankSystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/BankSystem/SystemImplement.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/BankSystem/SystemImplement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/DTOs/BankSystemDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/DTOs/BankSystemDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/DTOs/CustomerDTOs.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/DTOs/CustomerDTOs.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/DTOs/LoanDTOs.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/DTOs/LoanDTOs.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/bankActionServlets/GetIncreaseYazServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/bankActionServlets/GetIncreaseYazServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/userManager/UserManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/userManager/UserManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/utils/Constants/servletConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/ABS_Web_war_exploded/WEB-INF/classes/utils/Constants/servletConstants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/BankSystem_jar/BankSystem.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/BankSystem_jar/BankSystem.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/Dtos_jar/Dtos.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/Dtos_jar/Dtos.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ABS-Web/bankActionServlets/GetIncreaseYazServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ABS-Web/bankActionServlets/GetIncreaseYazServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ABS-Web/utils/Constants/servletConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ABS-Web/utils/Constants/servletConstants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BankSystem/BankActions/Loan.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BankSystem/BankActions/Loan.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BankSystem/BankSystem/BankSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BankSystem/BankSystem/BankSystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BankSystem/BankSystem/SystemImplement.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BankSystem/BankSystem/SystemImplement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BankSystem/userManager/UserManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BankSystem/userManager/UserManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ClientCommons/util/Constants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ClientCommons/util/Constants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/adminMainApp/AdminMainAppController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/adminMainApp/AdminMainAppController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/adminMainApp/AdminMainAppController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/adminMainApp/AdminMainAppController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$10.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$11.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$12$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$12$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$12.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$7$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$7$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CustomerCilent/customerMainApp/CustomerMainAppController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Dtos/DTOs/BankSystemDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Dtos/DTOs/BankSystemDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Dtos/DTOs/CustomerDTOs.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Dtos/DTOs/CustomerDTOs.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Dtos/DTOs/LoanDTOs.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Dtos/DTOs/LoanDTOs.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Gui/Component/ViewLoansInfo/ViewLoansInfoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Gui/Component/ViewLoansInfo/ViewLoansInfoController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,15 +104,15 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/ABS-Web/src/bankActionServlets/TransactionServlet.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ABS-Web/src/userManagemantServlets/LoginServlets.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ABS-Web/src/utils/SessionUtils.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CustomerCilent/src/main/CustomerClientMain.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ClientCommons/src/util/http/HttpClientUtil.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ClientCommons/src/login/LoginController.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ABS-Web/src/utils/Constants/servletConstants.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/ClientCommons/src/util/http/HttpClientUtil.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ClientCommons/src/util/http/SimpleCookieManager.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/CustomerCilent/src/main/CustomerClientMain.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ABS-Web/src/bankActionServlets/TransactionServlet.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -82,14 +135,15 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Packaging &amp; Common Pitfalls" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/CustomerCilent/src/CustomerInfoView" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.applicationServers" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\LolyP\IdeaProjects\ABS_Part_3\CustomerCilent\src\CustomerInfoView" />
       <recent name="C:\Users\LolyP\IdeaProjects\ABS part 3\ABS-Web\src\CSSFiles" />
       <recent name="C:\Users\LolyP\IdeaProjects\ABS part 3\CustomerCilent\src\adminMainApp" />
       <recent name="$PROJECT_DIR$/ABS/ClientCommons/src/component/loansComponent" />
@@ -109,7 +163,7 @@
       <recent name="component.customerMainApp" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CustomerClientMain">
+  <component name="RunManager" selected="Application.AdminClientMain">
     <configuration name="AdminClientMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.AdminClientMain" />
       <module name="CustomerCilent" />
@@ -235,8 +289,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CustomerClientMain" />
         <item itemvalue="Application.AdminClientMain" />
+        <item itemvalue="Application.CustomerClientMain" />
         <item itemvalue="Application.CustomerClientMain" />
         <item itemvalue="Application.CustomerClientMain" />
       </list>
@@ -274,6 +328,9 @@
       <workItem from="1657523908558" duration="57000" />
       <workItem from="1657525647027" duration="1396000" />
       <workItem from="1657528646612" duration="4203000" />
+      <workItem from="1657639698094" duration="18967000" />
+      <workItem from="1657734733628" duration="8970000" />
+      <workItem from="1657774162425" duration="17763000" />
     </task>
     <task id="LOCAL-00001" summary="fixed loginServlet">
       <created>1655998364760</created>
@@ -303,7 +360,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657553159286</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="added sell loans servlet and methods in bank system">
+      <created>1657559208786</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1657559208786</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -337,7 +401,8 @@
     <MESSAGE value="transaction Servlet bug before change transactionDTO" />
     <MESSAGE value="finished transactions servlet started working on load loans from file" />
     <MESSAGE value="commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit" />
+    <MESSAGE value="added sell loans servlet and methods in bank system" />
+    <option name="LAST_COMMIT_MESSAGE" value="added sell loans servlet and methods in bank system" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -359,13 +424,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/CustomerCilent/src/adminMainApp/AdminMainAppController.java</url>
-          <line>58</line>
+          <line>68</line>
           <option name="timeStamp" value="70" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/ABS-Web/src/bankActionServlets/GetIncreaseYazServlet.java</url>
-          <line>24</line>
+          <line>26</line>
           <option name="timeStamp" value="71" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ClientCommons/src/refreshers/AdminTablesRefresher.java</url>
+          <line>52</line>
+          <option name="timeStamp" value="74" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ClientCommons/src/refreshers/AdminTablesRefresher.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ABS-Web/src/bankActionServlets/RefreshTableServlet.java</url>
+          <line>41</line>
+          <option name="timeStamp" value="76" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

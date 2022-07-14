@@ -34,7 +34,6 @@ public class ViewLoansInfoController implements Serializable {
     @FXML private Accordion LenderDetails;
     @FXML private BankController mainController;
 
-
     public void setMainController(BankController mainController) {this.mainController = mainController;}
 
     public void buildLoansTableView(TableView<LoanDTOs> i_LoansData,List<LoanDTOs> allLoans){
@@ -93,7 +92,7 @@ public class ViewLoansInfoController implements Serializable {
         ViewLoansInfoController expendedLoansDetailsController = loader.getController();
         LoanExpandedDetails.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
 
-        expendedLoansDetailsController.setLoanDataByStatus(loan, mainController);
+        expendedLoansDetailsController.setLoanDataByStatus(loan);
         expendedLoansDetailsController.setInterestValue(interest);
         expendedLoansDetailsController.setOriginalAmountValue(originalAmount);
         expendedLoansDetailsController.setPaymentFrequencyValue(paymentFrequency);
@@ -171,7 +170,7 @@ public class ViewLoansInfoController implements Serializable {
 
     }
 
-    public void setLoanDataByStatus(LoanDTOs loan, BankController i_mainController){
+    public void setLoanDataByStatus(LoanDTOs loan){
         LoanDataByStatus.setText("");
         status.setText("");
         switch (loan.getStatusName()){

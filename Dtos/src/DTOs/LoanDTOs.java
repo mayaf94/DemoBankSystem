@@ -3,10 +3,15 @@ package DTOs;
 import BankActions.Loan;
 import BankActions.LoanStatus;
 import BankActions.Payment;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -187,4 +192,5 @@ public class LoanDTOs implements Serializable {
     public int getDebt() {
         return debt;
     }
+
 }

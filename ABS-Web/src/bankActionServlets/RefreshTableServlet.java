@@ -4,6 +4,7 @@ import BankSystem.BankSystem;
 import DTOs.AccountTransactionDTO;
 import DTOs.BankSystemDTO;
 import DTOs.CustomerDTOs;
+import DTOs.LoanDTOs;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,28 +19,24 @@ import utils.SessionUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
-@WebServlet(name = "GetIncreaseYazServlet",urlPatterns = {"/IncreaseYaz"})
-public class GetIncreaseYazServlet extends HttpServlet {
+@WebServlet(name = "RefreshTableServlet",urlPatterns = {"/RefreshAdminTables"})
+public class RefreshTableServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {//TODO not sure if doGet or doPost
         response.setContentType("application/json");
         String usernameFromSession = SessionUtils.getUsername(request);
         BankSystem bankEngine = ServletUtils.getBankSystem(getServletContext());
-        BankSystemDTO DTO = null;
+        String isRewind = request.getParameter(servletConstants.ISREWIND);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
 
+        BankSystemDTO bankSystemDTO = null;
         synchronized (getServletContext()) {
+            if (isRewind.equals("true"))
+                bankSystemDTO = userManager.getBankSystemDTOByYaz(bankEngine.getRewindYaz());
+            else
+                bankSystemDTO = bankEngine.getBankSystemDTO();
 
-            if(!bankEngine.isRewind())
-                userManager.addVersionToBankSystemVersionMap(bankEngine.getBankSystemDTO());
-            DTO = bankEngine.IncreaseYaz();
             response.setStatus(HttpServletResponse.SC_OK);
-
- /*           Gson gson2c = new GsonBuilder()
-                    .registerTypeAdapter(CusomerDTOs.class, new CustomerDTOs.CustomerDTOAdapter())
-                    .create();
-            String resp = gson2c.toJson(DTO, CustomerDTOs.class);*/
 
             //create the response json string
             Gson gson = new GsonBuilder()
@@ -48,12 +45,14 @@ public class GetIncreaseYazServlet extends HttpServlet {
                     .registerTypeAdapter(AccountTransactionDTO.class, new AccountTransactionDTO.TransactionsDTOAdapter())
                     .setPrettyPrinting()
                     .create();
-           // Gson gson = new Gson();
-            String jsonResponse = gson.toJson(DTO);
+
+            String jsonResponse = gson.toJson(bankSystemDTO);
             try (PrintWriter out = response.getWriter()) {
                 out.print(jsonResponse);
                 out.flush();
             }
+
         }
     }
 }
+
