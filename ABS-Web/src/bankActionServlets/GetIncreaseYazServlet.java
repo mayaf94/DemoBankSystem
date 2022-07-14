@@ -42,15 +42,15 @@ public class GetIncreaseYazServlet extends HttpServlet {
             String resp = gson2c.toJson(DTO, CustomerDTOs.class);*/
 
             //create the response json string
-     /*       Gson gson = new GsonBuilder()
-                    .registerTypeAdapter(BankSystemDTO.class, new BankSystemDTODeserializer())
-                    .registerTypeAdapter(CustomerDTOs.class, new CustomerDTOs.CustomerDTOAdapter())
-                    .registerTypeAdapter(AccountTransactionDTO.class, new AccountTransactionDTO.TransactionsDTOAdapter())
-                    .setPrettyPrinting()
-                    .create();*/
+           // Gson gson = new GsonBuilder()
+                  //  .registerTypeAdapter(BankSystemDTO.class, new BankSystemDTODeserializer())
+//                    .registerTypeAdapter(CustomerDTOs.class, new CustomerDTOs.CustomerDTOAdapter())
+//                    .registerTypeAdapter(AccountTransactionDTO.class, new AccountTransactionDTO.TransactionsDTOAdapter())
+//                    .setPrettyPrinting()
+//                    .create();
            // Gson gson = new Gson();
             Gson gson = new Gson();
-            String JsonResponse = (gson.toJson(DTO));
+            String jsonResponse = gson.toJson(DTO);
             try (PrintWriter out = response.getWriter()) {
                 out.print(JsonResponse);
                 out.flush();

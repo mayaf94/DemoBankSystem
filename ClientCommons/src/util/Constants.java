@@ -18,7 +18,7 @@ public class Constants {
     public final static String SCRAMBLE = FULL_SERVER_PATH + "/Scramble";
     public final static String INCREASE_YAZ = FULL_SERVER_PATH + "/IncreaseYaz";
     public final static String REWIND_YAZ = FULL_SERVER_PATH + "/RewindYaz";
-    public final static String refreshAdminTables = FULL_SERVER_PATH + "/RefreshAdminTables";
+    public final static String refreshTables = FULL_SERVER_PATH + "/RefreshTables";
     public final static String getAllLoansAndCustomersInBank = FULL_SERVER_PATH + "/GetAllLoansAndCustomers";
     public static final String LOANSPAYMENT = FULL_SERVER_PATH + "/LoansPayment";
     public static final String INVESMENTS = FULL_SERVER_PATH + "/investInLoans";

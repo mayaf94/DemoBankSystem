@@ -252,7 +252,8 @@ public class SystemImplement implements BankSystem , Serializable {
 
     public int rewindYaz(){
         isRewind = true;
-        RewindYaz--;
+        if(RewindYaz != 1)
+            RewindYaz--;
         return RewindYaz;
     }
 
