@@ -12,7 +12,6 @@ import util.Constants;
 import util.http.HttpClientUtil;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.TimerTask;
 import java.util.function.Consumer;
@@ -22,11 +21,9 @@ import static util.Constants.GSON_INSTANCE;
 public class AdminTablesRefresher extends TimerTask {
     private final Consumer<List<LoanDTOs>> loansTableUpdate;
     private final Consumer<List<CustomerDTOs>> customersTableUpdate;
-    private final Boolean shouldUpdate;
 
 
-    public AdminTablesRefresher(Boolean isRewind, Consumer<List<LoanDTOs>> listOfLoans, Consumer<List<CustomerDTOs>> customerUpdate) {
-        this.shouldUpdate = isRewind;
+    public AdminTablesRefresher(Consumer<List<LoanDTOs>> listOfLoans, Consumer<List<CustomerDTOs>> customerUpdate) {
         this.loansTableUpdate = listOfLoans;
         this.customersTableUpdate = customerUpdate;
     }
@@ -34,9 +31,8 @@ public class AdminTablesRefresher extends TimerTask {
     @Override
     public void run() {
         String finalUrl = HttpUrl
-                    .parse(Constants.refreshAdminTables)
+                    .parse(Constants.refreshTables)
                     .newBuilder()
-                    .addQueryParameter("isRewind", shouldUpdate.toString())
                     .build()
                     .toString();
 

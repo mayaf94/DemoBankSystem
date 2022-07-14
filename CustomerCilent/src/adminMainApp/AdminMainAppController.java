@@ -74,7 +74,6 @@ public class AdminMainAppController extends ClientController {
 
     private Timer timer;
     private TimerTask loanTableRefresher;
-    private TimerTask customerTableRefresher;
 
 
 
@@ -107,7 +106,11 @@ public class AdminMainAppController extends ClientController {
                             String rawBody = response.body().string();
                             BankSystemDTO BankSystemFromJson = GSON_INSTANCE.fromJson(rawBody, BankSystemDTO.class);
                             currentYazLB.setText("Current Yaz: " + BankSystemFromJson.getCurYaz());
-                            msgLB.setText(BankSystemFromJson.getMsg());
+                            if(BankSystemFromJson.getRewind())
+                                msgLB.setText(BankSystemFromJson.getMsg() + ", you are still in rewind status.");
+                            else
+                                msgLB.setText(BankSystemFromJson.getMsg());
+
                             msgLB.setStyle("-fx-text-fill: #e70d0d; -fx-font-size: 16px;");
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -181,40 +184,40 @@ public class AdminMainAppController extends ClientController {
 
     @FXML
     void clickOnRewindYazBT(ActionEvent event) {
-//        String finalUrl = HttpUrl
-//                .parse(Constants.REWIND_YAZ)
-//                .newBuilder()
-//                .build()
-//                .toString();
-//        HttpClientUtil.runAsync(finalUrl, new Callback() {
-//
-//            @Override
-//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-//                errorAlert.setContentText("Operation failed");
-//                errorAlert.show();
-//            }
-//
-//            @Override
-//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                if (response.isSuccessful()) {
-//                    Platform.runLater(() -> {
-//                        try {
-//                            String rawBody = response.body().string();
-//                            BankSystemDTO BankSystemFromJson = GSON_INSTANCE.fromJson(rawBody, BankSystemDTO.class);
-//                            currentYazLB.setText("Current Yaz: " + BankSystemFromJson.getCurYaz());
-//                            msgLB.setText(BankSystemFromJson.getMsg());
-//                            msgLB.setStyle("-fx-text-fill: #e70d0d; -fx-font-size: 16px;");
-//                        } catch (IOException e) {
-//                           // e.printStackTrace();
-//                        }
-        //});
-        //}
-        // }
-        //  });
+        String finalUrl = HttpUrl
+                .parse(Constants.REWIND_YAZ)
+                .newBuilder()
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                errorAlert.setContentText("Operation failed");
+                errorAlert.show();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    Platform.runLater(() -> {
+                        try {
+                            String rawBody = response.body().string();
+                            BankSystemDTO BankSystemFromJson = GSON_INSTANCE.fromJson(rawBody, BankSystemDTO.class);
+                            currentYazLB.setText("Current Yaz: " + BankSystemFromJson.getCurYaz());
+                            msgLB.setText("You are in rewind status");
+                            msgLB.setStyle("-fx-text-fill: #e70d0d; -fx-font-size: 16px;");
+                        } catch (IOException e) {
+                           // e.printStackTrace();
+                        }
+        });
+        }
+         }
+          });
     }
 
     public void startListRefresher() {
-        loanTableRefresher = new AdminTablesRefresher(isRewind, AdminMainAppController::updateLoansTable
+        loanTableRefresher = new AdminTablesRefresher(AdminMainAppController::updateLoansTable
                 , AdminMainAppController::updateCustomerTable);
         timer = new Timer();
         timer.schedule(loanTableRefresher, 4000, 4000);
@@ -277,25 +280,25 @@ public class AdminMainAppController extends ClientController {
     }
 
     private static void updateCustomerTable(List<CustomerDTOs> allCustomersInSystem){
-        Platform.runLater(() -> {
-            ObservableList<CustomerDTOs> item = CustomerData.getItems();
-            item.clear();
-            item.addAll(allCustomersInSystem);
-//            CustomerData.getItems().clear();
-//            CustomerData.getItems().addAll(allCustomersInSystem);
-//            CustomerData.refresh();
-        });
+        //Platform.runLater(() -> {
+//            ObservableList<CustomerDTOs> item = CustomerData.getItems();
+//            item.clear();
+//            item.addAll(allCustomersInSystem);
+           CustomerData.getItems().clear();
+            CustomerData.getItems().addAll(allCustomersInSystem);
+            CustomerData.refresh();
+        //});
     }
 
     private static void updateLoansTable(List<LoanDTOs> allLoans){
-        Platform.runLater(() -> {
-            ObservableList<LoanDTOs> item = LoansData.getItems();
-            item.clear();
-            item.addAll(allLoans);
-//            LoansData.getItems().clear();
-//            LoansData.getItems().addAll(allLoans);
-//            LoansData.refresh();
-        });
+        //Platform.runLater(() -> {
+            //ObservableList<LoanDTOs> item = LoansData.getItems();
+            //item.clear();
+            //item.addAll(allLoans);
+           LoansData.getItems().clear();
+            LoansData.getItems().addAll(allLoans);
+            LoansData.refresh();
+       // });
     }
 }
 

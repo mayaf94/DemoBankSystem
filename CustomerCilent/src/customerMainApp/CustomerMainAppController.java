@@ -3,7 +3,9 @@ package customerMainApp;
 
 import DTOs.AccountTransactionDTO;
 import DTOs.CategoriesDTO;
+import DTOs.CustomerDTOs;
 import DTOs.LoanDTOs;
+import adminMainApp.AdminMainAppController;
 import clientController.ClientController;
 import com.google.gson.reflect.TypeToken;
 //import com.sun.deploy.util.StringUtils;
@@ -28,6 +30,8 @@ import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.StatusBar;
 import org.jetbrains.annotations.NotNull;
+import refreshers.AdminTablesRefresher;
+import refreshers.CustomerInfoRefresher;
 import util.Constants;
 import util.http.HttpClientUtil;
 
@@ -97,6 +101,9 @@ public class CustomerMainAppController extends ClientController {
     @FXML private TableView<LoanDTOs> LoansToBuyTable;
     @FXML private Button SellLoanBT;
     @FXML private Button BuyLoansBT;
+
+    private Timer timer;
+    private TimerTask clientRefresher;
 
     @FXML
     private void initialize() {
@@ -575,6 +582,7 @@ public class CustomerMainAppController extends ClientController {
         customerInfoTables.getTransactionTable().prefHeightProperty().bind(AccountTransInfo.heightProperty());
         AccountTransInfo.getChildren().setAll(customerInfoTables.getTransactionTable());
         welcomeCustomer.setText("Hello " + curCustomerName);
+        startRefresher();
     }
 //
     public void switchToLoginScene() {
@@ -619,4 +627,46 @@ public class CustomerMainAppController extends ClientController {
     void BuyLoansClicked(ActionEvent event) {
 
     }
+
+    public void startRefresher() {
+        clientRefresher = new CustomerInfoRefresher(CustomerMainAppController::updateTableLoansAsLoaner,
+                CustomerMainAppController::updateTableLoansAsLender
+                ,CustomerMainAppController::updateTableLoansToSellTable
+                ,CustomerMainAppController::updateTableLoansToBuyTable
+                ,CustomerMainAppController::updateTableNotificationsView
+                ,CustomerMainAppController::updateTableCustomerInfoTables1
+                ,CustomerMainAppController::updateTableCustomerInfoTables2
+                ,CustomerMainAppController::updateYazLB
+                ,CustomerMainAppController::disableBT
+                ,CustomerMainAppController::updateCategories
+        ,CustomerMainAppController::balanceLBUpdate);
+        timer = new Timer();
+        timer.schedule(clientRefresher, 4000, 4000);
+    }
+
+    public static void updateTableLoansAsLoaner(List<LoanDTOs> allLoans){}
+
+    public static void updateTableLoansAsLender(List<LoanDTOs> allLoans){}
+
+    public static void updateCategories(List<String> allCategories){}
+
+    public static void updateTableLoansToSellTable(List<LoanDTOs> allLoans){}
+
+    public static void updateTableLoansToBuyTable(List<LoanDTOs> allLoans){}
+
+    public static void updateTableNotificationsView(List<CustomerDTOs> allNotifications){}
+
+    public static void updateTableCustomerInfoTables1(List<LoanDTOs> allLoans){}
+
+    public static void updateTableCustomerInfoTables2(List<CustomerDTOs> allCustomers){}
+
+    public static void updateYazLB(Integer yaz){
+
+    }
+
+    public static void balanceLBUpdate(Integer balance){}
+
+    public static void disableBT(Boolean isRewind){}
+
+
 }
