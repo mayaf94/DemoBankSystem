@@ -121,6 +121,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\LolyP\IdeaProjects\ABS_Part_3\CustomerCilent\src\CustomerInfoView" />
       <recent name="C:\Users\LolyP\IdeaProjects\ABS part 3\ABS-Web\src\CSSFiles" />
       <recent name="C:\Users\LolyP\IdeaProjects\ABS part 3\CustomerCilent\src\adminMainApp" />
       <recent name="$PROJECT_DIR$/ABS/ClientCommons/src/component/loansComponent" />
@@ -266,8 +267,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CustomerClientMain" />
         <item itemvalue="Application.AdminClientMain" />
+        <item itemvalue="Application.CustomerClientMain" />
         <item itemvalue="Application.CustomerClientMain" />
         <item itemvalue="Application.CustomerClientMain" />
       </list>
@@ -305,6 +306,9 @@
       <workItem from="1657523908558" duration="57000" />
       <workItem from="1657525647027" duration="1396000" />
       <workItem from="1657528646612" duration="4203000" />
+      <workItem from="1657639698094" duration="18967000" />
+      <workItem from="1657734733628" duration="8970000" />
+      <workItem from="1657774162425" duration="17763000" />
     </task>
     <task id="LOCAL-00001" summary="fixed loginServlet">
       <created>1655998364760</created>

@@ -1,33 +1,43 @@
 package adminMainApp;
 
-import DTOs.AccountTransactionDTO;
+import CustomerInfoView.ViewCustomersInfoController;
 import DTOs.BankSystemDTO;
 import DTOs.CustomerDTOs;
 import DTOs.LoanDTOs;
 import clientController.ClientController;
+import common.BankResourcesConstants;
+import component.loansComponent.ViewLoansInfo.ViewLoansInfoController;
 import customerMainApp.customerDataTables;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import login.LoginController;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.Response;
+import org.controlsfx.control.table.TableRowExpanderColumn;
 import org.jetbrains.annotations.NotNull;
+import refreshers.AdminTablesRefresher;
 import util.Constants;
 import util.http.HttpClientUtil;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 import static util.Constants.GSON_INSTANCE;
 
@@ -44,9 +54,9 @@ public class AdminMainAppController extends ClientController {
     @FXML
     private Button RewindYazBT;
     @FXML
-    private TableView<LoanDTOs> LoansData;
+    private static TableView<LoanDTOs> LoansData = new TableView<>();
     @FXML
-    private TableView<CustomerDTOs> CustomerData;
+    private static TableView<CustomerDTOs> CustomerData = new TableView<>();
     @FXML
     private Label loansInAbsLb;
     @FXML
@@ -58,8 +68,16 @@ public class AdminMainAppController extends ClientController {
     private String adminName;
     private Stage primaryStage;
     private Scene adminAppScene;
-    @FXML
-    private Label msgLB;
+    @FXML private Label msgLB;
+    private Boolean isRewind = false;
+    customerDataTables adminInfoTables;
+
+    private Timer timer;
+    private TimerTask loanTableRefresher;
+    private TimerTask customerTableRefresher;
+
+
+
 
     @FXML
     private void initialize() {
@@ -110,6 +128,36 @@ public class AdminMainAppController extends ClientController {
     public void switchToClientApp() {
         primaryStage.setScene(adminAppScene);
         primaryStage.show();
+        ViewLoansInfoController loansInfoController = new ViewLoansInfoController();
+        loansInfoController.setMainController(this);
+        loansInfoController.buildLoansTableView(LoansData);
+        String finalUrl = HttpUrl
+                .parse(Constants.getAllLoansAndCustomersInBank)
+                .newBuilder()
+                .build()
+                .toString();
+        HttpClientUtil.runAsync(finalUrl, new Callback() {
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    Platform.runLater(() -> {
+                        try {
+                            String rawBody = response.body().string();
+                            BankSystemDTO BankSystemFromJson = GSON_INSTANCE.fromJson(rawBody, BankSystemDTO.class);
+                            buildCustomersTableView(BankSystemFromJson.getCustomers(), BankSystemFromJson.getLoansInBank());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+            }
+        });
+        startListRefresher();
     }
 
     @Override
@@ -163,6 +211,91 @@ public class AdminMainAppController extends ClientController {
         //}
         // }
         //  });
+    }
+
+    public void startListRefresher() {
+        loanTableRefresher = new AdminTablesRefresher(isRewind, AdminMainAppController::updateLoansTable
+                , AdminMainAppController::updateCustomerTable);
+        timer = new Timer();
+        timer.schedule(loanTableRefresher, 4000, 4000);
+    }
+
+    private void buildCustomersTableView(List<CustomerDTOs> i_allCustomers, List<LoanDTOs> i_allLoans){
+        CustomerData.getItems().clear();
+        List<CustomerDTOs> allCustomers = i_allCustomers;
+        TableRowExpanderColumn<CustomerDTOs> expanderColumn = new TableRowExpanderColumn<>(param -> {
+            try {
+                return expandCustomerInfo(param, i_allLoans);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
+
+        expanderColumn.setPrefWidth(45);
+        TableColumn<CustomerDTOs, String> nameOfCustomer = new TableColumn<>("Name of customer");
+        nameOfCustomer.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameOfCustomer.setPrefWidth(125);
+
+        TableColumn<CustomerDTOs, String> balance = new TableColumn<>("Balance");
+        balance.setCellValueFactory(new PropertyValueFactory<>("balance"));
+        balance.setPrefWidth(125);
+
+        TableColumn<CustomerDTOs, String> loansAsLoaner = new TableColumn<>("Loans as Borrower");
+        loansAsLoaner.setCellValueFactory(new PropertyValueFactory<>("numOfLoansAsBorrower"));
+
+        TableColumn<CustomerDTOs, String> loansAsLender = new TableColumn<>("Loans as lender");
+        loansAsLender.setCellValueFactory(new PropertyValueFactory<>("numOfLoansAsLender"));
+
+        if(CustomerData.getColumns().isEmpty())
+            CustomerData.getColumns().addAll(expanderColumn, nameOfCustomer, balance, loansAsLoaner, loansAsLender);
+        CustomerData.getItems().addAll(FXCollections.observableArrayList(allCustomers));
+
+    }
+
+    private GridPane expandCustomerInfo(TableRowExpanderColumn.TableRowDataFeatures<CustomerDTOs> param, List<LoanDTOs> allLoans) throws IOException {
+        GridPane workSpace = new GridPane();
+        workSpace.setHgap(10);
+        workSpace.setVgap(5);
+
+        CustomerDTOs customer = param.getValue();
+
+        FXMLLoader loader = new FXMLLoader();
+        URL CustomerViewFXML = getClass().getResource(BankResourcesConstants.VIEWCUSTOMERDATAEXPANDED_RESOURCE_IDENTIFIRE);
+        loader.setLocation(CustomerViewFXML);
+        GridPane CustomerExpandedDetails = loader.load();
+        ViewCustomersInfoController customersInfoController = loader.getController();
+        CustomerExpandedDetails.setBackground(new Background(new BackgroundFill(Color.BEIGE, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        List<String> LoansAsALender = customer.getLoansAsALender();
+        List<String> LoansAsBorrower = customer.getLoansAsABorrower();
+
+        customersInfoController.SetLoansAsLenderByStatusLabels(allLoans.stream().filter(L -> LoansAsALender.contains(L.getNameOfLoan())).collect(Collectors.toList()));
+        customersInfoController.SetLoansAsLoanerByStatusLabels(allLoans.stream().filter(L -> LoansAsBorrower.contains(L.getNameOfLoan())).collect(Collectors.toList()));//TODO: change the map
+
+        return CustomerExpandedDetails;
+    }
+
+    private static void updateCustomerTable(List<CustomerDTOs> allCustomersInSystem){
+        Platform.runLater(() -> {
+            ObservableList<CustomerDTOs> item = CustomerData.getItems();
+            item.clear();
+            item.addAll(allCustomersInSystem);
+//            CustomerData.getItems().clear();
+//            CustomerData.getItems().addAll(allCustomersInSystem);
+//            CustomerData.refresh();
+        });
+    }
+
+    private static void updateLoansTable(List<LoanDTOs> allLoans){
+        Platform.runLater(() -> {
+            ObservableList<LoanDTOs> item = LoansData.getItems();
+            item.clear();
+            item.addAll(allLoans);
+//            LoansData.getItems().clear();
+//            LoansData.getItems().addAll(allLoans);
+//            LoansData.refresh();
+        });
     }
 }
 

@@ -1,8 +1,13 @@
 package DTOs;
 
 import BankActions.AccountTransaction;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 
 public class AccountTransactionDTO implements Serializable {
 
@@ -71,4 +76,23 @@ public class AccountTransactionDTO implements Serializable {
     public Integer getCurBalance() {
         return curBalance;
     }
+
+    public static class TransactionsDTOAdapter implements JsonSerializer<AccountTransactionDTO> {
+        @Override
+        public JsonElement serialize(AccountTransactionDTO accountTransactionDTO, Type type, JsonSerializationContext jsonSerializationContext) {
+            JsonObject jsonElement = new JsonObject();
+            jsonElement.addProperty("TransactionType", accountTransactionDTO.getTransactionType());
+            jsonElement.addProperty("amount", accountTransactionDTO.getAmount());
+            jsonElement.addProperty("yazOfAction", accountTransactionDTO.getYazOfAction());
+            jsonElement.addProperty("previousBalance", accountTransactionDTO.getPreviousBalance());
+            jsonElement.addProperty("curBalance", accountTransactionDTO.getCurBalance());
+
+            return jsonElement;
+        }
+    }
 }
+//    private String TransactionType;
+//    private Integer amount;
+//    private Integer yazOfAction;
+//    private Integer previousBalance;
+//    private Integer curBalance;

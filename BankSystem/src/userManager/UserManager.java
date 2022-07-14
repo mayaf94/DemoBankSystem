@@ -1,6 +1,7 @@
 package userManager;
 
 import BankSystem.BankSystem;
+import DTOs.BankSystemDTO;
 
 import java.util.*;
 
@@ -8,7 +9,7 @@ public class    UserManager {
 
     private final Set<String> usersSet;
     private BankSystem bankEngine;
-    private Map<Integer,BankSystem> bankSystemVersionMap = new HashMap<>();
+    private Map<Integer, BankSystemDTO> bankSystemVersionMap = new HashMap<>();
     private Boolean isAdminActive = false;
 
     public UserManager() {
@@ -37,7 +38,11 @@ public class    UserManager {
         return usersSet.contains(username);
     }
 
-    public synchronized void addVersionToBankSystemVersionMap(BankSystem bankSystemVersion){
-        bankSystemVersionMap.put(bankSystemVersion.getCurrentYaz(), bankSystemVersion);
+    public synchronized void addVersionToBankSystemVersionMap(BankSystemDTO bankSystemVersion){
+        bankSystemVersionMap.put(bankSystemVersion.getCurYaz(), bankSystemVersion);
+    }
+
+    public synchronized BankSystemDTO getBankSystemDTOByYaz(Integer yaz){
+        return bankSystemVersionMap.get(yaz);
     }
 }

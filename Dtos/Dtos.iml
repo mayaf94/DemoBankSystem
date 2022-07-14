@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="BankSystem" />
+    <orderEntry type="library" name="GSON" level="project" />
   </component>
 </module>

@@ -32,6 +32,8 @@ public class servletConstants {
     public static final String TRUEVALFORRESPONSE = "true";
     public static final String FALSEVALFORRESPONSE = "false";
 
+    public static final String ISREWIND = "isRewind";
+
 
 
 

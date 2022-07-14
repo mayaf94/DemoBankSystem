@@ -22,6 +22,18 @@ public class SystemImplement implements BankSystem , Serializable {
     private int RewindYaz = 1;
     private List<LoanForSale> loanForSale = new ArrayList<>();
 
+    public Integer getRewindYaz(){
+        return RewindYaz;
+    }
+
+    public Boolean isRewind() {
+        return isRewind;
+    }
+
+    public BankSystemDTO getBankSystemDTO(){
+        return new BankSystemDTO(RewindYaz, " ",
+                getListOfDTOsCustomer(), getListOfLoansDTO(), getAllCategories(), isRewind);
+    }
 
     public SimpleStringProperty getYazProperty() {
         return yazProperty;
@@ -235,9 +247,7 @@ public class SystemImplement implements BankSystem , Serializable {
                 isRewind = false;
         }
             return new BankSystemDTO(RewindYaz, "Increase Yaz was successful",
-                    getListOfDTOsCustomer().stream().collect(Collectors.toMap(CustomerDTOs::getName,
-                            CustomerDTOs -> CustomerDTOs)),
-                    getListOfLoansDTO().stream().collect(Collectors.toMap(LoanDTOs::getNameOfLoan, LoansDTOs -> LoansDTOs)));
+                    getListOfDTOsCustomer(), getListOfLoansDTO(), getAllCategories(), isRewind);
 
     }
 
