@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,14 +35,39 @@ public class ScrambleServlet extends HttpServlet {
         Boolean maxOpenLoansForLoanOwnerSelected = Boolean.parseBoolean(request.getParameter(servletConstants.MAXOPENLOANSSELECTED));
         List<String> CategoriesList = Arrays.asList(Categories.split( ","));
         int maxOpenLoansForLoanOwnerIntVal = bankEngine.getListOfLoansDTO().size();
-        if (usernameFromSession == null || minimumDuration == null || minimumInterestForSingleYaz == null || maxOpenLoansForLoanOwner == null || CategoriesList.size() == 0) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        if(minimumDuration.isEmpty()){
+            minimumDuration = "0";
+        }
+        if(minimumInterestForSingleYaz.isEmpty()){
+            minimumInterestForSingleYaz = "0";
+        }
+        if(minimumInterestForSingleYaz.isEmpty()){
+            minimumInterestForSingleYaz = "0";
+        }
+        if(Categories.isEmpty()){
+            CategoriesList = bankEngine.getAllCategories().getCategories();
+        }
+        else{
+            if(!listEqualsIgnoreOrder(CategoriesList,bankEngine.getAllCategories().getCategories())){
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getOutputStream().print("one or more categories are not exist in bank!");
+            }
         }
         if(maxOpenLoansForLoanOwnerSelected){
             maxOpenLoansForLoanOwnerIntVal = Integer.parseInt(maxOpenLoansForLoanOwner);
         }
+        try{
+            if(Integer.parseInt(minimumDuration) < 0 || Integer.parseInt(minimumInterestForSingleYaz) < 0|| Integer.parseInt(maxOpenLoansForLoanOwner) < 0 ){
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getOutputStream().print("please enter a positive (or 0 ) number for all the values");
+            }
+        }
+        catch (Exception e){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getOutputStream().print("please enter a integer");
+        }
 
-        List<LoanDTOs> MatchingLoans = bankEngine.ActivationOfAnInlay(bankEngine.getAllCategories().getCategories(),Integer.parseInt(minimumDuration),Integer.parseInt(minimumInterestForSingleYaz),maxOpenLoansForLoanOwnerIntVal,usernameFromSession);
+        List<LoanDTOs> MatchingLoans = bankEngine.ActivationOfAnInlay(CategoriesList,Integer.parseInt(minimumDuration),Integer.parseInt(minimumInterestForSingleYaz),maxOpenLoansForLoanOwnerIntVal,usernameFromSession);
         if(MatchingLoans == null) {
             String errorMessage = "an error occurred";
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -57,5 +83,7 @@ public class ScrambleServlet extends HttpServlet {
             }
         }
     }
-
+    private boolean listEqualsIgnoreOrder(List<String> chosenCategories, List<String> CategoriesInBank) {
+        return new HashSet<>(chosenCategories).equals(new HashSet<>(CategoriesInBank));
+    }
 }

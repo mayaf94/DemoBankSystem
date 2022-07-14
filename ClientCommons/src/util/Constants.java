@@ -20,6 +20,8 @@ public class Constants {
     public final static String REWIND_YAZ = FULL_SERVER_PATH + "/RewindYaz";
     public static final String LOANSPAYMENT = FULL_SERVER_PATH + "/LoansPayment";
     public static final String INVESMENTS = FULL_SERVER_PATH + "/investInLoans";
+    public final static String TAKE_OUT_A_LOAN = FULL_SERVER_PATH + "/takeOutLoan";
+
 
 
 

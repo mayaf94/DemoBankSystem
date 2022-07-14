@@ -38,6 +38,9 @@ public class Customer implements Serializable {
         Transactions = new ArrayList<>();
     }
 
+    public void addLoanAsLoaner(String loanName){
+        LoansAsABorrower.add(loanName);
+    }
 
     public List<AccountTransaction> getTransactions() {
        /* if (Transactions.size() == 0)

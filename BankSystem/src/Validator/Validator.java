@@ -35,4 +35,6 @@ public class Validator implements Serializable {
             throw new InccorectInputType(InccorectInputType.getGreaterThenZero());
         }
     }
+
+    
 }

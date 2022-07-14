@@ -127,6 +127,20 @@ public class SystemImplement implements BankSystem , Serializable {
         return Customers.get(i_nameOfCustomer).getMoneyInAccount() >= amountToInvest;
     }
 
+    public LoanDTOs takeOutLoan(String i_LoanerName,String i_loanName,String i_category,int i_principalAmount,int i_totalDuration,int i_paymentFreq,int i_interest){
+        //valdiation that there is such a customer name in bank(in servlet) TODO
+        //validation that there is no such loan name in bank(in servlet) TODO
+        //validation principal amount,total duration,payment freq,interest is valid TODO
+
+        if(!allCategories.contains(i_category)){
+            allCategories.add(i_category);
+        }
+        Loan newLoan = new Loan(i_loanName,i_LoanerName,i_category,i_principalAmount,i_totalDuration,i_paymentFreq,i_interest);
+        LoansInBank.put(i_loanName,newLoan);
+        Customers.get(i_LoanerName).addLoanAsLoaner(i_loanName);
+        return new LoanDTOs(newLoan);
+    }
+
     public CustomerDTOs LoansInlay(List<String> namesOfLoans,int amountOfMoneyUserWantToInvest,String nameOfLender,int maxOwnerShipOfTheLoan) {//TODO check if maxOwnerShip Does work
         List<Loan> loansForInvestment = FindLoansInSystemByNames(namesOfLoans);
         int numOfLoans = loansForInvestment.size();

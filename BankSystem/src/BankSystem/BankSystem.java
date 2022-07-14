@@ -32,6 +32,7 @@ public interface BankSystem extends Serializable {
     void                    YazlyPaymentForGivenLoans(Map<String,Integer> loansToPay);
     void                    addCustomerToBank(String nameOfCustomer);
     Map<String, SimpleStringProperty> getLoanDataByStatusPropertyFromSystemMap(String loanName);
+    LoanDTOs takeOutLoan(String i_LoanerName,String i_loanName,String i_category,int i_principalAmount,int i_totalDuration,int i_paymentFreq,int i_interest);
     List<LoanDTOs> getAllLoansThatAreForSale();
     int rewindYaz();
     List<LoansForSaleDTO> getAllLoansForSaleForTheCustomer(String seller);

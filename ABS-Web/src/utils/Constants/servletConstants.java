@@ -21,8 +21,12 @@ public class servletConstants {
     public static final String MAXLOANOWENERSHIP = "maxLoanOwnership";
     public static final String AMOUNT_TO_INVEST = "amountToInvest";
     public static final String LOANSNAMES = "LoansNames";
-
-
+    public static final String LOANNAME = "LoanName";
+    public static final String PRINCIPALAMOUNT = "originalAmount";
+    public static final String DURATION = "duration";
+    public static final String PAYMENTFREQ = "frequency";
+    public static final String CATEGORY = "category";
+    public static final String INTEREST = "interest";
 
 
     public static final String TRUEVALFORRESPONSE = "true";

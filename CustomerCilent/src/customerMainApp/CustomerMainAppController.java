@@ -101,6 +101,15 @@ public class CustomerMainAppController extends ClientController {
     @FXML private Button SellLoanBT;
     @FXML private Button BuyLoansBT;
 
+    @FXML private TextField LoanNameTakeLoanTA;
+    @FXML private TextField categoryTakeLoanTA;
+    @FXML private TextField principalAmountTA;
+    @FXML private TextField totalDurationTakeLoanTA;
+    @FXML private TextField paymentFreqTakeLoanTA;
+    @FXML private TextField InterestTakeLoanTA;
+    @FXML private Button takeOutLoanBT;
+
+
 
     @FXML
     private void initialize() {
@@ -354,6 +363,48 @@ public class CustomerMainAppController extends ClientController {
     }
 
     @FXML
+    void takeOutLoanBTClicked(ActionEvent event) {
+        String nameOfLoan = LoanNameTakeLoanTA.getText();
+        String principalAmount = principalAmountTA.getText();
+        String durationOfLoan = totalDurationTakeLoanTA.getText();
+        String paymentFreq = paymentFreqTakeLoanTA.getText();
+        String category = categoryTakeLoanTA.getText();
+        String interest = InterestTakeLoanTA.getText();
+
+        String finalUrl = HttpUrl
+                .parse(Constants.TAKE_OUT_A_LOAN)
+                .newBuilder()
+                .addQueryParameter("LoanName",nameOfLoan)
+                .addQueryParameter("originalAmount",principalAmount)
+                .addQueryParameter("duration",durationOfLoan)
+                .addQueryParameter("frequency",paymentFreq)
+                .addQueryParameter("category",category)
+                .addQueryParameter("interest",interest)
+                .build()
+                .toString();
+
+        HttpClientUtil.runAsync(finalUrl,new Callback(){
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Platform.runLater(() -> {
+                    errorAlert.setContentText(String.valueOf(e));
+                    errorAlert.showAndWait();
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                Platform.runLater(() -> {
+                    confirmationAlert.setContentText("Heydad you submitted a new Loan, pending for lenders!");
+                    confirmationAlert.showAndWait();
+                });
+            }
+        });
+        resetTakeOutLoan();
+    }
+
+    @FXML
     void findLoansBtClicked(ActionEvent event) {
         if(Integer.parseInt(balanceOfCustomer.getText()) > Integer.parseInt(amountToInvest.getText())) {
             disableFilterFields(true);
@@ -500,8 +551,19 @@ public class CustomerMainAppController extends ClientController {
         return true;
     }
 
+    void resetTakeOutLoan(){
+        Platform.runLater(() ->{
+            LoanNameTakeLoanTA.clear();
+            principalAmountTA.clear();
+            totalDurationTakeLoanTA.clear();
+            paymentFreqTakeLoanTA.clear();
+            categoryTakeLoanTA.clear();
+            InterestTakeLoanTA.clear();
+        });
+    }
+
     void resetScrambleTab(){
-        runLater(() ->{
+        Platform.runLater(() ->{
             disableFilterFields(false);
             amountToInvest.clear();
             categories.getCheckModel().clearChecks();

@@ -28,6 +28,7 @@ public class CustomerClientMain extends Application{
         loginLoader.setLocation(LoginLoaderFXML);
         GridPane LoginRoot = loginLoader.load();
         LoginController LoginController = loginLoader.getController();
+        LoginController.setAdmin(false);
 
         //Load Customer app page
         FXMLLoader CustomerLoader = new FXMLLoader();
