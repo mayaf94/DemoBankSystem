@@ -19,6 +19,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -32,10 +38,12 @@ import org.jetbrains.annotations.NotNull;
 import util.Constants;
 import util.http.HttpClientUtil;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static javafx.application.Platform.runLater;
@@ -396,8 +404,30 @@ public class CustomerMainAppController extends ClientController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 Platform.runLater(() -> {
-                    confirmationAlert.setContentText("Heydad you submitted a new Loan, pending for lenders!");
-                    confirmationAlert.showAndWait();
+                    if (response.code() != 200) {
+                        Platform.runLater(() -> {
+                            String responseBody = null;
+                            try {
+                                responseBody = response.body().string();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            errorAlert.setContentText(responseBody);
+                            errorAlert.showAndWait();
+                        });
+                    }
+                    else {
+                        Platform.runLater(() -> {
+                            String rawBody = null;
+                            try {
+                                rawBody = response.body().string();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            LoanDTOs newLoanAsLoaner = GSON_INSTANCE.fromJson(rawBody, LoanDTOs.class);
+                            LoansAsLoaner.getItems().add(newLoanAsLoaner);
+                        });
+                    }
                 });
             }
         });
@@ -406,7 +436,8 @@ public class CustomerMainAppController extends ClientController {
 
     @FXML
     void findLoansBtClicked(ActionEvent event) {
-        if(Integer.parseInt(balanceOfCustomer.getText()) > Integer.parseInt(amountToInvest.getText())) {
+        String balance = balanceOfCustomer.getText().substring(9);
+        if(Integer.parseInt(balance) > Integer.parseInt(amountToInvest.getText())) {
             disableFilterFields(true);
             startTask();
         }
@@ -794,13 +825,14 @@ public class CustomerMainAppController extends ClientController {
     }
 
     @FXML
-    void openReadMeClicked(ActionEvent event) {
-
+    void openReadMeClicked(ActionEvent event) throws IOException {
+        File readMeFile = new File("/Users/dan/Downloads/ABS part 3 2/ClientCommons/readme.rtf");
+        Desktop.getDesktop().edit(readMeFile);
     }
 
     @FXML
     void resetSearchBtClicked(ActionEvent event) {
-
+        resetScrambleTab();
     }
 
     @FXML
@@ -821,11 +853,6 @@ public class CustomerMainAppController extends ClientController {
         AccountTransInfo.getChildren().setAll(customerInfoTables.getTransactionTable());
         welcomeCustomer.setText("Hello " + curCustomerName);
     }
-//
-    public void switchToLoginScene() {
-        primaryStage.setScene(LoginScene);
-        primaryStage.show();
-    }//TODO
 
     @Override
     public void setCurrentClientUserName(String userName) {

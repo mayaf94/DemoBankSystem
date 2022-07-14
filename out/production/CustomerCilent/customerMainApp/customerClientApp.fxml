@@ -378,7 +378,7 @@
                                                 <HBox layoutX="10.0" layoutY="151.0" spacing="22.0">
                                                    <children>
                                                       <Label fx:id="paymentFreqTakeLoanLB" prefHeight="17.0" prefWidth="138.0" text="Payments Frequency" />
-                                                      <TextField fx:id="paymentFreqTakeLoanBT" minWidth="128.0" prefHeight="27.0" prefWidth="200.0" />
+                                                      <TextField fx:id="paymentFreqTakeLoanTA" minWidth="128.0" prefHeight="27.0" prefWidth="200.0" />
                                                       <Label fx:id="errorMaxLoanOwner1" prefHeight="17.0" prefWidth="86.0" />
                                                    </children>
                                                 </HBox>

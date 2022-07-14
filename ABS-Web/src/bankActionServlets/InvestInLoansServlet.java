@@ -2,8 +2,6 @@ package bankActionServlets;
 
 import BankSystem.BankSystem;
 import DTOs.LoanDTOs;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,12 +12,11 @@ import utils.SessionUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
 @WebServlet(name = "InvestInLoans",urlPatterns = {"/investInLoans"})
-public class InvestInLoans extends HttpServlet {
+public class InvestInLoansServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/plain;charset=UTF-8");

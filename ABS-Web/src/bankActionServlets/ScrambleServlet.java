@@ -34,7 +34,7 @@ public class ScrambleServlet extends HttpServlet {
         String Categories = request.getParameter(servletConstants.CATEGORIES);
         Boolean maxOpenLoansForLoanOwnerSelected = Boolean.parseBoolean(request.getParameter(servletConstants.MAXOPENLOANSSELECTED));
         List<String> CategoriesList = Arrays.asList(Categories.split( ","));
-        int maxOpenLoansForLoanOwnerIntVal = bankEngine.getListOfLoansDTO().size();
+        int maxOpenLoansForLoanOwnerIntVal = 50000;
         if(minimumDuration.isEmpty()){
             minimumDuration = "0";
         }
@@ -57,7 +57,7 @@ public class ScrambleServlet extends HttpServlet {
             maxOpenLoansForLoanOwnerIntVal = Integer.parseInt(maxOpenLoansForLoanOwner);
         }
         try{
-            if(Integer.parseInt(minimumDuration) < 0 || Integer.parseInt(minimumInterestForSingleYaz) < 0|| Integer.parseInt(maxOpenLoansForLoanOwner) < 0 ){
+            if(Integer.parseInt(minimumDuration) < 0 || Integer.parseInt(minimumInterestForSingleYaz) < 0 ){
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getOutputStream().print("please enter a positive (or 0 ) number for all the values");
             }
@@ -66,7 +66,7 @@ public class ScrambleServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getOutputStream().print("please enter a integer");
         }
-
+        //TODO CHECK IF CUSTOMER HAS ENOUGH MONEY TO INVEST
         List<LoanDTOs> MatchingLoans = bankEngine.ActivationOfAnInlay(CategoriesList,Integer.parseInt(minimumDuration),Integer.parseInt(minimumInterestForSingleYaz),maxOpenLoansForLoanOwnerIntVal,usernameFromSession);
         if(MatchingLoans == null) {
             String errorMessage = "an error occurred";

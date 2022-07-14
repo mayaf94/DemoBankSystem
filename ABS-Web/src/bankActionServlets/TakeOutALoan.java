@@ -48,27 +48,29 @@ public class TakeOutALoan extends HttpServlet {
             }
             try {
                 if (Integer.parseInt(principalAmount) <= 0) {
+                    valid = false;
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.getOutputStream().print("original amount for the loan should be positive!");
-                    valid = false;
                 }
                 if (Integer.parseInt(durationOfLoan) <= 0) {
+                    valid = false;
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.getOutputStream().print("Duration of the loan should be positive!");
-                    valid = false;
                 }
                 if (Integer.parseInt(paymentFreq) <= 0) {
+                    valid = false;
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.getOutputStream().print("Payment Frequency for the loan should be positive!");
-                    valid = false;
                 }
                 if (Integer.parseInt(interest) <= 0) {
+                    valid = false;
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.getOutputStream().print("interest for the loan should be positive!");
-                    valid = false;
                 }
             }
             catch (Exception e){
+                valid = false;
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 PrintWriter out = response.getWriter();
                 out.print("please enter integer and not a decimal number");
                 out.flush();

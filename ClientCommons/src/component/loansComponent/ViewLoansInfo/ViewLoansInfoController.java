@@ -29,6 +29,7 @@ public class ViewLoansInfoController implements Serializable {
     @FXML private Label TotalDuration;
     @FXML private Label originalAmount;
     @FXML private Label status;
+
     //@FXML private Label LoanDataByStatus;
     @FXML
     private TextArea LoanDataByStatus;

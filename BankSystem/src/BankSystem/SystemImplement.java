@@ -21,7 +21,6 @@ public class SystemImplement implements BankSystem , Serializable {
     private Boolean isRewind = false;
     private int RewindYaz = 1;
     private List<LoanForSale> loanForSale = new ArrayList<>();
-
     public Integer getRewindYaz(){
         return RewindYaz;
     }
@@ -425,6 +424,7 @@ public class SystemImplement implements BankSystem , Serializable {
             }
         }
     }
+
     //TODO  together with maya i think it should be map<string,List<string>>  <seller,LoansForSaleThatTheSellerSells>
     public void buyLoans(Map<String,String> mapOfKeySellerAndValueLoan, String buyer){
         for (Map.Entry<String,String> entry: mapOfKeySellerAndValueLoan.entrySet()) {

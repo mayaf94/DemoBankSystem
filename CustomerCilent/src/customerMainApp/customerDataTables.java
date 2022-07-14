@@ -45,6 +45,7 @@ public class customerDataTables implements Serializable {
         buildTransactionsTable();
     }
 
+
     private void buildLoansForSellOrBuyTable(TableView<LoanDTOs> LoansTradeTable){
         loansInfoController.buildLoansTableView(LoansTradeTable);
         final TableColumn<LoanDTOs, Integer> price = new TableColumn<>( "Price" );
