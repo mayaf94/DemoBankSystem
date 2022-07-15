@@ -39,6 +39,7 @@ public class customerDataTables implements Serializable {
         LoansAsLenderData = i_LoansAsLenderData;
         LoansForSell = i_LoansForSell;
         LoansToBuy = i_LoansForBuy;
+
         LoansAsLoanerDataForPaymentTab2 = i_loansAsLoanerDataForPaymentTab;
         MatchinLoansForScramble = i_MatchinLoansForScramble;
         buildLoansForSellOrBuyTable(LoansToBuy);
@@ -46,6 +47,7 @@ public class customerDataTables implements Serializable {
         loansInfoController.buildLoansTableView(MatchinLoansForScramble);
         loansInfoController.buildLoansTableView(LoansAsLoanerData);
         loansInfoController.buildLoansTableView(LoansAsLenderData);
+
         buildLoansTableForPaymentTab(LoansAsLoanerDataForPaymentTab2);
         buildTransactionsTable();
     }
@@ -69,6 +71,7 @@ public class customerDataTables implements Serializable {
 
     }
 
+
     private void buildLoansTableForPaymentTab(TableView<LoanDTOs> LoansTradeTable){
 
         loansInfoController.buildLoansTableView(LoansTradeTable);
@@ -87,11 +90,12 @@ public class customerDataTables implements Serializable {
         amountToPayCol.setCellValueFactory( new PropertyValueFactory<>("AmountToPay"));
         amountToPayCol.setPrefWidth(120);
         amountToPayCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        amountToPayCol.setOnEditCommit(
+/*        amountToPayCol.setOnEditCommit(
                 event -> {
                     event.getTableView().getItems().get(event.getTablePosition().getRow()).setAmountToPay(event.getNewValue());
                 }
         );
+
 
         LoansTradeTable.getColumns().add( amountToPayCol );
         amountToPayCol.getTableView().setEditable(true);
@@ -177,6 +181,10 @@ public class customerDataTables implements Serializable {
     public void addTransactionsToTable(List<AccountTransactionDTO> transaction){
         TransactionTable.getItems().clear();
         TransactionTable.getItems().addAll(transaction);
+    }
+
+    public void clearTransactionsToTable(){
+        TransactionTable.getItems().clear();
     }
 
 

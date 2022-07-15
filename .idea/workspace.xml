@@ -9,6 +9,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+    <list default="true" id="fd4b7284-78c4-4cd1-a5bc-7a87445047e1" name="Changes" comment="update changes">
+      <change afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/buyLoansServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/RefreshTableServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/RefreshTableServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BankSystem/src/BankSystem/BankSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/BankSystem/src/BankSystem/BankSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BankSystem/src/BankSystem/SystemImplement.java" beforeDir="false" afterPath="$PROJECT_DIR$/BankSystem/src/BankSystem/SystemImplement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClientCommons/src/util/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/ClientCommons/src/util/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dtos/src/DTOs/LoanDTOs.java" beforeDir="false" afterPath="$PROJECT_DIR$/Dtos/src/DTOs/LoanDTOs.java" afterDir="false" />
+
     <list default="true" id="fd4b7284-78c4-4cd1-a5bc-7a87445047e1" name="Changes" comment="impel refreshers and tests">
       <change afterPath="$PROJECT_DIR$/.idea/libraries/src.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/CustomerCilent/gsonUtils.iml" afterDir="false" />
@@ -47,6 +57,8 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
+        <entry key="$PROJECT_DIR$" value="check_payments_servlets" />
+
         <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
@@ -62,14 +74,14 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/ClientCommons/src/login/LoginController.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ABS-Web/src/bankActionServlets/TransactionServlet.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ABS-Web/src/userManagemantServlets/LoginServlets.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ABS-Web/src/utils/SessionUtils.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/ClientCommons/src/util/http/HttpClientUtil.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ABS-Web/src/utils/Constants/servletConstants.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/ABS-Web/src/bankActionServlets/TransactionServlet.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/CustomerCilent/src/main/CustomerClientMain.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/ClientCommons/src/util/http/SimpleCookieManager.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/CustomerCilent/src/main/CustomerClientMain.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ClientCommons/src/util/http/HttpClientUtil.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ClientCommons/src/util/http/SimpleCookieManager.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -92,6 +104,10 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../GSON" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -234,6 +250,9 @@
       <option name="presentableId" value="Default" />
       <updated>1657827110532</updated>
       <workItem from="1657827110776" duration="2000" />
+      <workItem from="1657827163907" duration="16465000" />
+      <workItem from="1657846513916" duration="28091000" />
+
       <workItem from="1657827163907" duration="45984000" />
     </task>
     <task id="LOCAL-00001" summary="impel refreshers and tests">
@@ -242,6 +261,16 @@
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
       <updated>1657844314967</updated>
+    </task>
+    <task id="LOCAL-00002" summary="update changes">
+      <created>1657883934550</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1657883934550</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
@@ -262,11 +291,23 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="impel refreshers and tests" />
+    <MESSAGE value="update changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="update changes" />
+
     <option name="LAST_COMMIT_MESSAGE" value="impel refreshers and tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/ABS-Web/src/bankActionServlets/ScrambleServlet.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/ABS-Web/src/bankActionServlets/ScrambleServlet.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="24" />
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java</url>
           <line>1086</line>
@@ -312,6 +353,45 @@
           <line>787</line>
           <option name="timeStamp" value="92" />
         </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java</url>
+          <line>218</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java</url>
+          <line>1071</line>
+          <properties>
+            <option name="lambda-ordinal" value="1" />
+          </properties>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/BankSystem/src/BankSystem/SystemImplement.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/BankSystem/src/BankSystem/SystemImplement.java</url>
+          <line>243</line>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ABS-Web/src/bankActionServlets/GetIncreaseYazServlet.java</url>
+          <line>34</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/ABS-Web/src/bankActionServlets/RewindYazServlet.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/BankSystem/src/BankSystem/SystemImplement.java</url>
+          <line>21</line>
+          <properties field="RewindYaz" class="BankSystem.SystemImplement" />
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
@@ -321,6 +401,41 @@
     </pin-to-top-manager>
     <watches-manager>
       <configuration name="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory">
+        <watch expression="CategoriesInBank" language="JAVA" />
+        <watch expression="HashSet&lt;&gt;(chosenCategories).equals(new HashSet&lt;&gt;(CategoriesInBank))" language="JAVA" />
+        <watch expression="chosenCategories" language="JAVA" />
+        <watch expression="HashSet&lt;&gt;(chosenCategories).equals(new HashSet&lt;&gt;(CategoriesInBank))" language="JAVA" />
+        <watch expression="CategoriesInBank" language="JAVA" />
+        <watch expression="chosenCategories" language="JAVA" />
+        <watch expression="listEqualsIgnoreOrder(CategoriesList,bankEngine.getAllCategories().getCategories())" language="JAVA" />
+        <watch expression="bankEngine.getBankSystemDTO()" language="JAVA" />
+        <watch expression="bankSystemDTO" language="JAVA" />
+        <watch expression="getListOfDTOsCustomer()" language="JAVA" />
+        <watch expression="bankEngine.getBankSystemDTO()" language="JAVA" />
+        <watch expression="getListOfDTOsCustomer()" language="JAVA" />
+      </configuration>
+      <configuration name="Application">
+        <watch expression="LoansAsLender" language="JAVA" />
+        <watch expression="LoansAsLoaner" language="JAVA" />
+        <watch expression="allCategories" language="JAVA" />
+        <watch expression="bankSystemDTO.getCategories().getCategories()" language="JAVA" />
+        <watch expression="allCategories.size()" language="JAVA" />
+        <watch expression="allCategories" language="JAVA" />
+        <watch expression="bankSystemDTO.getCategories().getCategories()" language="JAVA" />
+        <watch expression="allCategories.size()" language="JAVA" />
+        <watch expression="categories.getItems()" language="JAVA" />
+        <watch expression="allCategories.size()" language="JAVA" />
+        <watch expression="notificationsView.getItems()" language="JAVA" />
+        <watch expression="curCustomerName" language="JAVA" />
+        <watch expression="allLoans" language="JAVA" />
+        <watch expression="notificationsView.getItems().size()" language="JAVA" />
+        <watch expression="bankSystemDTO.getRewind()" language="JAVA" />
+        <watch expression="bankSystemDTO" language="JAVA" />
+        <watch expression="loanAsLoanerToAddToTable" language="JAVA" />
+        <watch expression="loanAsLoanerToAddToTable" language="JAVA" />
+        <watch expression="bankSystemDTO.getCustomers()" language="JAVA" />
+        <watch expression="bankSystemDTO.getCustomers().contains(curName)" language="JAVA" />
+
         <watch expression="filtterdLoans" language="JAVA" />
         <watch expression="loansToPayAndAmountOfPayment" language="JAVA" />
         <watch expression="LoansCanBePaid" language="JAVA" />
@@ -330,6 +445,7 @@
       </configuration>
       <configuration name="Application">
         <watch expression="customerInfoTables.getLoansAsLoanerDataForPaymentTab().getItems()" language="JAVA" />
+
       </configuration>
     </watches-manager>
   </component>

@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 @WebServlet(name = "RefreshTableServlet",urlPatterns = {"/RefreshTables"})
 public class RefreshTableServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {//TODO not sure if doGet or doPost
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         String usernameFromSession = SessionUtils.getUsername(request);
         BankSystem bankEngine = ServletUtils.getBankSystem(getServletContext());

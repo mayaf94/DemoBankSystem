@@ -20,7 +20,7 @@ public class Customer implements Serializable {
         return notifications;
     }
 
-    public Customer(String name, int balance, List<String> loansAsABorrowerNames) {
+    public Customer(String name, int balance, List<String> loansAsABorrowerNames, Integer Yaz) {
         this.name = name;
         moneyInAccount = balance;
         LoansAsALender = new ArrayList<>();

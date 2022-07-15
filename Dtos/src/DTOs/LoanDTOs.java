@@ -50,6 +50,8 @@ public class LoanDTOs implements Serializable {
     private int version;
     private Boolean isForSale = false;
     private Map<String, Integer> mapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment = new HashMap<>();
+    private String seller = " ";
+    private Integer price = 0;
 
     public LoanDTOs(Loan loan){
         nameOfLoan = loan.getNameOfLoan();
@@ -83,6 +85,24 @@ public class LoanDTOs implements Serializable {
         mapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment = loan.getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment();
     }
 
+    public LoanDTOs(String seller, Integer price, String loanName){
+        this.seller = seller;
+        this.price = price;
+        this.nameOfLoan = loanName;
+        originalAmount = 0;
+        amountRaisedSoFar = 0;
+        durationOfTheLoan = 0;
+        paymentFrequency = 0;
+        interest = 0;
+        theDateTheLoanBecameActive = 0;
+        listOfLenders = null;
+        howManyUnitsOfTimeAreLeft = 0;
+        interestPayedSoFar = 0;
+        theInterestYetToBePaidOnTheLoan = 0;
+        theAmountOfThePrincipalPaymentPaidOnTheLoanSoFar = 0;
+        theAmountOfTheFundYetToBePaid = 0;
+        status = null;
+        loansPayments = null;
 
     public void setSelected(Boolean selected) {
         this.selected = selected;
@@ -90,6 +110,18 @@ public class LoanDTOs implements Serializable {
 
     public Map<String, Integer> getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment() {
         return mapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public String getSeller() {
+        return seller;
+    }
+
+    public Integer getPrice() {
+        return price;
     }
 
     public int getVersion() {

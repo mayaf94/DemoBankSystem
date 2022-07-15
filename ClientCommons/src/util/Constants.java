@@ -23,6 +23,7 @@ public class Constants {
     public static final String LOANSPAYMENT = FULL_SERVER_PATH + "/LoansPayment";
     public static final String INVESMENTS = FULL_SERVER_PATH + "/investInLoans";
     public final static String TAKE_OUT_A_LOAN = FULL_SERVER_PATH + "/takeOutLoan";
+    public final static String BUY_LOANS = FULL_SERVER_PATH + "/BuyLoans";
 
 
 

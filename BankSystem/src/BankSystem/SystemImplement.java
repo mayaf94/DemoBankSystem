@@ -20,7 +20,7 @@ public class SystemImplement implements BankSystem , Serializable {
     transient private SimpleStringProperty yazProperty = new SimpleStringProperty();
     private Boolean isRewind = false;
     private int RewindYaz = 1;
-    private List<LoanForSale> loanForSale = new ArrayList<>();
+    private List<LoanDTOs> loanForSale = new ArrayList<>();
     public Integer getRewindYaz(){
         return RewindYaz;
     }
@@ -74,7 +74,7 @@ public class SystemImplement implements BankSystem , Serializable {
 
     public void addCustomerToBank(String nameOfCustomer){
         if(!Customers.containsKey(nameOfCustomer))
-            Customers.put(nameOfCustomer,new Customer(nameOfCustomer,0,null));
+            Customers.put(nameOfCustomer,new Customer(nameOfCustomer,0,null,Yaz));
     }
 
     public List<CustomerDTOs> getListOfDTOsCustomer(){
@@ -326,8 +326,8 @@ public class SystemImplement implements BankSystem , Serializable {
             for (Map.Entry<String,Integer> entry: mapToChang.entrySet()) {
                 entry.setValue(amountOfPrincipalPaymentThatIsLeft(curLoan, entry.getKey()));
             }
-            for (LoanForSale curLoanForSale: loanForSale) {
-                if(curLoanForSale.getLoanName().equals(curLoan) && curLoanForSale.getSeller().equals(customerName))
+            for (LoanDTOs curLoanForSale: loanForSale) {
+                if(curLoanForSale.getNameOfLoan().equals(curLoan) && curLoanForSale.getSeller().equals(customerName))
                     loanForSale.remove(curLoan);
             }
         }
@@ -414,24 +414,54 @@ public class SystemImplement implements BankSystem , Serializable {
     }
 
     public void checkIfUserHasTheTotalPriceOfLoansUserWantsToBuy(Map<String,String> mapOfKeySellerAndValueLoan, String buyer){
-        int sum = 0;
-        for (Map.Entry<String,String> entry: mapOfKeySellerAndValueLoan.entrySet()) {
-            for (LoanForSale curLoan: loanForSale) {
-                //if(curLoan.getSeller().equals(entry.getKey()) && curLoan.getLoanName().equals(entry.get()))
-            }
+//        int sum = 0;
+//        for (Map.Entry<String,String> entry: mapOfKeySellerAndValueLoan.entrySet()) {
+//            for (LoanForSale curLoan: loanForSale) {
+//                //if(curLoan.getSeller().equals(entry.getKey()) && curLoan.getLoanName().equals(entry.get()))
+//            }
         }
-    }
+
 
     //TODO  together with maya i think it should be map<string,List<string>>  <seller,LoansForSaleThatTheSellerSells>
-    public void buyLoans(Map<String,String> mapOfKeySellerAndValueLoan, String buyer){
-        for (Map.Entry<String,String> entry: mapOfKeySellerAndValueLoan.entrySet()) {
-            //TODO  check if buyer has enough money to buy loan from seller (the logic need to be the same as in the invest method)
-            Customers.get(entry.getKey()).getLoansAsALender().remove(LoansInBank.get(entry.getValue()).getNameOfLoan());
-            LeftToPay leftToPayOfTheSeller = LoansInBank.get(entry.getValue()).getMapOfLenders().get(entry.getKey());
-            LoansInBank.get(entry.getValue()).getMapOfLenders().remove(entry.getKey());
-            LoansInBank.get(entry.getValue()).getMapOfLenders().put(buyer, leftToPayOfTheSeller);
-            Customers.get(buyer).getLoansAsALender().add(LoansInBank.get(entry.getValue()).getNameOfLoan());
+    public Boolean buyLoans(Map<String,List<String>> mapOfKeySellerAndValueLoan, String buyer) {//Map<seller name ,list of loans name>
+        Boolean flag = checkIfBuyerHaveMoney(mapOfKeySellerAndValueLoan, buyer);
+        if (flag) {//check if the buyer have money for all the loans he wants
+            for (Map.Entry<String, List<String>> entry : mapOfKeySellerAndValueLoan.entrySet()) {
+                for (String curLoan : entry.getValue()) {
+                    Customers.get(entry.getKey()).getLoansAsALender().remove(curLoan);//remove the loan from list of loans as lender of sellers
+                    LeftToPay leftToPayOfTheSeller = LoansInBank.get(curLoan).getMapOfLenders().get(entry.getKey());//get the left to pay of the seller of the loan
+                    LoansInBank.get(curLoan).getMapOfLenders().remove(entry.getKey());//remove the seller from the map of lenders of the loan
+                    LoansInBank.get(curLoan).getMapOfLenders().put(buyer, leftToPayOfTheSeller);//add the buyer with the left to pay to the map of the lenders
+                    Customers.get(buyer).getLoansAsALender().add(curLoan);//add the loan to the loans as lender of the buyer
+                    removeLoanFromLoansForSale(entry.getKey(), curLoan);
+                }
+                //TODO  check if buyer has enough money to buy loan from seller (the logic need to be the same as in the invest method)
+            }
         }
+        return flag;
+    }
+
+        private Boolean checkIfBuyerHaveMoney(Map<String,List<String>> mapOfKeySellerAndValueLoan, String buyer){
+        Integer balance = Customers.get(buyer).getMoneyInAccount();
+        Integer allLoansPrice = 0;
+            for (Map.Entry<String,List<String>> entry: mapOfKeySellerAndValueLoan.entrySet()) {
+                for (String curLoan: entry.getValue()) {
+                    allLoansPrice += LoansInBank.get(curLoan).getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment().get(entry.getKey());
+                }
+            }
+            if(balance >= allLoansPrice)
+                return true;
+            else
+                return false;
+        }
+
+        private void removeLoanFromLoansForSale(String seller, String nameOfLoan) {
+        LoanDTOs tmpLoanToRemove = null;
+            for (LoanDTOs curLoan: loanForSale) {
+                if(curLoan.getNameOfLoan().equals(nameOfLoan) && curLoan.getSeller().equals(seller))
+                    tmpLoanToRemove = curLoan;
+            }
+            loanForSale.remove(tmpLoanToRemove);
         }
 
         private Integer amountOfPrincipalPaymentThatIsLeft(String nameOfLoan, String nameOfSeller) {
@@ -446,23 +476,24 @@ public class SystemImplement implements BankSystem , Serializable {
 
         public void putLoanOnSale(List<String> loansForSale, String seller){
             for (String curLoan: loansForSale) {
-                loanForSale.add(new LoanForSale(seller, LoansInBank.get(curLoan).getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment().get(seller),curLoan));
+                loanForSale.add(new LoanDTOs(seller, LoansInBank.get(curLoan).getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment().get(seller),curLoan));
+
             }
         }
 
         private void setNewAmount(String seller, String loanName){
-            for (LoanForSale curLoan: loanForSale) {
-                if(curLoan.getSeller().equals(seller) && curLoan.getLoanName().equals(loanName)){
+            for (LoanDTOs curLoan: loanForSale) {
+                if(curLoan.getSeller().equals(seller) && curLoan.getNameOfLoan().equals(loanName)){
                     curLoan.setPrice(LoansInBank.get(loanName).getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment().get(seller));
                 }
             }
         }
 
-        public List<LoansForSaleDTO> getAllLoansForSaleForTheCustomer(String Buyer){
-        List<LoansForSaleDTO> loansForSaleDTOList = new ArrayList<>();
-            for (LoanForSale curLoan: loanForSale) {
+        public List<LoanDTOs> getAllLoansForSaleForTheCustomer(String Buyer){
+        List<LoanDTOs> loansForSaleDTOList = new ArrayList<>();
+            for (LoanDTOs curLoan: loanForSale) {
                 if(!curLoan.getSeller().equals(Buyer))
-                    loansForSaleDTOList.add(new LoansForSaleDTO(curLoan));
+                    loansForSaleDTOList.add(new LoanDTOs(curLoan.getSeller(), curLoan.getPrice(), curLoan.getNameOfLoan()));
             }
             return loansForSaleDTOList;
         }

@@ -24,7 +24,7 @@ public class RewindYazServlet extends HttpServlet {
 
         BankSystemDTO bankSystemDTO = null;
         synchronized (getServletContext()) {
-            userManager.addVersionToBankSystemVersionMap(bankEngine.getBankSystemDTO());
+            //userManager.addVersionToBankSystemVersionMap(bankEngine.getBankSystemDTO());
             Integer rewindYaz = bankEngine.rewindYaz();
             bankSystemDTO = userManager.getBankSystemDTOByYaz(rewindYaz);
             bankSystemDTO.setRewind(true);
