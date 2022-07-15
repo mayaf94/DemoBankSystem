@@ -1,5 +1,5 @@
 package Component.ViewLoansInfo;
-import BankActions.Payment;
+import DTOs.Payment;
 import Component.MainComponent.BankController;
 import DTOs.LoanDTOs;
 import common.BankResourcesConstants;

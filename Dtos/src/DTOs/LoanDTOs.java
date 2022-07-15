@@ -2,14 +2,11 @@ package DTOs;
 
 import BankActions.Loan;
 import BankActions.LoanStatus;
-import BankActions.Payment;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -56,7 +53,6 @@ public class LoanDTOs implements Serializable {
     private String seller = " ";
     private Integer price = 0;
 
-
     public LoanDTOs(Loan loan){
         nameOfLoan = loan.getNameOfLoan();
         version = loan.getVersion();
@@ -66,6 +62,7 @@ public class LoanDTOs implements Serializable {
         nameOfLoaner = loan.getNameOfLoaner();
         durationOfTheLoan = loan.getDurationOfTheLoan();
         paymentFrequency = loan.getPaymentFrequency();
+        selected = false;
         howManyUnitsOfTimeAreLeft = loan.getHowManyYazAreLeft();
         interest = loan.getInterest();
         listOfLenders = loan.getListOfLenders();
@@ -106,6 +103,9 @@ public class LoanDTOs implements Serializable {
         theAmountOfTheFundYetToBePaid = 0;
         status = null;
         loansPayments = null;
+
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
     }
 
     public Map<String, Integer> getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment() {
@@ -232,5 +232,8 @@ public class LoanDTOs implements Serializable {
     public int getDebt() {
         return debt;
     }
+
+
+
 
 }

@@ -26,7 +26,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import login.LoginController;
@@ -51,19 +50,17 @@ import static util.Constants.GSON_INSTANCE;
 
 public class CustomerMainAppController extends ClientController {
 
-    @FXML private AnchorPane customerViewWindow;
-    @FXML private VBox ChargeOrWithdraw;
     @FXML private AnchorPane AccountTransInfo;
     @FXML private Button ChargeBT;
     @FXML private Button WithdrawBT;
     @FXML private Label welcomeCustomer;
     @FXML private Label yazLB;
+    @FXML private Integer curYaz;
     @FXML private MenuItem loadFile;
     @FXML private Label balanceOfCustomer;
-    @FXML private Label LoansAsLoanerLabel;
-    @FXML private Label LoansAsLenderLabel;
     @FXML private TableView<LoanDTOs> LoansAsLoaner;
     @FXML private TableView<LoanDTOs> LoansAsLender;
+    @FXML private TableView<LoanDTOs> LoansAsLoanerTableForPaymentTab;
     @FXML private TextField amountToInvest;
     @FXML private Label errorAmountToInvest;
     @FXML private CheckComboBox<String> categories;
@@ -84,7 +81,6 @@ public class CustomerMainAppController extends ClientController {
     @FXML private ListView<String> notificationsView;
     @FXML private Button fullPayment;
     @FXML private Button yazlyPayment;
-    @FXML private AnchorPane LoansAsLoanerTableForPaymentTab;
     @FXML private MenuBar customerMenuBar;
     @FXML private Menu fileOption;
     @FXML private Menu viewOption;
@@ -623,17 +619,19 @@ public class CustomerMainAppController extends ClientController {
         minInterest.setDisable(disable);
     }
 
+    //void makeSelectedChecked
+
     @FXML
     void fullPaymentClicked(ActionEvent event) {
+
         List<String> LoansToClose = customerInfoTables.getLoansAsLoanerDataForPaymentTab().getItems().stream()
-                .filter(L -> L.isSelected())
-                .collect(Collectors.toMap(LoanDTOs::getNameOfLoan,loan -> loan))
+                .filter(L -> L.isSelected()).collect(Collectors.toMap(LoanDTOs::getNameOfLoan,loan -> loan))
                 .keySet().stream().collect(Collectors.toList());
         if (LoansToClose.size() != 0) {
             Type type = new TypeToken<List<String>>(){}.getType();
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody requestBody = RequestBody.create(
-                    mediaType, GSON_INSTANCE.toJson(LoansToClose,type));
+            RequestBody requestBody = RequestBody.Companion.create(GSON_INSTANCE.toJson(LoansToClose,type),mediaType);
+
 
             String finalUrl = HttpUrl
                     .parse(Constants.LOANSPAYMENT)
@@ -657,10 +655,10 @@ public class CustomerMainAppController extends ClientController {
                     if (response.code() != 200) {
                         String responseBody = response.body().string();//Name of loans that the user has enough money to pay for.
                         Platform.runLater(()->{
-                                confirmationAlert.setContentText("You can not pay fully on the loans that you choose but you can pay the loans:\n" + responseBody +"Press OK to continue the process");
+                                confirmationAlert.setContentText("You can not pay fully on the loans that you choose but you can pay the loans: " + responseBody + " Press OK to continue the process");
                                 confirmationAlert.showAndWait();
                                 if(confirmationAlert.getResult().getText().equals("OK")){
-                                    fullPayTheMinimumLoansThatUserCanPay(responseBody);
+                                    fullPayTheMinimumLoansThatUserCanPay(requestBody);
                                 }
                         });
                     }
@@ -682,8 +680,8 @@ public class CustomerMainAppController extends ClientController {
         if(loansToPay.size() != 0) {
             Type type = new TypeToken<List<LoanDTOs>>(){}.getType();
             MediaType mediaType = MediaType.parse("application/json");
-            RequestBody requestBody = RequestBody.create(
-                    mediaType, GSON_INSTANCE.toJson(loansToPayAndAmountOfPayment,type));
+            RequestBody requestBody = RequestBody.Companion.create(GSON_INSTANCE.toJson(loansToPay,type),mediaType);
+
             String finalUrl = HttpUrl
                     .parse(Constants.LOANSPAYMENT)
                     .newBuilder()
@@ -705,10 +703,16 @@ public class CustomerMainAppController extends ClientController {
                     if (response.code() != 200) {
                         String responseBody = response.body().string();//Name of loans that the user has enough money to pay for.
                         Platform.runLater(() -> {
-                            confirmationAlert.setContentText("You can not pay all the loans that you choose but you can pay the loans:\n" + responseBody +"Press OK to continue the process");
-                            confirmationAlert.showAndWait();
-                            if (confirmationAlert.getResult().getText().equals("OK")) {
-                                yazliPayTheMinimumLoansThatUserCanPay(loansToPay);
+                            if(responseBody.isEmpty()){
+                                errorAlert.setContentText("you dont have enough money to pay for any of the loans");
+                                errorAlert.showAndWait();
+                            }
+                            else {
+                                confirmationAlert.setContentText("You can not pay all the loans that you choose but you can pay the loans: " + responseBody + " Press OK to continue the process");
+                                confirmationAlert.showAndWait();
+                                if (confirmationAlert.getResult().getText().equals("OK")) {
+                                    yazliPayTheMinimumLoansThatUserCanPay(loansToPay);
+                                }
                             }
                         });
                     }
@@ -720,8 +724,7 @@ public class CustomerMainAppController extends ClientController {
     private void yazliPayTheMinimumLoansThatUserCanPay(List<LoanDTOs> i_loansToPay) {
         Type type = new TypeToken<List<LoanDTOs>>(){}.getType();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody requestBody = RequestBody.create(
-                mediaType, GSON_INSTANCE.toJson(i_loansToPay,type));
+        RequestBody requestBody = RequestBody.Companion.create(GSON_INSTANCE.toJson(i_loansToPay,type),mediaType);
 
         String finalUrl = HttpUrl
                 .parse(Constants.LOANSPAYMENT)
@@ -748,16 +751,15 @@ public class CustomerMainAppController extends ClientController {
 
     }
 
-    private void fullPayTheMinimumLoansThatUserCanPay(String i_loansToPay) {
+    private void fullPayTheMinimumLoansThatUserCanPay(RequestBody requestBody ) {
         String finalUrl = HttpUrl
                 .parse(Constants.LOANSPAYMENT)
                 .newBuilder()
-                .addQueryParameter("namesOfLoans",i_loansToPay)
                 .addQueryParameter("typeOfPayment","full")
                 .addQueryParameter("AutoPayment","auto")//auto mean tell system to pay the loans the loans the user able to pay and manual is ask the user if he wants to pay what he can becaus he dosnet have enoug money to all the loans
                 .build()
                 .toString();
-        HttpClientUtil.runAsync(finalUrl, new Callback() {
+        HttpClientUtil.runAsyncWithBodyForPost(finalUrl,requestBody, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Platform.runLater(() -> {
@@ -851,7 +853,7 @@ public class CustomerMainAppController extends ClientController {
     public void switchToClientApp() {
         primaryStage.setScene(customerAppScene);
         primaryStage.show();
-        customerInfoTables = new customerDataTables(this,LoansAsLoaner,LoansAsLender,relevantLoans,LoansToSellTable,LoansToBuyTable);
+        customerInfoTables = new customerDataTables(this,LoansAsLoaner,LoansAsLender,LoansAsLoanerTableForPaymentTab,relevantLoans,LoansToSellTable,LoansToBuyTable);
         customerInfoTables.getTransactionTable().prefWidthProperty().bind(AccountTransInfo.widthProperty());
         customerInfoTables.getTransactionTable().prefHeightProperty().bind(AccountTransInfo.heightProperty());
         AccountTransInfo.getChildren().setAll(customerInfoTables.getTransactionTable());
@@ -956,7 +958,7 @@ public class CustomerMainAppController extends ClientController {
 
     public void startRefresher() {
         clientRefresher = new CustomerInfoRefresher(this::updateTableLoansAsLoaner,
-                this::updateTableLoansAsLender
+                this::updateTableLoansAsLenderAndLoanTableForPaymentTab
                 ,this::updateTableLoansToSellTable
                 ,this::updateTableLoansToBuyTable
                 ,this::updateTableNotificationsView
@@ -999,8 +1001,9 @@ public class CustomerMainAppController extends ClientController {
         });
     }
 
-    public void updateTableLoansAsLender(List<LoanDTOs> allLoans){
+    public void updateTableLoansAsLenderAndLoanTableForPaymentTab(List<LoanDTOs> allLoans){
         List<LoanDTOs> tmp = allLoans.stream().filter(L -> L.getListOfLenders().containsKey(curCustomerName)).collect(Collectors.toList());
+        List<LoanDTOs> loansForPaymentTab = allLoans.stream().filter(L -> L.getNameOfLoaner().equals(curCustomerName)).collect(Collectors.toList());
         Platform.runLater(() ->{
             if(LoansAsLender.getItems().size() != tmp.size()){
                 customerInfoTables.addLoanToLoansAsLenderTable(tmp);
@@ -1022,6 +1025,28 @@ public class CustomerMainAppController extends ClientController {
                 }
                 if(!versionsOfLoans.values().stream().filter(L -> (L.size() > 1)).collect(Collectors.toList()).isEmpty()){
                     customerInfoTables.addLoanToLoansAsLenderTable(tmp);
+                }
+            }
+            if(LoansAsLoanerTableForPaymentTab.getItems().size() != loansForPaymentTab.size()){
+                customerInfoTables.updateLoanAsLoanerForPaymentTab(loansForPaymentTab);
+            }
+            else {
+                Map<String, Set<Integer>> versionsOfLoans2 = new HashMap<>();
+                for (LoanDTOs curLoan : loansForPaymentTab) {
+                    Set<Integer> mySet = new HashSet<Integer>();
+                    mySet.add(curLoan.getVersion());
+                    versionsOfLoans2.put(curLoan.getNameOfLoan(), mySet);
+                }
+                for (LoanDTOs curLoan : LoansAsLoanerTableForPaymentTab.getItems()) {
+                    if(!versionsOfLoans2.containsKey(curLoan.getNameOfLoan())){
+                        customerInfoTables.updateLoanAsLoanerForPaymentTab(loansForPaymentTab);
+                    }
+                    else{
+                        versionsOfLoans2.get(curLoan.getNameOfLoan()).add(curLoan.getVersion());
+                    }
+                }
+                if(!versionsOfLoans2.values().stream().filter(L -> (L.size() > 1)).collect(Collectors.toList()).isEmpty()){
+                    customerInfoTables.updateLoanAsLoanerForPaymentTab(loansForPaymentTab);
                 }
             }
         });

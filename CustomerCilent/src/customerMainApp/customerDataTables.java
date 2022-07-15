@@ -5,6 +5,9 @@ import DTOs.CustomerDTOs;
 import DTOs.LoanDTOs;
 import clientController.ClientController;
 import component.loansComponent.ViewLoansInfo.ViewLoansInfoController;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -23,12 +26,12 @@ public class customerDataTables implements Serializable {
     private TableView<LoanDTOs> MatchinLoansForScramble;
     private TableView<LoanDTOs> LoansForSell;
     private TableView<LoanDTOs> LoansToBuy;
-    private TableView<LoanDTOs> LoansAsLoanerDataForPaymentTab = new TableView<>();
+    private TableView<LoanDTOs> LoansAsLoanerDataForPaymentTab2;
     private TableView<AccountTransactionDTO> TransactionTable = new TableView<>();
     ViewLoansInfoController loansInfoController = new ViewLoansInfoController();
     ClientController clientController;
 
-    public customerDataTables(ClientController i_clientController,TableView<LoanDTOs> i_LoansAsLoanerData,TableView<LoanDTOs> i_LoansAsLenderData,TableView<LoanDTOs> i_MatchinLoansForScramble,TableView<LoanDTOs> i_LoansForSell,TableView<LoanDTOs> i_LoansForBuy) {
+    public customerDataTables(ClientController i_clientController,TableView<LoanDTOs> i_LoansAsLoanerData,TableView<LoanDTOs> i_LoansAsLenderData,TableView<LoanDTOs> i_loansAsLoanerDataForPaymentTab,TableView<LoanDTOs> i_MatchinLoansForScramble,TableView<LoanDTOs> i_LoansForSell,TableView<LoanDTOs> i_LoansForBuy) {
         clientController = i_clientController;
         List<LoanDTOs> lst = new ArrayList<>();
         loansInfoController.setMainController(clientController);
@@ -36,14 +39,16 @@ public class customerDataTables implements Serializable {
         LoansAsLenderData = i_LoansAsLenderData;
         LoansForSell = i_LoansForSell;
         LoansToBuy = i_LoansForBuy;
-        //LoansAsLoanerDataForPaymentTab = i_loansAsLoanerDataForPaymentTab;
+
+        LoansAsLoanerDataForPaymentTab2 = i_loansAsLoanerDataForPaymentTab;
         MatchinLoansForScramble = i_MatchinLoansForScramble;
         buildLoansForSellOrBuyTable(LoansToBuy);
         buildLoansForSellOrBuyTable(LoansForSell);
         loansInfoController.buildLoansTableView(MatchinLoansForScramble);
         loansInfoController.buildLoansTableView(LoansAsLoanerData);
         loansInfoController.buildLoansTableView(LoansAsLenderData);
-        buildLoansTableForPaymentTab();
+
+        buildLoansTableForPaymentTab(LoansAsLoanerDataForPaymentTab2);
         buildTransactionsTable();
     }
 
@@ -66,17 +71,18 @@ public class customerDataTables implements Serializable {
 
     }
 
-    private void buildLoansTableForPaymentTab(){
-        loansInfoController.buildLoansTableView(LoansAsLoanerDataForPaymentTab);
 
+    private void buildLoansTableForPaymentTab(TableView<LoanDTOs> LoansTradeTable){
+
+        loansInfoController.buildLoansTableView(LoansTradeTable);
         final TableColumn<LoanDTOs, Integer> nextYazPayment = new TableColumn<>( "Next yaz payment" );
         nextYazPayment.setCellValueFactory( new PropertyValueFactory<>("nextYazPayment"));
-        LoansAsLoanerDataForPaymentTab.getColumns().add(nextYazPayment);
+        LoansTradeTable.getColumns().add(nextYazPayment);
         nextYazPayment.setPrefWidth(150);
 
         final TableColumn<LoanDTOs, Integer> amountToPayThisYaz = new TableColumn<>( "Amount To Pay This Yaz" );
         amountToPayThisYaz.setCellValueFactory( new PropertyValueFactory<>("AmountToPayThisYaz"));
-        LoansAsLoanerDataForPaymentTab.getColumns().add(amountToPayThisYaz);
+        LoansTradeTable.getColumns().add(amountToPayThisYaz);
         amountToPayThisYaz.setPrefWidth(125);
 
 
@@ -86,28 +92,53 @@ public class customerDataTables implements Serializable {
         amountToPayCol.setCellFactory(TextFieldTableCell.forTableColumn());
 /*        amountToPayCol.setOnEditCommit(
                 event -> {
-                    if((event.getTableView().getItems().get(event.getTablePosition().getRow()).getNextYazPayment()) != clientController.getCurrentYaz()){
-                        event.getTableView().getItems().get(event.getTablePosition().getRow()).setAmountToPay("0");
-                    }
-                    else{
-                        event.getTableView().getItems().get(event.getTablePosition().getRow()).setAmountToPay(event.getNewValue());
-                    }
+                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setAmountToPay(event.getNewValue());
                 }
         );
-        */
-        LoansAsLoanerDataForPaymentTab.getColumns().add( amountToPayCol );
-        amountToPayCol.getTableView().setEditable(true);
 
-        final TableColumn<LoanDTOs, Boolean> selectedColumn = new TableColumn<>( "Selected" );
+
+        LoansTradeTable.getColumns().add( amountToPayCol );
+        amountToPayCol.getTableView().setEditable(true);
+        TableColumn<LoanDTOs, LoanDTOs> // Do not use <Item, Boolean> here!
+                checkBoxCol = new TableColumn<>("selected");
+
+        LoansTradeTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        checkBoxCol.setPrefWidth(125);
+        LoansTradeTable.getColumns().add(checkBoxCol);
+        checkBoxCol.setStyle("-fx-alignment: center;");
+        checkBoxCol.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
+        checkBoxCol.setCellFactory(tc -> new TableCell<LoanDTOs, LoanDTOs>() {
+
+            @Override
+            protected void updateItem(LoanDTOs item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (item == null || empty) {
+                    setGraphic(null);
+                } else {
+                    CheckBox checkBox = new CheckBox();
+
+                    // Set starting value:
+                    checkBox.setSelected(item.isSelected());
+
+                    // Add listener!!!:
+                    checkBox.selectedProperty().addListener((observable, oldValue, newValue) ->
+                            item.setSelected(newValue));
+
+                    setGraphic(checkBox);
+                }
+            }
+        });
+     /*   final TableColumn<LoanDTOs,Boolean> selectedColumn = new TableColumn<>( "Selected" );
         selectedColumn.setCellValueFactory( new PropertyValueFactory<>("selected"));
         selectedColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectedColumn));
         selectedColumn.setPrefWidth(125);
-        LoansAsLoanerDataForPaymentTab.getColumns().add( selectedColumn );
-        selectedColumn.getTableView().setEditable(true);
+        LoansTradeTable.getColumns().add(selectedColumn);*/
+        checkBoxCol.getTableView().setEditable(true);
 
     }
     public TableView<LoanDTOs> getLoansAsLoanerDataForPaymentTab() {
-        return LoansAsLoanerDataForPaymentTab;
+        return LoansAsLoanerDataForPaymentTab2;
     }
 
     public TableView<LoanDTOs> getLoansAsLoanerData() {
@@ -173,13 +204,6 @@ public class customerDataTables implements Serializable {
         LoansForSell.getItems().addAll(loans);
     }
 
-   /* public void updateLoansTables(CustomerDTOs curCustomer){
-        List<LoanDTOs> loansAsLoaner = clientController.getSystemCustomerLoansByListOfLoansName(curCustomer.getLoansAsABorrower());
-        updateLoansAsLender(clientController.getSystemCustomerLoansByListOfLoansName(curCustomer.getLoansAsALender()));
-        updateLoansAsLoaner(loansAsLoaner);
-        updateLoanAsLoanerForPaymentTab(loansAsLoaner);
-        updateTransactionTable(curCustomer);
-    }*/
 
    public void updateMatchingLoansForScramble(List<LoanDTOs> i_loansAsLender){
        MatchinLoansForScramble.getItems().clear();
@@ -187,32 +211,11 @@ public class customerDataTables implements Serializable {
        MatchinLoansForScramble.refresh();
    }
 
-    public void updateLoansAsLender(List<LoanDTOs> i_loansAsLender){
-        LoansAsLenderData.getItems().clear();
-        LoansAsLenderData.getItems().addAll(i_loansAsLender);
-        LoansAsLenderData.refresh();
-    }
-
-    private void updateLoansAsLoaner(List<LoanDTOs> i_loansAsLoaner){
-        LoansAsLoanerData.getItems().clear();
-        LoansAsLoanerData.getItems().addAll(i_loansAsLoaner);
-        LoansAsLoanerData.refresh();
-        LoansAsLoanerData.refresh();
-    }
-
-    private void updateTransactionTable(CustomerDTOs curCustomer){
-        List<AccountTransactionDTO> Transactions = curCustomer.getTransactions();
-        TransactionTable.getItems().clear();
-        TransactionTable.getItems().addAll(Transactions);
-        TransactionTable.refresh();
-
-    }
-
-    private void updateLoanAsLoanerForPaymentTab(List<LoanDTOs> i_loansAsLoaner){
-        LoansAsLoanerDataForPaymentTab.getItems().clear();
+    public void updateLoanAsLoanerForPaymentTab(List<LoanDTOs> i_loansAsLoaner){
+        LoansAsLoanerDataForPaymentTab2.getItems().clear();
         List<LoanDTOs> filteredLoansActiveAndRisk = i_loansAsLoaner.stream().filter(L -> (L.getStatusName().equals("ACTIVE") || L.getStatusName().equals("RISK"))).collect(Collectors.toList());
-        LoansAsLoanerDataForPaymentTab.getItems().addAll(filteredLoansActiveAndRisk);
-        LoansAsLoanerDataForPaymentTab.refresh();
+        LoansAsLoanerDataForPaymentTab2.getItems().addAll(filteredLoansActiveAndRisk);
+        LoansAsLoanerDataForPaymentTab2.refresh();
     }
 
 

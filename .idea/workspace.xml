@@ -18,6 +18,29 @@
       <change beforePath="$PROJECT_DIR$/ClientCommons/src/util/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/ClientCommons/src/util/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dtos/src/DTOs/LoanDTOs.java" beforeDir="false" afterPath="$PROJECT_DIR$/Dtos/src/DTOs/LoanDTOs.java" afterDir="false" />
+
+    <list default="true" id="fd4b7284-78c4-4cd1-a5bc-7a87445047e1" name="Changes" comment="impel refreshers and tests">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/src.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CustomerCilent/gsonUtils.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CustomerCilent/utils.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/GetIncreaseYazServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/GetIncreaseYazServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/GetNewLoansFromFileServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/GetNewLoansFromFileServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/PaymentForLoans.java" beforeDir="false" afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/PaymentForLoans.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/RefreshTableServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/RefreshTableServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/RewindYazServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/RewindYazServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/ScrambleServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/ScrambleServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/TakeOutALoan.java" beforeDir="false" afterPath="$PROJECT_DIR$/ABS-Web/src/bankActionServlets/TakeOutALoan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BankSystem/src/BankActions/Loan.java" beforeDir="false" afterPath="$PROJECT_DIR$/BankSystem/src/BankActions/Loan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BankSystem/src/BankActions/LoanStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/BankSystem/src/BankActions/LoanStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BankSystem/src/BankActions/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Dtos/src/DTOs/Payment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClientCommons/src/component/loansComponent/ViewLoansInfo/ViewLoansInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ClientCommons/src/component/loansComponent/ViewLoansInfo/ViewLoansInfoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/customerClientApp.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/customerClientApp.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/customerDataTables.java" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerCilent/src/customerMainApp/customerDataTables.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dtos/src/DTOs/LoanDTOs.java" beforeDir="false" afterPath="$PROJECT_DIR$/Dtos/src/DTOs/LoanDTOs.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gui/src/Component/ViewLoansInfo/ViewLoansInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Gui/src/Component/ViewLoansInfo/ViewLoansInfoController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,9 +58,19 @@
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="check_payments_servlets" />
+
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/ClientCommons/src/login/LoginController.java" root0="FORCE_HIGHLIGHTING" />
@@ -69,11 +102,17 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../GSON" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="component.loansComponent.ViewLoansInfo" />
+    </key>
   </component>
   <component name="RunManager" selected="Application.CustomerClientMain">
     <configuration name="AdminClientMain" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
@@ -213,6 +252,8 @@
       <workItem from="1657827110776" duration="2000" />
       <workItem from="1657827163907" duration="16465000" />
       <workItem from="1657846513916" duration="28091000" />
+
+      <workItem from="1657827163907" duration="45984000" />
     </task>
     <task id="LOCAL-00001" summary="impel refreshers and tests">
       <created>1657844314966</created>
@@ -229,6 +270,9 @@
       <updated>1657883934550</updated>
     </task>
     <option name="localTasksCounter" value="3" />
+
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -249,6 +293,8 @@
     <MESSAGE value="impel refreshers and tests" />
     <MESSAGE value="update changes" />
     <option name="LAST_COMMIT_MESSAGE" value="update changes" />
+
+    <option name="LAST_COMMIT_MESSAGE" value="impel refreshers and tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -262,6 +308,50 @@
           <url>file://$PROJECT_DIR$/ABS-Web/src/bankActionServlets/ScrambleServlet.java</url>
           <line>33</line>
           <option name="timeStamp" value="24" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java</url>
+          <line>1086</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/BankSystem/src/BankSystem/SystemImplement.java</url>
+          <line>385</line>
+          <option name="timeStamp" value="75" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/customerDataTables.java</url>
+          <line>195</line>
+          <option name="timeStamp" value="78" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/customerDataTables.java</url>
+          <line>190</line>
+          <option name="timeStamp" value="79" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/customerDataTables.java</url>
+          <line>183</line>
+          <option name="timeStamp" value="82" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java</url>
+          <line>626</line>
+          <option name="timeStamp" value="88" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java</url>
+          <line>755</line>
+          <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java</url>
+          <line>825</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java</url>
+          <line>787</line>
+          <option name="timeStamp" value="92" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/CustomerCilent/src/customerMainApp/CustomerMainAppController.java</url>
@@ -345,6 +435,17 @@
         <watch expression="loanAsLoanerToAddToTable" language="JAVA" />
         <watch expression="bankSystemDTO.getCustomers()" language="JAVA" />
         <watch expression="bankSystemDTO.getCustomers().contains(curName)" language="JAVA" />
+
+        <watch expression="filtterdLoans" language="JAVA" />
+        <watch expression="loansToPayAndAmountOfPayment" language="JAVA" />
+        <watch expression="LoansCanBePaid" language="JAVA" />
+        <watch expression="LoansCanBePaidForResponse" language="JAVA" />
+        <watch expression="LoansCanBePaid" language="JAVA" />
+        <watch expression="LoansCanBePaid" language="JAVA" />
+      </configuration>
+      <configuration name="Application">
+        <watch expression="customerInfoTables.getLoansAsLoanerDataForPaymentTab().getItems()" language="JAVA" />
+
       </configuration>
     </watches-manager>
   </component>
