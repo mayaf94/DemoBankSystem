@@ -314,11 +314,7 @@
                                                 <Insets bottom="10.0" left="10.0" top="10.0" />
                                              </GridPane.margin>
                                           </HBox>
-                                          <ScrollPane fitToHeight="true" fitToWidth="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3">
-                                             <content>
-                                                <AnchorPane fx:id="LoansAsLoanerTableForPaymentTab" prefHeight="644.0" prefWidth="507.0" />
-                                             </content>
-                                          </ScrollPane>
+                                          <TableView fx:id="LoansAsLoanerTableForPaymentTab" prefHeight="388.0" prefWidth="510.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
                                        </children>
                                     </GridPane>
                                  </children>

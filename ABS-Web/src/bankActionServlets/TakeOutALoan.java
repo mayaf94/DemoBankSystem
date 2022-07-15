@@ -1,11 +1,8 @@
 package bankActionServlets;
 
 import BankSystem.BankSystem;
-import Costumers.Customer;
-import DTOs.CustomerDTOs;
 import DTOs.LoanDTOs;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +13,6 @@ import utils.SessionUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Type;
 import java.util.List;
 
 @WebServlet(name = "TakeOutALoan",urlPatterns = {"/takeOutLoan"})
@@ -79,6 +75,7 @@ public class TakeOutALoan extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_OK);
                 LoanDTOs newLoan =  bankEngine.takeOutLoan(username,nameOfLoan,category,Integer.parseInt(principalAmount),Integer.parseInt(durationOfLoan),Integer.parseInt(paymentFreq),Integer.parseInt(interest));
                 Gson gson = new Gson();
+
                 String JsonResponse = (gson.toJson(newLoan));
                 try (PrintWriter out = response.getWriter()) {
                     out.print(JsonResponse);

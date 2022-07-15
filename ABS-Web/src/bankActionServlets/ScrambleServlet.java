@@ -1,7 +1,6 @@
 package bankActionServlets;
 
 import BankSystem.BankSystem;
-import DTOs.CategoriesDTO;
 import DTOs.LoanDTOs;
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,11 +13,9 @@ import utils.SessionUtils;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @WebServlet(name = "ScrambleServlet",urlPatterns = {"/Scramble"})
 public class ScrambleServlet extends HttpServlet {
@@ -77,6 +74,7 @@ public class ScrambleServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_OK);
             //create the response json string
             Gson gson = new Gson();
+
             String JsonResponse = (gson.toJson(MatchingLoans));
             try (PrintWriter out = response.getWriter()) {
                 out.print(JsonResponse);
