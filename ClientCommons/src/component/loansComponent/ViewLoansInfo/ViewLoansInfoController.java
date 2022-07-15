@@ -3,6 +3,7 @@ package component.loansComponent.ViewLoansInfo;
 //import BankActions.Payment;
 //import Component.MainComponent.BankController;
 import DTOs.LoanDTOs;
+import DTOs.Payment;
 import clientController.ClientController;
 import common.BankResourcesConstants;
 import javafx.collections.FXCollections;
@@ -104,7 +105,7 @@ public class ViewLoansInfoController implements Serializable {
         expendedLoansDetailsController.setOriginalInterestAmountValue(theTotalInterestAmountOfTheLoan);
         //expendedLoansDetailsController.setStatusValue(status, loan.getNameOfLoan(), mainController);
         expendedLoansDetailsController.setLenderDetails(loan);
-        //expendedLoansDetailsController.setPaymentsDetails(loan);//TODO  make it work with payment Dto
+        expendedLoansDetailsController.setPaymentsDetails(loan);//TODO  make it work with payment Dto
 
         return LoanExpandedDetails;
     }
@@ -150,7 +151,7 @@ public class ViewLoansInfoController implements Serializable {
         LenderDetails.getPanes().addAll(lenders);
     }
 
-/*    public void setPaymentsDetails(LoanDTOs Loan){//TODO change to payment dto and make it work
+    public void setPaymentsDetails(LoanDTOs Loan){//TODO change to payment dto and make it work
         List<Payment> listOfPayments = Loan.getLoansPayments();
         TitledPane[] Payments = new TitledPane[listOfPayments.size()];
         int counter = 0;
@@ -172,7 +173,7 @@ public class ViewLoansInfoController implements Serializable {
         }
         PaymentsDetails.getPanes().addAll(Payments);
 
-    }*/
+    }
 
     public void setLoanDataByStatus(LoanDTOs loan){
         LoanDataByStatus.setText("");

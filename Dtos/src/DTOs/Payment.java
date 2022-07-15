@@ -1,4 +1,4 @@
-package BankActions;
+package DTOs;
 
 import java.io.Serializable;
 

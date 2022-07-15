@@ -9,6 +9,8 @@
       <module fileurl="file://$PROJECT_DIR$/CustomerCilent/CustomerCilent.iml" filepath="$PROJECT_DIR$/CustomerCilent/CustomerCilent.iml" />
       <module fileurl="file://$PROJECT_DIR$/Dtos/Dtos.iml" filepath="$PROJECT_DIR$/Dtos/Dtos.iml" />
       <module fileurl="file://$PROJECT_DIR$/Gui/Gui.iml" filepath="$PROJECT_DIR$/Gui/Gui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CustomerCilent/gsonUtils.iml" filepath="$PROJECT_DIR$/CustomerCilent/gsonUtils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CustomerCilent/utils.iml" filepath="$PROJECT_DIR$/CustomerCilent/utils.iml" />
     </modules>
   </component>
 </project>

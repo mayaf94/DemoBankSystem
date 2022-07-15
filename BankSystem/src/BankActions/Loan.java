@@ -1,5 +1,6 @@
 package BankActions;
 
+import DTOs.Payment;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.io.Serializable;

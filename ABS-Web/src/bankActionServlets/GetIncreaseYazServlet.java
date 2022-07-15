@@ -1,17 +1,13 @@
 package bankActionServlets;
 
 import BankSystem.BankSystem;
-import DTOs.AccountTransactionDTO;
 import DTOs.BankSystemDTO;
-import DTOs.CustomerDTOs;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import userManager.UserManager;
-import utils.Constants.servletConstants;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
