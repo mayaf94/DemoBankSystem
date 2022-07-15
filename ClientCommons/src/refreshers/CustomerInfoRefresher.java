@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.TimerTask;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static util.Constants.GSON_INSTANCE;
 
@@ -30,11 +31,13 @@ public class CustomerInfoRefresher extends TimerTask {
     private final Consumer<Boolean> disableBT;
     private final Consumer<List<String>> updateCategories;
     private final Consumer<List<CustomerDTOs>> updatebalanceLB;
+    private final Consumer<Integer> clearAllTables;
+    private final String curName;
 
     public CustomerInfoRefresher(Consumer<List<LoanDTOs>> updateTableLoansAsLoaner, Consumer<List<LoanDTOs>> updateTableLoansAsLender,
                                  Consumer<List<LoanDTOs>> updateTableLoansToSellTable, Consumer<List<LoanDTOs>> updateTableLoansToBuyTable,
                                  Consumer<List<CustomerDTOs>> updateTableNotificationsView, Consumer<List<CustomerDTOs>> updateTransactionTable,
-                                 Consumer<Integer> updateYazLB, Consumer<Boolean> disableBT, Consumer<List<String>> updateCategories, Consumer<List<CustomerDTOs>> updatebalanceLB) {
+                                 Consumer<Integer> updateYazLB, Consumer<Boolean> disableBT, Consumer<List<String>> updateCategories, Consumer<List<CustomerDTOs>> updatebalanceLB, String curName, Consumer<Integer> clearAllTables) {
         this.updateTableLoansAsLoaner = updateTableLoansAsLoaner;
         this.updateTableLoansAsLender = updateTableLoansAsLender;
         this.updateTableLoansToSellTable = updateTableLoansToSellTable;
@@ -45,6 +48,8 @@ public class CustomerInfoRefresher extends TimerTask {
         this.disableBT = disableBT;
         this.updateCategories = updateCategories;
         this.updatebalanceLB = updatebalanceLB;
+        this.curName = curName;
+        this.clearAllTables = clearAllTables;
     }
 
     @Override
@@ -66,15 +71,19 @@ public class CustomerInfoRefresher extends TimerTask {
                 String jsonBankSystem = response.body().string();
                 BankSystemDTO bankSystemDTO = GSON_INSTANCE.fromJson(jsonBankSystem, BankSystemDTO.class);
 
-                updateTableLoansAsLoaner.accept(bankSystemDTO.getLoansInBank());
-                updateTableLoansAsLender.accept(bankSystemDTO.getLoansInBank());
-                updateTableLoansToSellTable.accept(bankSystemDTO.getLoansInBank());
-                updateTableLoansToBuyTable.accept(bankSystemDTO.getLoansInBank());
-                updateTableNotificationsView.accept(bankSystemDTO.getCustomers());
-                updateTransactionTable.accept(bankSystemDTO.getCustomers());
+                if(bankSystemDTO.getCustomers().stream().filter(C -> C.getName().equals(curName)).collect(Collectors.toList()).size() == 1) {
+                    updateTableLoansAsLoaner.accept(bankSystemDTO.getLoansInBank());
+                    updateTableLoansAsLender.accept(bankSystemDTO.getLoansInBank());
+                    updateTableLoansToSellTable.accept(bankSystemDTO.getLoansInBank());
+                    updateTableLoansToBuyTable.accept(bankSystemDTO.getLoansInBank());
+                    updateTableNotificationsView.accept(bankSystemDTO.getCustomers());
+                    updateTransactionTable.accept(bankSystemDTO.getCustomers());
+                    updatebalanceLB.accept(bankSystemDTO.getCustomers());
+                }
+                else
+                    clearAllTables.accept(bankSystemDTO.getCurYaz());
                 updateYazLB.accept(bankSystemDTO.getCurYaz());
                 disableBT.accept(bankSystemDTO.getRewind());
-                updatebalanceLB.accept(bankSystemDTO.getCustomers());
                 updateCategories.accept(bankSystemDTO.getCategories().getCategories());
             }
         });

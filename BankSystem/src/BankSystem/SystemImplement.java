@@ -74,7 +74,7 @@ public class SystemImplement implements BankSystem , Serializable {
 
     public void addCustomerToBank(String nameOfCustomer){
         if(!Customers.containsKey(nameOfCustomer))
-            Customers.put(nameOfCustomer,new Customer(nameOfCustomer,0,null));
+            Customers.put(nameOfCustomer,new Customer(nameOfCustomer,0,null,Yaz));
     }
 
     public List<CustomerDTOs> getListOfDTOsCustomer(){

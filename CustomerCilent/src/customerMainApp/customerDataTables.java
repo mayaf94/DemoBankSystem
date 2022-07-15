@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,13 +36,14 @@ public class customerDataTables implements Serializable {
         LoansAsLenderData = i_LoansAsLenderData;
         LoansForSell = i_LoansForSell;
         LoansToBuy = i_LoansForBuy;
+        //LoansAsLoanerDataForPaymentTab = i_loansAsLoanerDataForPaymentTab;
         MatchinLoansForScramble = i_MatchinLoansForScramble;
         buildLoansForSellOrBuyTable(LoansToBuy);
         buildLoansForSellOrBuyTable(LoansForSell);
         loansInfoController.buildLoansTableView(MatchinLoansForScramble);
         loansInfoController.buildLoansTableView(LoansAsLoanerData);
         loansInfoController.buildLoansTableView(LoansAsLenderData);
-        //buildLoansTableForPaymentTab();
+        buildLoansTableForPaymentTab();
         buildTransactionsTable();
     }
 
@@ -64,9 +66,8 @@ public class customerDataTables implements Serializable {
 
     }
 
-/*    private void buildLoansTableForPaymentTab(){
-        List<LoanDTOs> filteredLoansActiveAndRisk = clientController.getSystemCustomerLoansByListOfLoansName(customer.getLoansAsABorrower()).stream().filter(L -> (L.getStatusName().equals("ACTIVE") || L.getStatusName().equals("RISK"))).collect(Collectors.toList());
-        loansInfoController.buildLoansTableView(LoansAsLoanerDataForPaymentTab,filteredLoansActiveAndRisk);
+    private void buildLoansTableForPaymentTab(){
+        loansInfoController.buildLoansTableView(LoansAsLoanerDataForPaymentTab);
 
         final TableColumn<LoanDTOs, Integer> nextYazPayment = new TableColumn<>( "Next yaz payment" );
         nextYazPayment.setCellValueFactory( new PropertyValueFactory<>("nextYazPayment"));
@@ -83,7 +84,7 @@ public class customerDataTables implements Serializable {
         amountToPayCol.setCellValueFactory( new PropertyValueFactory<>("AmountToPay"));
         amountToPayCol.setPrefWidth(120);
         amountToPayCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        amountToPayCol.setOnEditCommit(
+/*        amountToPayCol.setOnEditCommit(
                 event -> {
                     if((event.getTableView().getItems().get(event.getTablePosition().getRow()).getNextYazPayment()) != clientController.getCurrentYaz()){
                         event.getTableView().getItems().get(event.getTablePosition().getRow()).setAmountToPay("0");
@@ -93,8 +94,7 @@ public class customerDataTables implements Serializable {
                     }
                 }
         );
-
-
+        */
         LoansAsLoanerDataForPaymentTab.getColumns().add( amountToPayCol );
         amountToPayCol.getTableView().setEditable(true);
 
@@ -106,8 +106,6 @@ public class customerDataTables implements Serializable {
         selectedColumn.getTableView().setEditable(true);
 
     }
-*///TODO buildLoansTableForPaymentTab
-
     public TableView<LoanDTOs> getLoansAsLoanerDataForPaymentTab() {
         return LoansAsLoanerDataForPaymentTab;
     }
@@ -152,6 +150,10 @@ public class customerDataTables implements Serializable {
     public void addTransactionsToTable(List<AccountTransactionDTO> transaction){
         TransactionTable.getItems().clear();
         TransactionTable.getItems().addAll(transaction);
+    }
+
+    public void clearTransactionsToTable(){
+        TransactionTable.getItems().clear();
     }
 
 

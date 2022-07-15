@@ -47,7 +47,6 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static javafx.application.Platform.runLater;
 import static util.Constants.GSON_INSTANCE;
 
 public class CustomerMainAppController extends ClientController {
@@ -964,7 +963,8 @@ public class CustomerMainAppController extends ClientController {
                 ,this::updateYazLB
                 ,this::disableBT
                 ,this::updateCategories
-        ,this::balanceLBUpdate);
+        ,this::balanceLBUpdate
+        ,curCustomerName, this::clearAllTables);
         timer = new Timer();
         timer.schedule(clientRefresher, 2000, 2000);
     }
@@ -1128,5 +1128,15 @@ public class CustomerMainAppController extends ClientController {
 
     }
 
+    public void clearAllTables(Integer yaz){
+        Platform.runLater(() -> {
+        LoansAsLoaner.getItems().clear();
+        LoansAsLender.getItems().clear();
+        LoansToSellTable.getItems().clear();
+        notificationsView.getItems().clear();
+        customerInfoTables.clearTransactionsToTable();
+        balanceOfCustomer.setText("balance: ");
+        });
+    }
 
 }

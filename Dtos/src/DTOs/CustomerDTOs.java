@@ -24,7 +24,7 @@ public class CustomerDTOs implements Serializable {
     private List<String> LoansAsABorrower;
     private List<AccountTransactionDTO> DtosTransactions;
     private int amountInvested = 0;
-    private List<String> notifications;
+    private List<String> notifications = new ArrayList<>();
 
     public CustomerDTOs() {
     }

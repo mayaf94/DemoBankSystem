@@ -284,6 +284,7 @@ public class AdminMainAppController extends ClientController {
             CustomerData.getItems().clear();
             CustomerData.getItems().addAll(allCustomersInSystem);
             CustomerData.refresh();
+            msgLB.setText(" ");
         });
     }
 

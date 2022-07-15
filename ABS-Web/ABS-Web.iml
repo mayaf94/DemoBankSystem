@@ -24,7 +24,7 @@
     <orderEntry type="module" module-name="BankSystem" />
     <orderEntry type="module" module-name="Dtos" />
     <orderEntry type="library" name="okHttp" level="project" />
-    <orderEntry type="library" name="GSON" level="project" />
     <orderEntry type="library" name="src" level="project" />
+    <orderEntry type="library" name="GSON" level="project" />
   </component>
 </module>
