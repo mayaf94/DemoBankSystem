@@ -25,27 +25,22 @@ public class CustomerInfoRefresher extends TimerTask {
     private final Consumer<List<LoanDTOs>> updateTableLoansToSellTable;
     private final Consumer<List<LoanDTOs>> updateTableLoansToBuyTable;
     private final Consumer<List<CustomerDTOs>> updateTableNotificationsView;
-    private final Consumer<List<LoanDTOs>> updateTableCustomerInfoTables1;
-    private final Consumer<List<CustomerDTOs>> updateTableCustomerInfoTables2;
+    private final Consumer<List<CustomerDTOs>> updateTransactionTable;
     private final Consumer<Integer> updateYazLB;
     private final Consumer<Boolean> disableBT;
     private final Consumer<List<String>> updateCategories;
-    private final Consumer<Integer> updatebalanceLB;
+    private final Consumer<List<CustomerDTOs>> updatebalanceLB;
 
-
-    public CustomerInfoRefresher(Consumer<List<LoanDTOs>> updateTableLoansAsLoaner,
-                                 Consumer<List<LoanDTOs>> updateTableLoansAsLender,
+    public CustomerInfoRefresher(Consumer<List<LoanDTOs>> updateTableLoansAsLoaner, Consumer<List<LoanDTOs>> updateTableLoansAsLender,
                                  Consumer<List<LoanDTOs>> updateTableLoansToSellTable, Consumer<List<LoanDTOs>> updateTableLoansToBuyTable,
-                                 Consumer<List<CustomerDTOs>> updateTableNotificationsView, Consumer<List<LoanDTOs>> updateTableCustomerInfoTables1,
-                                 Consumer<List<CustomerDTOs>> updateTableCustomerInfoTables2, Consumer<Integer> updateYazLB,
-                                 Consumer<Boolean> disableBT, Consumer<List<String>> updateCategories, Consumer<Integer> updatebalanceLB) {
+                                 Consumer<List<CustomerDTOs>> updateTableNotificationsView, Consumer<List<CustomerDTOs>> updateTransactionTable,
+                                 Consumer<Integer> updateYazLB, Consumer<Boolean> disableBT, Consumer<List<String>> updateCategories, Consumer<List<CustomerDTOs>> updatebalanceLB) {
         this.updateTableLoansAsLoaner = updateTableLoansAsLoaner;
         this.updateTableLoansAsLender = updateTableLoansAsLender;
         this.updateTableLoansToSellTable = updateTableLoansToSellTable;
         this.updateTableLoansToBuyTable = updateTableLoansToBuyTable;
         this.updateTableNotificationsView = updateTableNotificationsView;
-        this.updateTableCustomerInfoTables1 = updateTableCustomerInfoTables1;
-        this.updateTableCustomerInfoTables2 = updateTableCustomerInfoTables2;
+        this.updateTransactionTable = updateTransactionTable;
         this.updateYazLB = updateYazLB;
         this.disableBT = disableBT;
         this.updateCategories = updateCategories;
@@ -76,11 +71,10 @@ public class CustomerInfoRefresher extends TimerTask {
                 updateTableLoansToSellTable.accept(bankSystemDTO.getLoansInBank());
                 updateTableLoansToBuyTable.accept(bankSystemDTO.getLoansInBank());
                 updateTableNotificationsView.accept(bankSystemDTO.getCustomers());
-                updateTableCustomerInfoTables1.accept(bankSystemDTO.getLoansInBank());
-                updateTableCustomerInfoTables2.accept(bankSystemDTO.getCustomers());
+                updateTransactionTable.accept(bankSystemDTO.getCustomers());
                 updateYazLB.accept(bankSystemDTO.getCurYaz());
                 disableBT.accept(bankSystemDTO.getRewind());
-                //updatebalanceLB.accept();
+                updatebalanceLB.accept(bankSystemDTO.getCustomers());
                 updateCategories.accept(bankSystemDTO.getCategories().getCategories());
             }
         });

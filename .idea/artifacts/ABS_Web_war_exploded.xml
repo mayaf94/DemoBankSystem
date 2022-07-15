@@ -10,7 +10,6 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="GSON" />
-          <element id="library" level="project" name="okHttp" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="ABS-Web/web/Web" />

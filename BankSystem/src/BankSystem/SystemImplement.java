@@ -139,10 +139,6 @@ public class SystemImplement implements BankSystem , Serializable {
     }
 
     public LoanDTOs takeOutLoan(String i_LoanerName,String i_loanName,String i_category,int i_principalAmount,int i_totalDuration,int i_paymentFreq,int i_interest){
-        //valdiation that there is such a customer name in bank(in servlet) TODO
-        //validation that there is no such loan name in bank(in servlet) TODO
-        //validation principal amount,total duration,payment freq,interest is valid TODO
-
         if(!allCategories.contains(i_category)){
             allCategories.add(i_category);
         }

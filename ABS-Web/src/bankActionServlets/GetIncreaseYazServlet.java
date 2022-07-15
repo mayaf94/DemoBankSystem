@@ -52,7 +52,7 @@ public class GetIncreaseYazServlet extends HttpServlet {
             Gson gson = new Gson();
             String jsonResponse = gson.toJson(DTO);
             try (PrintWriter out = response.getWriter()) {
-                out.print(JsonResponse);
+                out.print(jsonResponse);
                 out.flush();
             }
         }

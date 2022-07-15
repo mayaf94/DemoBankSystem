@@ -46,6 +46,7 @@ public class customerDataTables implements Serializable {
     }
 
 
+
     private void buildLoansForSellOrBuyTable(TableView<LoanDTOs> LoansTradeTable){
         loansInfoController.buildLoansTableView(LoansTradeTable);
         final TableColumn<LoanDTOs, Integer> price = new TableColumn<>( "Price" );
@@ -149,16 +150,25 @@ public class customerDataTables implements Serializable {
     }
 
     public void addTransactionsToTable(List<AccountTransactionDTO> transaction){
+        TransactionTable.getItems().clear();
         TransactionTable.getItems().addAll(transaction);
     }
 
 
     public void addLoanToLoansAsLoanerTable(List<LoanDTOs> loans){
+        LoansAsLoanerData.getItems().clear();
         LoansAsLoanerData.getItems().addAll(loans);
+        LoansAsLoanerData.refresh();
     }
 
     public void addLoanToLoansAsLenderTable(List<LoanDTOs> loans){
+        LoansAsLenderData.getItems().clear();
         LoansAsLenderData.getItems().addAll(loans);
+    }
+
+    public void addLoanToLoansForSellTable(List<LoanDTOs> loans){
+        LoansForSell.getItems().clear();
+        LoansForSell.getItems().addAll(loans);
     }
 
    /* public void updateLoansTables(CustomerDTOs curCustomer){

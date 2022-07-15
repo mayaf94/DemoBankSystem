@@ -9,7 +9,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="BankSystem" />
     <orderEntry type="module" module-name="Dtos" />
-    <orderEntry type="library" name="GSON" level="project" />
     <orderEntry type="library" name="controlsfx-8.40.14" level="project" />
+    <orderEntry type="library" name="GSON" level="project" />
   </component>
 </module>

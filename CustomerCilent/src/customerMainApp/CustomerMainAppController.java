@@ -5,13 +5,11 @@ import DTOs.AccountTransactionDTO;
 import DTOs.CategoriesDTO;
 import DTOs.CustomerDTOs;
 import DTOs.LoanDTOs;
-import adminMainApp.AdminMainAppController;
 import clientController.ClientController;
 import com.google.gson.reflect.TypeToken;
 //import com.sun.deploy.util.StringUtils;
 //import org.apache.commons.lang.StringUtils;
 
-import com.sun.deploy.util.StringUtils;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -37,7 +35,6 @@ import org.controlsfx.control.CheckComboBox;
 import org.controlsfx.control.CheckListView;
 import org.controlsfx.control.StatusBar;
 import org.jetbrains.annotations.NotNull;
-import refreshers.AdminTablesRefresher;
 import refreshers.CustomerInfoRefresher;
 import util.Constants;
 import util.http.HttpClientUtil;
@@ -58,10 +55,11 @@ public class CustomerMainAppController extends ClientController {
     @FXML private AnchorPane customerViewWindow;
     @FXML private VBox ChargeOrWithdraw;
     @FXML private AnchorPane AccountTransInfo;
-    @FXML private TextField AmountTB;
     @FXML private Button ChargeBT;
     @FXML private Button WithdrawBT;
     @FXML private Label welcomeCustomer;
+    @FXML private Label yazLB;
+    @FXML private MenuItem loadFile;
     @FXML private Label balanceOfCustomer;
     @FXML private Label LoansAsLoanerLabel;
     @FXML private Label LoansAsLenderLabel;
@@ -71,10 +69,11 @@ public class CustomerMainAppController extends ClientController {
     @FXML private Label errorAmountToInvest;
     @FXML private CheckComboBox<String> categories;
     @FXML private TextField minimumYaz;
+    @FXML private TextField AmountTB;
     @FXML private TextField maxOpenLoans;
     @FXML private TextField maxLoanOwner;
-    @FXML private Label errorMaxLoanOwner;
     @FXML private TextField minInterest;
+    @FXML private Label errorMaxLoanOwner;
     @FXML private StatusBar FindLoansProgress;
     @FXML private CheckListView<String> checkLoansToInvest;
     @FXML private Button invest;
@@ -83,7 +82,7 @@ public class CustomerMainAppController extends ClientController {
     @FXML private TableView<LoanDTOs> relevantLoans;
     @FXML private Button resetSearch;
     @FXML private CheckBox selectAllLoansToInvest;
-    @FXML private ListView<?> notificationsView;
+    @FXML private ListView<String> notificationsView;
     @FXML private Button fullPayment;
     @FXML private Button yazlyPayment;
     @FXML private AnchorPane LoansAsLoanerTableForPaymentTab;
@@ -101,7 +100,7 @@ public class CustomerMainAppController extends ClientController {
     private Scene LoginScene;
     private SimpleStringProperty howManyMatchingLoansFoundProp = new SimpleStringProperty("");
     private Map<String, List<String>> messages;
-    private String curCustomerName;
+    private  String curCustomerName;
     private Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
     private Alert errorAlert = new Alert(Alert.AlertType.ERROR);
     LoginController loginController;
@@ -221,9 +220,6 @@ public class CustomerMainAppController extends ClientController {
                             List<LoanDTOs> loanAsLoanerToAddToTable = GSON_INSTANCE.fromJson(rawBody, new TypeToken<List<LoanDTOs>>() {
                             }.getType());
                             customerInfoTables.addLoanToLoansAsLoanerTable(loanAsLoanerToAddToTable);
-                            if (response.headers().get("NEW_CATEGORIES").equals("true")) {
-                                updateCategoriesInScrambleView();
-                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -432,7 +428,7 @@ public class CustomerMainAppController extends ClientController {
                                 e.printStackTrace();
                             }
                             LoanDTOs newLoanAsLoaner = GSON_INSTANCE.fromJson(rawBody, LoanDTOs.class);
-                            LoansAsLoaner.getItems().add(newLoanAsLoaner);
+                            //LoansAsLoaner.getItems().add(newLoanAsLoaner);
                         });
                     }
                 });
@@ -444,6 +440,8 @@ public class CustomerMainAppController extends ClientController {
     @FXML
     void findLoansBtClicked(ActionEvent event) {
         String balance = balanceOfCustomer.getText().substring(9);
+        if(balance.isEmpty())
+            balance = "0";
         if(Integer.parseInt(balance) > Integer.parseInt(amountToInvest.getText())) {
             disableFilterFields(true);
             startTask();
@@ -474,7 +472,7 @@ public class CustomerMainAppController extends ClientController {
                             }
               //  });
                 getRelevantLoansByUserParameters();
-                runLater(() -> {
+                Platform.runLater(() -> {
                     updateProgress(0, 0);
                     done();
                 });
@@ -504,7 +502,7 @@ public class CustomerMainAppController extends ClientController {
             i_categories = categories.getItems();
         }
         //String i_categoriesAsOneString = StringUtils.join(i_categories, ", ");
-        StringJoiner joiner = new StringJoiner(", ");
+        StringJoiner joiner = new StringJoiner(",");
         i_categories.stream().forEach(C -> joiner.add(C));
         String i_categoriesAsOneString = joiner.toString();
         if (getUserParametersForScramble(minYaz, i_minInterest, i_maxOpenLoansForLoanOwner, maxOpenLoansSelected)) {
@@ -957,44 +955,178 @@ public class CustomerMainAppController extends ClientController {
     }
 
     public void startRefresher() {
-        clientRefresher = new CustomerInfoRefresher(CustomerMainAppController::updateTableLoansAsLoaner,
-                CustomerMainAppController::updateTableLoansAsLender
-                ,CustomerMainAppController::updateTableLoansToSellTable
-                ,CustomerMainAppController::updateTableLoansToBuyTable
-                ,CustomerMainAppController::updateTableNotificationsView
-                ,CustomerMainAppController::updateTableCustomerInfoTables1
-                ,CustomerMainAppController::updateTableCustomerInfoTables2
-                ,CustomerMainAppController::updateYazLB
-                ,CustomerMainAppController::disableBT
-                ,CustomerMainAppController::updateCategories
-        ,CustomerMainAppController::balanceLBUpdate);
+        clientRefresher = new CustomerInfoRefresher(this::updateTableLoansAsLoaner,
+                this::updateTableLoansAsLender
+                ,this::updateTableLoansToSellTable
+                ,this::updateTableLoansToBuyTable
+                ,this::updateTableNotificationsView
+                ,this::updateTransactionTable
+                ,this::updateYazLB
+                ,this::disableBT
+                ,this::updateCategories
+        ,this::balanceLBUpdate);
         timer = new Timer();
-        timer.schedule(clientRefresher, 4000, 4000);
+        timer.schedule(clientRefresher, 2000, 2000);
     }
 
-    public static void updateTableLoansAsLoaner(List<LoanDTOs> allLoans){}
+    public  void updateTableLoansAsLoaner(List<LoanDTOs> allLoans){
+        List<LoanDTOs> tmp = allLoans.stream().filter(l -> l.getNameOfLoaner().equals(curCustomerName)).collect(Collectors.toList());
 
-    public static void updateTableLoansAsLender(List<LoanDTOs> allLoans){}
-
-    public static void updateCategories(List<String> allCategories){}
-
-    public static void updateTableLoansToSellTable(List<LoanDTOs> allLoans){}
-
-    public static void updateTableLoansToBuyTable(List<LoanDTOs> allLoans){}
-
-    public static void updateTableNotificationsView(List<CustomerDTOs> allNotifications){}
-
-    public static void updateTableCustomerInfoTables1(List<LoanDTOs> allLoans){}
-
-    public static void updateTableCustomerInfoTables2(List<CustomerDTOs> allCustomers){}
-
-    public static void updateYazLB(Integer yaz){
-
+        Platform.runLater(() ->{
+            if(LoansAsLoaner.getItems().size() != tmp.size()){
+                customerInfoTables.addLoanToLoansAsLoanerTable(tmp);
+            }
+            else {
+                Map<String, Set<Integer>> versionsOfLoans = new HashMap<>();
+                for (LoanDTOs curLoan : tmp) {
+                    Set<Integer> mySet = new HashSet<Integer>();
+                    mySet.add(curLoan.getVersion());
+                    versionsOfLoans.put(curLoan.getNameOfLoan(), mySet);
+                }
+                for (LoanDTOs curLoan : LoansAsLoaner.getItems()) {
+                    if(!versionsOfLoans.containsKey(curLoan.getNameOfLoan())){
+                        customerInfoTables.addLoanToLoansAsLoanerTable(tmp);
+                    }
+                    else{
+                        versionsOfLoans.get(curLoan.getNameOfLoan()).add(curLoan.getVersion());
+                    }
+                }
+                if(!versionsOfLoans.values().stream().filter(L -> (L.size() > 1)).collect(Collectors.toList()).isEmpty()){
+                    customerInfoTables.addLoanToLoansAsLoanerTable(tmp);
+                }
+            }
+        });
     }
 
-    public static void balanceLBUpdate(Integer balance){}
+    public void updateTableLoansAsLender(List<LoanDTOs> allLoans){
+        List<LoanDTOs> tmp = allLoans.stream().filter(L -> L.getListOfLenders().containsKey(curCustomerName)).collect(Collectors.toList());
+        Platform.runLater(() ->{
+            if(LoansAsLender.getItems().size() != tmp.size()){
+                customerInfoTables.addLoanToLoansAsLenderTable(tmp);
+            }
+            else {
+                Map<String, Set<Integer>> versionsOfLoans = new HashMap<>();
+                for (LoanDTOs curLoan : tmp) {
+                    Set<Integer> mySet = new HashSet<Integer>();
+                    mySet.add(curLoan.getVersion());
+                    versionsOfLoans.put(curLoan.getNameOfLoan(), mySet);
+                }
+                for (LoanDTOs curLoan : LoansAsLender.getItems()) {
+                    if(!versionsOfLoans.containsKey(curLoan.getNameOfLoan())){
+                        customerInfoTables.addLoanToLoansAsLenderTable(tmp);
+                    }
+                    else{
+                        versionsOfLoans.get(curLoan.getNameOfLoan()).add(curLoan.getVersion());
+                    }
+                }
+                if(!versionsOfLoans.values().stream().filter(L -> (L.size() > 1)).collect(Collectors.toList()).isEmpty()){
+                    customerInfoTables.addLoanToLoansAsLenderTable(tmp);
+                }
+            }
+        });
+    }
 
-    public static void disableBT(Boolean isRewind){}
+    public void updateCategories(List<String> i_allCategories){
+        Platform.runLater(() -> {
+            if (categories.getItems().size() < i_allCategories.size()) {
+                categories.getItems().clear();
+                categories.getItems().addAll(i_allCategories);
+            }
+        });
+    }
+
+    public void updateTableLoansToSellTable(List<LoanDTOs> allLoans){
+        List<LoanDTOs> tmp = allLoans.stream().filter(L -> L.getListOfLenders().containsKey(curCustomerName))
+                .collect(Collectors.toList()).stream().filter(L -> L.getStatusName().equals("ACTIVE")).collect(Collectors.toList());
+        Platform.runLater(() ->{
+           if(LoansToSellTable.getItems().size() != tmp.size()){
+               customerInfoTables.addLoanToLoansForSellTable(tmp);
+           }
+           else {
+               Map<String, Set<Integer>> versionsOfLoans = new HashMap<>();
+               for (LoanDTOs curLoan : tmp) {
+                   Set<Integer> mySet = new HashSet<Integer>();
+                   mySet.add(curLoan.getVersion());
+                   versionsOfLoans.put(curLoan.getNameOfLoan(), mySet);
+               }
+               for (LoanDTOs curLoan : LoansToSellTable.getItems()) {
+                   if(!versionsOfLoans.containsKey(curLoan.getNameOfLoan())){
+                       customerInfoTables.addLoanToLoansForSellTable(tmp);
+                   }
+                   else{
+                       versionsOfLoans.get(curLoan.getNameOfLoan()).add(curLoan.getVersion());
+                   }
+               }
+               if(!versionsOfLoans.values().stream().filter(L -> (L.size() > 1)).collect(Collectors.toList()).isEmpty()){
+                   customerInfoTables.addLoanToLoansForSellTable(tmp);
+               }
+           }
+        });
+    }
+
+    public void updateTableLoansToBuyTable(List<LoanDTOs> allLoans){}//TODO
+
+    public void updateTableNotificationsView(List<CustomerDTOs> allNotifications){
+        Platform.runLater(() ->{
+            allNotifications.stream().filter(L -> L.getName().equals(curCustomerName)).collect(Collectors.toList()).get(0).getNotifications();
+            if(allNotifications.stream().filter(L -> L.getName().equals(curCustomerName)).collect(Collectors.toList()).get(0).getNotifications().size() !=  notificationsView.getItems().size()) {
+                notificationsView.getItems().clear();
+                notificationsView.getItems().addAll(allNotifications.stream().filter(L -> L.getName().equals(curCustomerName)).collect(Collectors.toList()).get(0).getNotifications());
+            }
+        });
+    }
+
+    public void updateTransactionTable(List<CustomerDTOs> allCustomers){
+        Platform.runLater(() ->{
+            customerInfoTables.addTransactionsToTable(allCustomers.stream().filter(L -> L.getName().equals(curCustomerName)).collect(Collectors.toList()).get(0).getTransactions());
+        });
+    }
+
+    public void updateYazLB(Integer yaz){
+        Platform.runLater(()-> yazLB.setText("Yaz: " + yaz));
+    }
+
+    public void balanceLBUpdate(List<CustomerDTOs> allCustomers){
+        Platform.runLater(() -> balanceOfCustomer.setText("Balance: " + allCustomers.stream().filter(L -> L.getName().equals(curCustomerName)).collect(Collectors.toList()).get(0).getBalance()));
+    }
+
+    public void disableBT(Boolean isRewind){
+        if(isRewind){
+            Platform.runLater(()->{
+                String yazTmp = yazLB.getText();
+                yazLB.setText(yazTmp + " (Rewind)");
+            });
+        }
+
+        Platform.runLater(() -> {
+            amountToInvest.setDisable(isRewind);
+            ChargeBT.setDisable(isRewind);
+            WithdrawBT.setDisable(isRewind);
+            findLoans.setDisable(isRewind);
+            resetSearch.setDisable(isRewind);
+            invest.setDisable(isRewind);
+            selectAllLoansToInvest.setDisable(isRewind);
+            fullPayment.setDisable(isRewind);
+            yazlyPayment.setDisable(isRewind);
+            takeOutLoanBT.setDisable(isRewind);
+            SellLoanBT.setDisable(isRewind);
+            BuyLoansBT.setDisable(isRewind);
+            LoanNameTakeLoanTA.setDisable(isRewind);
+            categoryTakeLoanTA.setDisable(isRewind);
+            principalAmountTA.setDisable(isRewind);
+            totalDurationTakeLoanTA.setDisable(isRewind);
+            paymentFreqTakeLoanTA.setDisable(isRewind);
+            InterestTakeLoanTA.setDisable(isRewind);
+            categories.setDisable(isRewind);
+            minimumYaz.setDisable(isRewind);
+            AmountTB.setDisable(isRewind);
+            maxOpenLoans.setDisable(isRewind);
+            maxLoanOwner.setDisable(isRewind);
+            minInterest.setDisable(isRewind);
+            loadFile.setDisable(isRewind);
+        });
+
+    }
 
 
 }

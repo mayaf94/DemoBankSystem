@@ -35,7 +35,7 @@ public class LoanDTOs implements Serializable {
     private final int paymentFrequency;
     private final int interest;
     private final int theDateTheLoanBecameActive;
-    private Map<String, Integer> listOfLenders = new HashMap<String, Integer>();;// TODO: do we need it?
+    private Map<String, Integer> listOfLenders;
     private final int howManyUnitsOfTimeAreLeft; //TODO: wtf does it mean
     private final float interestPayedSoFar;
     private final float theInterestYetToBePaidOnTheLoan;
@@ -50,12 +50,14 @@ public class LoanDTOs implements Serializable {
     private int interestYetToPaid;
     private int totalMissedYazNeedToPayBack;
     private int debt;
+    private int version;
     private Boolean isForSale = false;
     private Map<String, Integer> mapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment = new HashMap<>();
 
 
     public LoanDTOs(Loan loan){
         nameOfLoan = loan.getNameOfLoan();
+        version = loan.getVersion();
         category = loan.getCategory();
         nextYazPayment = loan.getNextYazForPayment();
         originalAmount = loan.getOriginalAmount();
@@ -86,6 +88,10 @@ public class LoanDTOs implements Serializable {
 
     public Map<String, Integer> getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment() {
         return mapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment;
+    }
+
+    public int getVersion() {
+        return version;
     }
 
     public Boolean getForSale() {

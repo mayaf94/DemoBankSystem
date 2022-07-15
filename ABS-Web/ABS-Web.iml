@@ -23,7 +23,8 @@
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 10.0.22" level="application_server_libraries" />
     <orderEntry type="module" module-name="BankSystem" />
     <orderEntry type="module" module-name="Dtos" />
-    <orderEntry type="library" name="GSON" level="project" />
     <orderEntry type="library" name="okHttp" level="project" />
+    <orderEntry type="library" name="GSON" level="project" />
+    <orderEntry type="library" name="src" level="project" />
   </component>
 </module>

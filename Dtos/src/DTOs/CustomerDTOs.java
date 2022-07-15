@@ -17,14 +17,14 @@ import java.util.List;
 
 public class CustomerDTOs implements Serializable {
     private String name;
-    private Integer numOfLoansAsLender;
-    private Integer numOfLoansAsBorrower;
-    private Integer balance;
-    private String LoansAsALender;
-    private String LoansAsABorrower;
+    private Integer numOfLoansAsLender = 0;
+    private Integer numOfLoansAsBorrower = 0;
+    private Integer balance = 0;
+    private List<String> LoansAsALender;
+    private List<String> LoansAsABorrower;
     private List<AccountTransactionDTO> DtosTransactions;
     private int amountInvested = 0;
-    private String notifications;
+    private List<String> notifications;
 
     public CustomerDTOs() {
     }
@@ -34,33 +34,18 @@ public class CustomerDTOs implements Serializable {
         name = curCustomer.getName();
         //balance.set(curCustomer.getMoneyInAccount());
         balance = curCustomer.getMoneyInAccount();
-        //notifications = curCustomer.getNotifications();
-        StringBuilder tmpStringNot = new StringBuilder();
-        for (String curNot: curCustomer.getNotifications()) {
-            tmpStringNot.append(" , " + curNot);
-        }
-        notifications = tmpStringNot.toString();
+        notifications = curCustomer.getNotifications();
         if(curCustomer.getLoansAsALender() == null)
             LoansAsALender = null;
         else {
-            StringBuilder tmpString = new StringBuilder();
-            for (String curLoan: curCustomer.getLoansAsALender()) {
-                tmpString.append(" , " + curLoan);
+            LoansAsALender = curCustomer.getLoansAsALender();
             }
-            LoansAsALender = tmpString.toString();
-            //numOfLoansAsLender.set((LoansAsALender.split(" , ")).length);
-            numOfLoansAsLender = LoansAsALender.split(" , ").length;
-        }
+            numOfLoansAsLender = curCustomer.getLoansAsALender().size();
+
         if(curCustomer.getLoansAsABorrower() == null)
             LoansAsABorrower = null;
         else{
-            StringBuilder tmpString = new StringBuilder();
-            for (String curLoan: curCustomer.getLoansAsABorrower()) {
-                tmpString.append(" , " + curLoan);
-            }
-            LoansAsABorrower = tmpString.toString();
-            //numOfLoansAsLender.set((LoansAsABorrower.split(" , ")).length);
-            numOfLoansAsLender = LoansAsABorrower.split(" , ").length;
+            LoansAsABorrower = curCustomer.getLoansAsABorrower();
         }
         if(ListOfTransactions == null)
             DtosTransactions = null;
@@ -141,7 +126,7 @@ public class CustomerDTOs implements Serializable {
         if (LoansAsALender == null)
             return null;
         else
-            return Collections.unmodifiableList(new ArrayList<String>(Arrays.asList(LoansAsALender.split(" , "))));
+            return LoansAsALender;
     }
 
     public int getNumOfLoansAsLender() {
@@ -164,7 +149,7 @@ public class CustomerDTOs implements Serializable {
         if (LoansAsABorrower == null)
             return null;
         else
-            return Collections.unmodifiableList(new ArrayList<String>(Arrays.asList(LoansAsABorrower.split(" , "))));
+            return LoansAsABorrower;
     }
 
     public List<AccountTransactionDTO> getTransactions() {
@@ -172,22 +157,22 @@ public class CustomerDTOs implements Serializable {
     }
 
     public List<String> getNotifications() {
-        return (new ArrayList<String>(Arrays.asList(notifications.split(" , "))));
-    }
-
-    public String getLoansAsLenderString(){
-        return LoansAsALender;
-    }
-
-    public String getLoansAsBorrowerString(){
-        return LoansAsABorrower;
-    }
-
-    public String getNotificationsAsString(){
         return notifications;
     }
 
-    public static class CustomerDTOAdapter implements JsonSerializer<CustomerDTOs> {
+    public List<String> getLoansAsLenderString(){
+        return LoansAsALender;
+    }
+
+    public List<String> getLoansAsBorrowerString(){
+        return LoansAsABorrower;
+    }
+
+    public List<String> getNotificationsAsString(){
+        return notifications;
+    }
+
+    /*public static class CustomerDTOAdapter implements JsonSerializer<CustomerDTOs> {
         @Override
         public JsonElement serialize(CustomerDTOs customerDTOs, Type type, JsonSerializationContext jsonSerializationContext) {
             JsonObject jsonElement = new JsonObject();
@@ -202,6 +187,6 @@ public class CustomerDTOs implements Serializable {
             jsonElement.getAsJsonArray("DtosTransactions");
 
             return jsonElement;
-        }
-    }
+        }package*/
+
 }

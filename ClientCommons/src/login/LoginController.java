@@ -49,7 +49,7 @@ public class LoginController {
 
     @FXML
     void LoginClicked(ActionEvent event) {
-        String userName = userNameTextFiled.getText();
+        String userName = userNameTextFiled.getText().trim();
         if (userName.isEmpty()) {
             errorMessageProperty.set("User name is empty. You can't login with empty user name");
             return;

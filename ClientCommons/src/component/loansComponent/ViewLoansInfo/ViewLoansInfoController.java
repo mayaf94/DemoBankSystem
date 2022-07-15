@@ -40,8 +40,10 @@ public class ViewLoansInfoController implements Serializable {
     public void setMainController(ClientController i_clientController) {this.clientController = i_clientController;}
 
     public void buildLoansTableView(TableView<LoanDTOs> i_LoansData){
-        i_LoansData.getItems().clear();
-        i_LoansData.refresh();
+        if(!(i_LoansData.getItems().isEmpty())) {
+            i_LoansData.getItems().clear();
+            i_LoansData.refresh();
+        }
         TableRowExpanderColumn<LoanDTOs> expanderColumn = new TableRowExpanderColumn<>(param -> {
             try {
                 return expandLoanInfo(param);

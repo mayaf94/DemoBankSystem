@@ -34,9 +34,7 @@ import util.http.HttpClientUtil;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static util.Constants.GSON_INSTANCE;
@@ -53,10 +51,8 @@ public class AdminMainAppController extends ClientController {
     private Button IncreaseYazBtn;
     @FXML
     private Button RewindYazBT;
-    @FXML
-    private static TableView<LoanDTOs> LoansData = new TableView<>();
-    @FXML
-    private static TableView<CustomerDTOs> CustomerData = new TableView<>();
+    @FXML private TableView<LoanDTOs> LoansData;
+    @FXML private TableView<CustomerDTOs> CustomerData;
     @FXML
     private Label loansInAbsLb;
     @FXML
@@ -133,7 +129,8 @@ public class AdminMainAppController extends ClientController {
         primaryStage.show();
         ViewLoansInfoController loansInfoController = new ViewLoansInfoController();
         loansInfoController.setMainController(this);
-        loansInfoController.buildLoansTableView(LoansData);
+        Platform.runLater(()-> loansInfoController.buildLoansTableView(LoansData));
+
         String finalUrl = HttpUrl
                 .parse(Constants.getAllLoansAndCustomersInBank)
                 .newBuilder()
@@ -217,10 +214,10 @@ public class AdminMainAppController extends ClientController {
     }
 
     public void startListRefresher() {
-        loanTableRefresher = new AdminTablesRefresher(AdminMainAppController::updateLoansTable
-                , AdminMainAppController::updateCustomerTable);
+        loanTableRefresher = new AdminTablesRefresher(this::updateLoansTable
+                ,this::updateCustomerTable);
         timer = new Timer();
-        timer.schedule(loanTableRefresher, 4000, 4000);
+        timer.schedule(loanTableRefresher, 2000, 2000);
     }
 
     private void buildCustomersTableView(List<CustomerDTOs> i_allCustomers, List<LoanDTOs> i_allLoans){
@@ -246,9 +243,12 @@ public class AdminMainAppController extends ClientController {
 
         TableColumn<CustomerDTOs, String> loansAsLoaner = new TableColumn<>("Loans as Borrower");
         loansAsLoaner.setCellValueFactory(new PropertyValueFactory<>("numOfLoansAsBorrower"));
+        loansAsLoaner.setPrefWidth(125);
 
         TableColumn<CustomerDTOs, String> loansAsLender = new TableColumn<>("Loans as lender");
         loansAsLender.setCellValueFactory(new PropertyValueFactory<>("numOfLoansAsLender"));
+        loansAsLender.setPrefWidth(125);
+
 
         if(CustomerData.getColumns().isEmpty())
             CustomerData.getColumns().addAll(expanderColumn, nameOfCustomer, balance, loansAsLoaner, loansAsLender);
@@ -279,26 +279,45 @@ public class AdminMainAppController extends ClientController {
         return CustomerExpandedDetails;
     }
 
-    private static void updateCustomerTable(List<CustomerDTOs> allCustomersInSystem){
-        //Platform.runLater(() -> {
-//            ObservableList<CustomerDTOs> item = CustomerData.getItems();
-//            item.clear();
-//            item.addAll(allCustomersInSystem);
-           CustomerData.getItems().clear();
+    private void updateCustomerTable(List<CustomerDTOs> allCustomersInSystem){
+        Platform.runLater(() -> {
+            CustomerData.getItems().clear();
             CustomerData.getItems().addAll(allCustomersInSystem);
             CustomerData.refresh();
-        //});
+        });
     }
 
-    private static void updateLoansTable(List<LoanDTOs> allLoans){
-        //Platform.runLater(() -> {
-            //ObservableList<LoanDTOs> item = LoansData.getItems();
-            //item.clear();
-            //item.addAll(allLoans);
-           LoansData.getItems().clear();
-            LoansData.getItems().addAll(allLoans);
-            LoansData.refresh();
-       // });
+    private void updateLoansTable(List<LoanDTOs> allLoans){
+
+        Platform.runLater(() ->{
+            if(LoansData.getItems().size() != allLoans.size()){
+                LoansData.getItems().clear();
+                LoansData.getItems().addAll(allLoans);
+                LoansData.refresh();            }
+            else {
+                Map<String, Set<Integer>> versionsOfLoans = new HashMap<>();
+                for (LoanDTOs curLoan : allLoans) {
+                    Set<Integer> mySet = new HashSet<Integer>();
+                    mySet.add(curLoan.getVersion());
+                    versionsOfLoans.put(curLoan.getNameOfLoan(), mySet);
+                }
+                for (LoanDTOs curLoan : LoansData.getItems()) {
+                    if(!versionsOfLoans.containsKey(curLoan.getNameOfLoan())){
+                        LoansData.getItems().clear();
+                        LoansData.getItems().addAll(allLoans);
+                        LoansData.refresh();
+                    }
+                    else{
+                        versionsOfLoans.get(curLoan.getNameOfLoan()).add(curLoan.getVersion());
+                    }
+                }
+                if(!versionsOfLoans.values().stream().filter(L -> (L.size() > 1)).collect(Collectors.toList()).isEmpty()){
+                    LoansData.getItems().clear();
+                    LoansData.getItems().addAll(allLoans);
+                    LoansData.refresh();
+                }
+            }
+        });
     }
 }
 

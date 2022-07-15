@@ -34,6 +34,7 @@ public class ScrambleServlet extends HttpServlet {
         String Categories = request.getParameter(servletConstants.CATEGORIES);
         Boolean maxOpenLoansForLoanOwnerSelected = Boolean.parseBoolean(request.getParameter(servletConstants.MAXOPENLOANSSELECTED));
         List<String> CategoriesList = Arrays.asList(Categories.split( ","));
+
         int maxOpenLoansForLoanOwnerIntVal = 50000;
         if(minimumDuration.isEmpty()){
             minimumDuration = "0";

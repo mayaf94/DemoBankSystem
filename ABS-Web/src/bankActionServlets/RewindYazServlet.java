@@ -27,8 +27,10 @@ public class RewindYazServlet extends HttpServlet {
 
         BankSystemDTO bankSystemDTO = null;
         synchronized (getServletContext()) {
+            userManager.addVersionToBankSystemVersionMap(bankEngine.getBankSystemDTO());
             Integer rewindYaz = bankEngine.rewindYaz();
             bankSystemDTO = userManager.getBankSystemDTOByYaz(rewindYaz);
+            bankSystemDTO.setRewind(true);
 
             response.setStatus(HttpServletResponse.SC_OK);
             //create the response json string

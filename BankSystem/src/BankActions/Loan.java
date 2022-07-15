@@ -20,6 +20,7 @@ public class Loan implements Serializable {
     private int  interest;
     private Map<String, LeftToPay> listOfLenders;
     private int howManyYazAreLeft;
+    private int version = 0;
     private int interestPayedSoFar;
     private int theInterestYetToBePaidOnTheLoan;
     private int theAmountOfThePrincipalPaymentPaidOnTheLoanSoFar;
@@ -106,8 +107,6 @@ public class Loan implements Serializable {
         isForSale = forSale;
     }
 
-
-
     public Map<String,Integer> getListOfLenders() {
         Map<String,Integer> listOfLenderAndTheirShareInTheInvesment = new HashMap<>();
         for (Map.Entry<String,LeftToPay> entry : listOfLenders.entrySet())
@@ -151,6 +150,7 @@ public class Loan implements Serializable {
         if(howManyYazAreLeft != 0){
             howManyYazAreLeft--;
         }
+        version++;
     }
 
     public int getTheAmountLeftToMakeTheLoanActive() {
@@ -173,24 +173,6 @@ public class Loan implements Serializable {
         return Payments;
     }
 
-    public void PrintLoan(Boolean flagWithDuration, int numOfLoan){
-        System.out.println(numOfLoan + ") " + "The name of the Loan: " + nameOfLoan);
-        System.out.println("The loan owner is: " + nameOfLoaner);
-        System.out.println("The category: " + category);
-        System.out.println("The original amount: " + originalAmount);
-        System.out.println("The payment frequency: " + paymentFrequency);
-        System.out.println("The interest: " + interest);
-        System.out.println("The total amount of the loan (original amount + interest): "
-                + (theAmountOfThePrincipalPaymentPaidOnTheLoanSoFar + theAmountOfPrincipalPaymentYetToBePaid));
-        if(flagWithDuration)
-        {
-            System.out.println("The total duration of the loan: " + durationOfTheLoan);
-            status.PrintForLoan(this);
-        }
-        else
-        status.PrintForCustomer(this);
-        System.out.print("\n");
-    }
 
     public boolean ifTheNameIsInTheNameList(String name){
         for (String curName: listOfLenders.keySet().stream().collect(Collectors.toList())) {
@@ -226,7 +208,7 @@ public class Loan implements Serializable {
                 status = LoanStatus.PENDING;
             }
         }
-
+        version++;
     }
 
     public void makeRisk(int yaz,int amountNotPaid){
@@ -241,16 +223,19 @@ public class Loan implements Serializable {
         }
         status = LoanStatus.RISK;
         this.makeLoanPayment(yaz,amountNotPaid,false);
+        version++;
     }
 
     public void setNextYazForPayment(){
         nextYazForPayment += paymentFrequency;
+        version++;
     }
 
     public void makeFinished(int yaz){
         status = LoanStatus.FINISHED;
         finishDate = yaz;
         active = false;
+        version++;
     }
 
     public int getYazlyPaymentWithDebtsCalculation(int curYaz){
@@ -285,9 +270,14 @@ public class Loan implements Serializable {
                 active = true;
             }
         }
+        version++;
     }
 
-    public void makeFullyPaymentToCloseLoan(int yaz,int principalAmount,int interestAmount){
+    public int getVersion() {
+        return version;
+    }
+
+    public void makeFullyPaymentToCloseLoan(int yaz, int principalAmount, int interestAmount){
         howManyYazAreLeft = 0;
         Payments.add(new Payment(yaz, principalAmount, interestAmount, principalAmount + interestAmount, true));
         theAmountOfPrincipalPaymentYetToBePaid = 0;
@@ -295,6 +285,7 @@ public class Loan implements Serializable {
         theAmountOfThePrincipalPaymentPaidOnTheLoanSoFar += principalAmount;
         interestPayedSoFar += interestAmount;
         totalMissedYazNeedToPayBack = 0;
+        version++;
     }
 
     public int getTotalMissedYazNeedToPayBack() {
@@ -303,6 +294,7 @@ public class Loan implements Serializable {
 
     public void setDebt(int debt) {
         this.debt = debt;
+        version++;
     }
 
     public int getDebt() {

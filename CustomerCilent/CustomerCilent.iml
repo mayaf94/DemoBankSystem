@@ -9,9 +9,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ClientCommons" />
     <orderEntry type="module" module-name="Dtos" />
-    <orderEntry type="library" name="GSON" level="project" />
     <orderEntry type="library" name="controlsfx-8.40.14" level="project" />
     <orderEntry type="library" name="okHttp" level="project" />
     <orderEntry type="module" module-name="ABS-Web" />
+    <orderEntry type="library" name="GSON" level="project" />
   </component>
 </module>
