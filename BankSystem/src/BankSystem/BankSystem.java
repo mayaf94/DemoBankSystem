@@ -35,9 +35,9 @@ public interface BankSystem extends Serializable {
     LoanDTOs takeOutLoan(String i_LoanerName,String i_loanName,String i_category,int i_principalAmount,int i_totalDuration,int i_paymentFreq,int i_interest);
     List<LoanDTOs> getAllLoansThatAreForSale();
     int rewindYaz();
-    List<LoansForSaleDTO> getAllLoansForSaleForTheCustomer(String seller);
+    List<LoanDTOs> getAllLoansForSaleForTheCustomer(String seller);
     void putLoanOnSale(List<String> loansForSale, String seller);
-    void buyLoans(Map<String,String> mapOfSellerAndLoan, String buyer);
+    Boolean buyLoans(Map<String,List<String>> mapOfSellerAndLoan, String buyer);
     BankSystemDTO getBankSystemDTO();
     Boolean isRewind();
     Integer getRewindYaz();

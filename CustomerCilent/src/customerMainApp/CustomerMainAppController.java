@@ -917,18 +917,17 @@ public class CustomerMainAppController extends ClientController {
 
     @FXML
     void BuyLoansClicked(ActionEvent event) {
-        List<String> LoansToBuy = LoansToBuyTable.getItems().stream()      // TODO maybe to change it to table of LoansForSaleDto
+        List<String> LoansToBuy = LoansToBuyTable.getItems().stream()
                 .filter(L -> L.isSelected())
                 .collect(Collectors.toMap(LoanDTOs::getNameOfLoan,loan -> loan))
                 .keySet().stream().collect(Collectors.toList());
 
         Type type = new TypeToken<List<String>>(){}.getType();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody requestBody = RequestBody.create(
-                mediaType, GSON_INSTANCE.toJson(LoansToBuy,type));
+        RequestBody requestBody = RequestBody.Companion.create(GSON_INSTANCE.toJson(LoansToBuy,type),mediaType);//the
 
         String finalUrl = HttpUrl
-                .parse(Constants.SELL_LOANS)
+                .parse(Constants.BUY_LOANS)
                 .newBuilder()
                 .build()
                 .toString();
@@ -945,10 +944,12 @@ public class CustomerMainAppController extends ClientController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                //TODO don't have enough money to buy loan
-                Platform.runLater(() -> {
-                    //TODO maya im not sure if we need to do something after the customer put to sale one or more loans.
-                });
+                String rawBody = response.body().string();
+                Boolean FromJson = GSON_INSTANCE.fromJson(rawBody, Boolean.class);
+                if(!FromJson) {
+                    errorAlert.setContentText("You dont have money to buy all the loans you want.");
+                    errorAlert.showAndWait();
+                }
             }
         });
     }
