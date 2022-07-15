@@ -31,7 +31,7 @@ public class SystemImplement implements BankSystem , Serializable {
 
     public BankSystemDTO getBankSystemDTO(){
         return new BankSystemDTO(RewindYaz, " ",
-                getListOfDTOsCustomer(), getListOfLoansDTO(), getAllCategories(), isRewind);
+                getListOfDTOsCustomer(), getListOfLoansDTO(), getAllCategories(), isRewind, loanForSale);
     }
 
     public SimpleStringProperty getYazProperty() {
@@ -213,6 +213,7 @@ public class SystemImplement implements BankSystem , Serializable {
             }
             if(debt != 0){
                 curLoan.makeRisk(Yaz,debt);
+                removeFromSellRiskLoan(curLoan.getNameOfLoan());
                 newRiskLoans.put(curLoan,debt);
                 curLoan.setDebt(debt);
             }
@@ -242,8 +243,15 @@ public class SystemImplement implements BankSystem , Serializable {
                 isRewind = false;
         }
             return new BankSystemDTO(RewindYaz, "Increase Yaz was successful",
-                    getListOfDTOsCustomer(), getListOfLoansDTO(), getAllCategories(), isRewind);
+                    getListOfDTOsCustomer(), getListOfLoansDTO(), getAllCategories(), isRewind, loanForSale);
 
+    }
+
+    private void removeFromSellRiskLoan(String nameLoan){
+        for (LoanDTOs curLoan: loanForSale) {
+            if(curLoan.getNameOfLoan().equals(nameLoan))
+                loanForSale.remove(curLoan);
+        }
     }
 
     public int rewindYaz(){

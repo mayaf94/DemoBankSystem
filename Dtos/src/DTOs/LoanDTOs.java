@@ -85,7 +85,7 @@ public class LoanDTOs implements Serializable {
         mapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment = loan.getMapOfAllBorrowersAndWhatIsLeftToPayFromThePrincipalPayment();
     }
 
-    public LoanDTOs(String seller, Integer price, String loanName){
+    public LoanDTOs(String seller, Integer price, String loanName) {
         this.seller = seller;
         this.price = price;
         this.nameOfLoan = loanName;
@@ -103,6 +103,7 @@ public class LoanDTOs implements Serializable {
         theAmountOfTheFundYetToBePaid = 0;
         status = null;
         loansPayments = null;
+    }
 
     public void setSelected(Boolean selected) {
         this.selected = selected;
@@ -232,6 +233,8 @@ public class LoanDTOs implements Serializable {
     public int getDebt() {
         return debt;
     }
+
+
 
 
 

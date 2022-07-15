@@ -90,7 +90,7 @@ public class customerDataTables implements Serializable {
         amountToPayCol.setCellValueFactory( new PropertyValueFactory<>("AmountToPay"));
         amountToPayCol.setPrefWidth(120);
         amountToPayCol.setCellFactory(TextFieldTableCell.forTableColumn());
-/*        amountToPayCol.setOnEditCommit(
+        amountToPayCol.setOnEditCommit(
                 event -> {
                     event.getTableView().getItems().get(event.getTablePosition().getRow()).setAmountToPay(event.getNewValue());
                 }
@@ -204,6 +204,10 @@ public class customerDataTables implements Serializable {
         LoansForSell.getItems().addAll(loans);
     }
 
+    public void addLoanToLoansForBuyTable(List<LoanDTOs> loans){
+        LoansToBuy.getItems().clear();
+        LoansToBuy.getItems().addAll(loans);
+    }
 
    public void updateMatchingLoansForScramble(List<LoanDTOs> i_loansAsLender){
        MatchinLoansForScramble.getItems().clear();

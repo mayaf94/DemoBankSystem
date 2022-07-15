@@ -10,19 +10,26 @@ public class BankSystemDTO {
     private String msg;
     private List<CustomerDTOs> Customers = new ArrayList<>();
     private List<LoanDTOs> LoansInBank = new ArrayList<>();
+    private List<LoanDTOs> LoansToBuy = new ArrayList<>();
     private CategoriesDTO categories;
     private Boolean isRewind;
 
     public BankSystemDTO() {
     }
 
-    public BankSystemDTO(Integer curYaz, String msg, List<CustomerDTOs> customers,List<LoanDTOs> loansInBank, CategoriesDTO categories, Boolean rewind) {
+    public BankSystemDTO(Integer curYaz, String msg, List<CustomerDTOs> customers,List<LoanDTOs> loansInBank, CategoriesDTO categories,
+                         Boolean rewind, List<LoanDTOs> LoansToBuy) {
         this.curYaz = curYaz;
         this.msg = msg;
         Customers = customers;
         LoansInBank = loansInBank;
         this.categories = categories;
         isRewind = rewind;
+        //this.LoansToBuy = LoansToBuy;
+    }
+
+    public List<LoanDTOs> getLoansToBuy() {
+        return LoansToBuy;
     }
 
     public Integer getCurYaz() {
@@ -71,5 +78,9 @@ public class BankSystemDTO {
 
     public void setRewind(Boolean rewind) {
         isRewind = rewind;
+    }
+
+    public void setLoansToBuy(List<LoanDTOs> loansToBuy) {
+        LoansToBuy = loansToBuy;
     }
 }

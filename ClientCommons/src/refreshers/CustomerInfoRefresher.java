@@ -75,7 +75,7 @@ public class CustomerInfoRefresher extends TimerTask {
                     updateTableLoansAsLoaner.accept(bankSystemDTO.getLoansInBank());
                     updateTableLoansAsLender.accept(bankSystemDTO.getLoansInBank());
                     updateTableLoansToSellTable.accept(bankSystemDTO.getLoansInBank());
-                    updateTableLoansToBuyTable.accept(bankSystemDTO.getLoansInBank());
+                   // updateTableLoansToBuyTable.accept(bankSystemDTO.getLoansToBuy());
                     updateTableNotificationsView.accept(bankSystemDTO.getCustomers());
                     updateTransactionTable.accept(bankSystemDTO.getCustomers());
                     updatebalanceLB.accept(bankSystemDTO.getCustomers());

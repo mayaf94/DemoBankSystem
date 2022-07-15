@@ -21,6 +21,7 @@ public class BankSystemDTODeserializer implements JsonDeserializer<BankSystemDTO
         List<LoanDTOs> LoansInBank = context.deserialize(json.getAsJsonObject().get("LoansInBank"), LoanDTOs.class);
         CategoriesDTO categories = context.deserialize(json.getAsJsonObject().get("categories"), CategoriesDTO.class);
         Boolean isRewind = json.getAsJsonObject().get("isRewind").getAsBoolean();
+       // List<LoanDTOs> LoansToBuy = context.deserialize(json.getAsJsonObject().get("LoansToBuy"), LoanDTOs.class);
 
         // build object manually
         BankSystemDTO result = new BankSystemDTO();
@@ -30,6 +31,7 @@ public class BankSystemDTODeserializer implements JsonDeserializer<BankSystemDTO
         result.setLoansInBank(LoansInBank);
         result.setCategories(categories);
         result.setRewind(isRewind);
+        //result.setLoansToBuy(LoansToBuy);
 
         return result;
     }

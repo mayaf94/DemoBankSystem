@@ -1090,7 +1090,32 @@ public class CustomerMainAppController extends ClientController {
         });
     }
 
-    public void updateTableLoansToBuyTable(List<LoanDTOs> allLoans){}//TODO
+    public void updateTableLoansToBuyTable(List<LoanDTOs> loansToBuy){
+        Platform.runLater(() ->{
+            if(LoansToBuyTable.getItems().size() != loansToBuy.size()){
+                customerInfoTables.addLoanToLoansForBuyTable(loansToBuy);
+            }
+            else {
+                Map<String, Set<Integer>> versionsOfLoans = new HashMap<>();
+                for (LoanDTOs curLoan : loansToBuy) {
+                    Set<Integer> mySet = new HashSet<Integer>();
+                    mySet.add(curLoan.getVersion());
+                    versionsOfLoans.put(curLoan.getNameOfLoan(), mySet);
+                }
+                for (LoanDTOs curLoan : LoansToBuyTable.getItems()) {
+                    if(!versionsOfLoans.containsKey(curLoan.getNameOfLoan())){
+                        customerInfoTables.addLoanToLoansForBuyTable(loansToBuy);
+                    }
+                    else{
+                        versionsOfLoans.get(curLoan.getNameOfLoan()).add(curLoan.getVersion());
+                    }
+                }
+                if(!versionsOfLoans.values().stream().filter(L -> (L.size() > 1)).collect(Collectors.toList()).isEmpty()){
+                    customerInfoTables.addLoanToLoansForBuyTable(loansToBuy);
+                }
+            }
+        });
+    }//TODO
 
     public void updateTableNotificationsView(List<CustomerDTOs> allNotifications){
         Platform.runLater(() ->{
